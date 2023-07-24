@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:getgodriver/widgets/appBarSetting.dart';
+import 'package:getgodriver/widgets/home/bottomSheetAcceptTrip.dart';
+import 'package:getgodriver/widgets/home/countDownAnimation.dart';
+import 'package:getgodriver/widgets/home/timerPainer.dart';
 import 'package:getgodriver/widgets/map.dart';
+import 'package:flutter_rating_native/flutter_rating_native.dart';
+import 'dart:math' as math;
+import 'package:getgodriver/widgets/home/floatingButtonMap.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,59 +16,49 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   bool isOnline = true;
+
+  late AnimationController controller;
+  String get timerString {
+    Duration duration = controller.duration! * controller.value;
+    return "${duration.inSeconds}";
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 10),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    controller.reverse(from: controller.value == 0.0 ? 1.0 : controller.value);
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(actions: [
-          InkWell(
-            onTap: () {
-              setState(() {
-                if (isOnline) {
-                  isOnline = false;
-                } else {
-                  isOnline = true;
-                }
-              });
+        appBar: AppBarSetting(
+          isOnline: isOnline,
+        ),
+        body: Center(
+          child: ElevatedButton(
+            onPressed: () {
+              showModalBottomSheet(
+                enableDrag: false,
+
+                isDismissible: false,
+                context: context,
+                builder: (context) {
+                  return BottomSheetAcceptTrip();
+                },
+              );
             },
-            child: Container(
-              width: 180,
-              alignment: Alignment.center,
-              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius:const  BorderRadius.all(Radius.circular(30)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        color: isOnline ? Colors.green : Colors.red,
-                        size: 20,
-                      ),
-                      Container(
-                        margin:const  EdgeInsets.only(left: 10),
-                        child: Text(
-                          isOnline ? "Trực tuyến" : "Ngoại tuyến",
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Icon(Icons.arrow_forward_ios,color: Colors.grey,),
-                ],
-              ),
-            ),
-          )
-        ]),
-        body: MapScreen(),
+            child: const Text("haha"),
+          ),        
+        ),
+        floatingActionButton:const FloatingButtonMap(),
       ),
     );
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getgodriver/routes/Routes.dart';
+import 'package:getgodriver/widgets/auth/login/inputPhone.dart';
+import 'package:getgodriver/widgets/auth/login/loginButton.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,7 +18,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   login() {
     if (validPhone) {
-      Navigator.pushNamed(context,Routes.verification, arguments: phone.phoneNumber);
+      Navigator.pushNamed(context, Routes.verification,
+          arguments: phone.phoneNumber);
     } else {
       _notifyErrorMessage("lỗi");
     }
@@ -58,87 +61,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   image: AssetImage("assets/imgs/title.png"),
                 ),
                 Column(children: [
-                  Stack(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black.withOpacity(0.4),
-                          ),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: InternationalPhoneNumberInput(
-                          onInputChanged: (PhoneNumber number) {
-                            setState(() {
-                              
-                            phone = number;
-                            });
-                            print(phone);
-                          },
-                          onInputValidated: (bool value) {
-                            validPhone = value;
-                            print(value);
-                          },
-                          cursorColor: Colors.black,
-                          formatInput: false,
-                          selectorConfig: const SelectorConfig(
-                            selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                          ),
-                          inputDecoration: InputDecoration(
-                            contentPadding:
-                                const EdgeInsets.only(bottom: 15, left: 0),
-                            border: InputBorder.none,
-                            hintText: "Your phone number",
-                            hintStyle: TextStyle(
-                                color: Colors.grey.shade500, fontSize: 16),
-                          ),
-
-                          ignoreBlank: false,
-                          autoValidateMode: AutovalidateMode.disabled,
-                          selectorTextStyle:
-                              const TextStyle(color: Colors.black),
-                          initialValue: PhoneNumber(isoCode: 'VN'),
-                          textFieldController: controller,
-                          // keyboardType: TextInputType.numberWithOptions(
-                          //     signed: true, decimal: true),
-                          inputBorder: const OutlineInputBorder(),
-                          // onSaved: (PhoneNumber number) {},
-                        ),
-                      ),
-                      Positioned(
-                        left: 90,
-                        top: 8,
-                        bottom: 8,
-                        child: Container(
-                          height: 40,
-                          width: 1,
-                          color: Colors.black.withOpacity(0.13),
-                        ),
-                      ),
-                    ],
-                  ),
+                  InputPhone(
+                      controller: controller,
+                      phone: phone,
+                      validPhone: validPhone),
                   const SizedBox(
                     height: 20,
                   ),
-                  InkWell(
-                    onTap: login,
-                    child: Container(
-                        alignment: Alignment.center,
-                        height: 40,
-                        width: MediaQuery.of(context).size.width - 20,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            color: Theme.of(context).primaryColor),
-                        child: const Text(
-                          "ĐÂNG NHẬP",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        )),
-                  ),
+                  LoginButton(login: login),
                   const SizedBox(
                     height: 20,
                   ),

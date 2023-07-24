@@ -52,6 +52,7 @@ dev_dependencies:
   google_maps_flutter: ^2.3.0
   http: ^0.13.6
   pinput: ^2.2.31
+  flutter_rating_native: ^0.0.2
 
 
 # For information on the generic Dart part of this file, see the
@@ -70,6 +71,7 @@ flutter:
     - assets/imgs/title.png
     - assets/imgs/banner.jpg
     - assets/jsons/map_style.json
+    - assets/imgs/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

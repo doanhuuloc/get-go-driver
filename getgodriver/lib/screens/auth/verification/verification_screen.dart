@@ -97,7 +97,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   length: 6,
                   showCursor: true,
                   autofocus: true,
-
                   onCompleted: (pin) => print(pin),
                 ),
               ),
