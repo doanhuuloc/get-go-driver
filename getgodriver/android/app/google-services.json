@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "410792468487",
+    "project_id": "taxi-getgo",
+    "storage_bucket": "taxi-getgo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410792468487:android:228af4f7041602d54dcaa2",
+        "android_client_info": {
+          "package_name": "com.example.clientapp_taxi_getgo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410792468487-d7gem8hkpdibdtksckmbkc6rrtgjqruk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.clientapp_taxi_getgo",
+            "certificate_hash": "3aebc9bb1238b4651505827379cb010580afacc1"
+          }
+        },
+        {
+          "client_id": "410792468487-bunc941l598jba360qt58ss51mupfdh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzEHzXnfWZWbbygrpf69RMTaiBIbo9bRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410792468487-bunc941l598jba360qt58ss51mupfdh2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
