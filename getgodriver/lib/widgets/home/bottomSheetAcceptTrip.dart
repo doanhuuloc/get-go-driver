@@ -1,11 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_native/flutter_rating_native.dart';
+import 'package:getgodriver/models/tripModel.dart';
 import 'package:getgodriver/widgets/home/acceptOrRejectTrip.dart';
-import 'package:getgodriver/widgets/home/address.dart';
+import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/home/countDownAnimation.dart';
-import 'package:getgodriver/widgets/home/customerInfo.dart';
+import 'package:getgodriver/widgets/customerInfo.dart';
 import 'package:getgodriver/widgets/home/distanceCost.dart';
 
 class BottomSheetAcceptTrip extends StatefulWidget {
@@ -18,18 +18,18 @@ class BottomSheetAcceptTrip extends StatefulWidget {
 class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
   int remainingTime = 9;
   late Timer timer;
-
-  String avatar = "assets/imgs/avatar.jpg";
-  String name = "Nguyễn Đăng Mạnh Tú";
-  String phone = "0909100509";
-  double rate = 3.7;
-
-  String note = "Chở em gái đi học";
-  String fromAddress = "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm";
-  String toAddress = "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm";
-
-  double distance = 22.6;
-  double cost = 100000;
+  final trip = TripModel(
+    avatar: "assets/imgs/avatar.jpg",
+    name: "Nguyễn Đăng Mạnh Tú",
+    phone: "0909100509",
+    rate: 3.7,
+    cost: 100000,
+    distance: 22.6,
+    note: "Chở em gái đi học",
+    fromAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
+    toAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
+    apointmentDate: DateTime.utc(2023, 7, 25, 16, 00),
+  );
 
   accpetTrip() {}
   rejectTrip() {
@@ -38,7 +38,6 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
 
   void startCountdown() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      print(remainingTime);
       setState(() {
         if (remainingTime > 0) {
           remainingTime--;
@@ -64,36 +63,58 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 20),
-          CustomerInfo(avatar: avatar, name: name, phone: phone, rate: rate),
-          const SizedBox(height: 10),
-          Text(
-            "Note: $note",
-            style: const TextStyle(fontSize: 20),
+    return Wrap(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomerInfo(
+                      avatar: trip.avatar,
+                      name: trip.name,
+                      phone: trip.phone,
+                      rate: trip.rate),
+                  IconButton(
+                    onPressed: () {},
+                    iconSize: 30,
+                    icon: Icon(
+                      Icons.chat,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "Note: ${trip.note}",
+                style: const TextStyle(fontSize: 20),
+              ),
+              const SizedBox(height: 10),
+              Address(address: trip.fromAddress),
+              const SizedBox(height: 15),
+              Address(
+                address: trip.toAddress,
+                color: Theme.of(context).primaryColor,
+              ),
+              DistanceCost(
+                distance: trip.distance,
+                cost: trip.cost,
+              ),
+              const SizedBox(height: 10),
+              AcceptOrRejectTrip(
+                accept: accpetTrip,
+                reject: rejectTrip,
+              ),
+              const SizedBox(height: 50)
+            ],
           ),
-          const SizedBox(height: 10),
-          Address(address: fromAddress),
-          const SizedBox(height: 15),
-          Address(
-            address: toAddress,
-            color: Theme.of(context).primaryColor,
-          ),
-          DistanceCost(
-            distance: distance,
-            cost: cost,
-          ),
-          const SizedBox(height: 10),
-          AcceptOrRejectTrip(
-            accept: accpetTrip,
-            reject: rejectTrip,
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 }

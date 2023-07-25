@@ -4,6 +4,7 @@ import 'package:getgodriver/screens/auth/login/login_screen.dart';
 import 'package:getgodriver/screens/auth/verification/verification_screen.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: const Color(0xFFFA8D1D),
+        textTheme: const TextTheme(bodyMedium: TextStyle(fontSize: 16)),
       ),
       title: "GetGoDriver",
       initialRoute: Routes.home,

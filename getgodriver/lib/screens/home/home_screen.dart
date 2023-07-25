@@ -41,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       child: Scaffold(
         appBar: AppBarSetting(
           isOnline: isOnline,
+          title: "",
         ),
         body: Center(
           child: ElevatedButton(

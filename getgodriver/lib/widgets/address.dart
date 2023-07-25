@@ -13,11 +13,11 @@ class Address extends StatelessWidget {
           size: 24,
           color: color,
         ),
+        const SizedBox(width: 5),
         Flexible(
           child: Text(
             overflow: TextOverflow.clip,
             address,
-            style: const TextStyle(fontSize: 20),
           ),
         ),
       ],

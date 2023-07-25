@@ -53,6 +53,7 @@ dev_dependencies:
   http: ^0.13.6
   pinput: ^2.2.31
   flutter_rating_native: ^0.0.2
+  intl: ^0.18.1
 
 
 # For information on the generic Dart part of this file, see the
