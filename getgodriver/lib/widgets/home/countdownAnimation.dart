@@ -29,7 +29,7 @@ class _CountdownAnimationState extends State<CountdownAnimation>
   @override
   void dispose() {
     // TODO: implement dispose
-    controller.stop();
+    controller.dispose();
     super.dispose();
   }
 

@@ -20,7 +20,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: const Color(0xFFFA8D1D),
-        textTheme: const TextTheme(bodyMedium: TextStyle(fontSize: 16)),
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(fontSize: 16),
+          titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          titleSmall: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+          titleLarge: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+        ),
+        
       ),
       title: "GetGoDriver",
       initialRoute: Routes.home,

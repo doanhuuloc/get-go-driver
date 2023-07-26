@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:getgodriver/models/tripModel.dart';
 import 'package:getgodriver/widgets/address.dart';
-import 'package:getgodriver/widgets/apointmentTrip/apointmentBox.dart';
+import 'package:getgodriver/widgets/scheduledTrip/scheduledBox.dart';
 import 'package:getgodriver/widgets/appBarSetting.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
 import 'package:intl/intl.dart';
 
-class ApointmentTripsScreen extends StatefulWidget {
-  const ApointmentTripsScreen({super.key});
+class ScheduledTripsScreen extends StatefulWidget {
+  const ScheduledTripsScreen({super.key});
 
   @override
-  State<ApointmentTripsScreen> createState() => _ApointmentTripsScreenState();
+  State<ScheduledTripsScreen> createState() => _ScheduledTripsScreenState();
 }
 
-class _ApointmentTripsScreenState extends State<ApointmentTripsScreen> {
-  bool isOnline = false;
+class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
   final format = DateFormat("dd/MM/yyyy");
   DateTime dateTime = DateTime.now();
 
@@ -91,8 +90,8 @@ class _ApointmentTripsScreenState extends State<ApointmentTripsScreen> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBarSetting(
-          isOnline: isOnline,
+        appBar: const AppBarSetting(
+          isOnline: false,
           title: "Chuyến đi hẹn giờ",
         ),
         body: Column(children: [
