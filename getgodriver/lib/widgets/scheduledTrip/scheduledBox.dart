@@ -62,7 +62,7 @@ class ApointmentBox extends StatelessWidget {
               ),
             ),
             Text(
-              formatApointmentDate.format(trip.apointmentDate!),
+              formatApointmentDate.format(trip.scheduledDate!),
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
             ),
           ],

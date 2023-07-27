@@ -3,6 +3,7 @@ import 'package:getgodriver/screens/auth/login/login_screen.dart';
 import 'package:getgodriver/screens/home/home_screen.dart';
 import 'package:getgodriver/screens/setting/settingscreen.dart';
 import 'package:getgodriver/screens/user/userScreen.dart';
+import 'package:getgodriver/screens/detailedTrip/detailedTripscreen.dart';
 import 'package:getgodriver/widgets/appBarSetting.dart';
 
 class TabScreen extends StatefulWidget {
@@ -23,9 +24,14 @@ class _TabScreenState extends State<TabScreen> {
       'page': UserScreen(),
       'title': 'login',
     },
-    {'page': SettingScreen(),
-     'title': 'setting'
-     },
+    {
+      'page': SettingScreen(),
+      'title': 'setting',
+    },
+    {
+      'page': DetailedTripScreen(),
+      'title': "trip",
+    }
   ];
   int _selectedPageIndex = 0;
 
@@ -40,7 +46,8 @@ class _TabScreenState extends State<TabScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBarSetting(
-            isOnline: isOnline, title: _pages[_selectedPageIndex]['title']),
+            isOnline: isOnline,
+            title: "haha"), //_pages[_selectedPageIndex]['title']
         body: _pages[_selectedPageIndex]['page'] as Widget,
         bottomNavigationBar: BottomNavigationBar(
           onTap: _selectPage,
@@ -48,16 +55,20 @@ class _TabScreenState extends State<TabScreen> {
           currentIndex: _selectedPageIndex,
           items: [
             BottomNavigationBarItem(
-              icon: const Icon(Icons.home),
+              icon: Icon(Icons.home),
               label: 'home',
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.account_circle),
+              icon: Icon(Icons.account_circle),
               label: 'login',
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.settings),
+              icon: Icon(Icons.settings),
               label: 'setting',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.travel_explore),
+              label: 'trip',
             ),
           ],
         ),

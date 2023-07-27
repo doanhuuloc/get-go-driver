@@ -28,7 +28,11 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
     note: "Chở em gái đi học",
     fromAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
     toAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
-    apointmentDate: DateTime.utc(2023, 7, 25, 16, 00),
+    scheduledDate: DateTime.utc(2023, 7, 25, 16, 00),
+    paymentMethod: "tiền mặt",
+    startDate: DateTime.utc(2023, 7, 25, 16, 00),
+    endDate: DateTime.utc(2023, 7, 25, 16, 00),
+    setTripDate: DateTime.utc(2023, 7, 25, 16, 00),
   );
 
   accpetTrip() {}

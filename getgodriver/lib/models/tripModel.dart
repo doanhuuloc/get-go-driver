@@ -12,7 +12,13 @@ class TripModel {
   final String fromAddress;
   final String toAddress;
 
-  DateTime? apointmentDate;
+  final DateTime startDate;
+  final DateTime endDate;
+
+  final String paymentMethod;
+
+  DateTime? setTripDate;
+  DateTime? scheduledDate;
   TripModel({
     required this.avatar,
     required this.name,
@@ -24,8 +30,10 @@ class TripModel {
     required this.note,
     required this.fromAddress,
     required this.toAddress,
-    this.apointmentDate,
+    required this.paymentMethod,
+    required this.startDate,
+    required this.endDate,
+    this.scheduledDate,
+    this.setTripDate,
   });
-
-
 }
