@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:getgodriver/main.dart';
 import 'package:getgodriver/screens/auth/login/login_screen.dart';
 import 'package:getgodriver/screens/auth/verification/verification_screen.dart';
+import 'package:getgodriver/screens/history/history_screen.dart';
 import 'package:getgodriver/screens/setting/settingscreen.dart';
 import 'package:getgodriver/screens/tab_screen.dart';
 import 'package:getgodriver/screens/scheduledTrips/scheduledTrips_screen.dart';
@@ -15,6 +16,7 @@ class Routes {
   static const String scheduledTrips = '/scheduledTrips';
   static const String setting = '/setting';
   static const String user = '/user';
+  static const String history='/history';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -32,6 +34,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => SettingScreen());
       case user:
         return MaterialPageRoute(builder: (_) => UserScreen());
+        case history:
+        return MaterialPageRoute(builder: (_) => HistoryScreen());
       default:
         return null;
     }

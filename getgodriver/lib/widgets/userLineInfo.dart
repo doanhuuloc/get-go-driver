@@ -36,11 +36,13 @@ class UserLineInfo extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 5),
-                decoration: const BoxDecoration(color: Colors.black54),
-                height: 1,
-              )
+              // Container(
+              //   margin: const EdgeInsets.only(top: 5),
+              //   decoration: const BoxDecoration(color: Colors.black54),
+              //   height: 1,
+              // ),
+              const SizedBox(height: 5),
+              const Divider(height: 1, color: Colors.black54)
             ],
           ),
         )

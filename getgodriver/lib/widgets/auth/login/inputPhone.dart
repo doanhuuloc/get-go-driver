@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class InputPhone extends StatefulWidget {
-  InputPhone(
-      {super.key,
-      required this.controller,
-      required this.phone,
-      required this.validPhone});
+  InputPhone({
+    super.key,
+    required this.controller,
+    required this.phone,
+    required this.validPhone,
+    required this.updatePhone,
+    required this.updateValidPhone,
+  });
   final TextEditingController controller;
   PhoneNumber phone;
   bool validPhone;
+  Function updatePhone;
+  Function updateValidPhone;
   @override
   State<InputPhone> createState() => _InputPhoneState();
 }
@@ -31,13 +36,11 @@ class _InputPhoneState extends State<InputPhone> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: InternationalPhoneNumberInput(
             onInputChanged: (PhoneNumber number) {
-              setState(() {
-                widget.phone = number;
-              });
+              widget.updatePhone(number);
               print(widget.phone);
             },
             onInputValidated: (bool value) {
-              widget.validPhone = value;
+              widget.updateValidPhone(value);
               print(value);
             },
             cursorColor: Colors.black,

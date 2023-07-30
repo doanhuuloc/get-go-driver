@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:getgodriver/screens/auth/login/login_screen.dart';
+import 'package:getgodriver/screens/history/history_screen.dart';
 import 'package:getgodriver/screens/home/home_screen.dart';
+import 'package:getgodriver/screens/scheduledTrips/scheduledTrips_screen.dart';
 import 'package:getgodriver/screens/setting/settingscreen.dart';
 import 'package:getgodriver/screens/user/userScreen.dart';
 import 'package:getgodriver/screens/detailedTrip/detailedTripscreen.dart';
@@ -21,17 +23,13 @@ class _TabScreenState extends State<TabScreen> {
       'title': 'home',
     },
     {
-      'page': UserScreen(),
-      'title': 'login',
+      'page': HistoryScreen(),
+      'title': "history",
     },
     {
       'page': SettingScreen(),
       'title': 'setting',
     },
-    {
-      'page': DetailedTripScreen(),
-      'title': "trip",
-    }
   ];
   int _selectedPageIndex = 0;
 
@@ -51,24 +49,21 @@ class _TabScreenState extends State<TabScreen> {
         body: _pages[_selectedPageIndex]['page'] as Widget,
         bottomNavigationBar: BottomNavigationBar(
           onTap: _selectPage,
-          selectedItemColor: Colors.amber,
+          selectedItemColor: Theme.of(context).primaryColor,
+          unselectedItemColor: Colors.black,
           currentIndex: _selectedPageIndex,
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
-              label: 'login',
+              icon: Icon(Icons.bar_chart),
+              label: 'history',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
               label: 'setting',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.travel_explore),
-              label: 'trip',
             ),
           ],
         ),

@@ -16,6 +16,18 @@ class _LoginScreenState extends State<LoginScreen> {
   PhoneNumber phone = new PhoneNumber();
   bool validPhone = false;
 
+  updatePhone(PhoneNumber newphone) {
+    setState(() {
+      phone = newphone;
+    });
+  }
+
+  updateValidPhone(bool value) {
+    setState(() {
+      validPhone = value;
+    });
+  }
+
   login() {
     if (validPhone) {
       Navigator.pushNamed(context, Routes.verification,
@@ -62,9 +74,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Column(children: [
                   InputPhone(
-                      controller: controller,
-                      phone: phone,
-                      validPhone: validPhone),
+                    controller: controller,
+                    phone: phone,
+                    validPhone: validPhone,
+                    updatePhone: updatePhone,
+                    updateValidPhone: updateValidPhone,
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
