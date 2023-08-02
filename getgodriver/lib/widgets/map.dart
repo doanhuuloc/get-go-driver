@@ -9,8 +9,10 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 import 'package:uuid/uuid.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:geocoding/geocoding.dart';
+// import 'package:permission_handler/permission_handler.dart';
+// import 'package:geocoding/geocoding.dart';
+// import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
 
 class MapScreen extends StatefulWidget {
@@ -35,54 +37,58 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
+  Location? _location;
+  LocationData? _currentLocation;
+  double _heading = 0.0;
 
   Map<String, Marker> _marker = {};
-  Future<void> _getCurrentLocation() async {
-    try {
-      while (true) {
-        await Permission.location.request();
-        Position position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high);
-        print('ydddđfffffffff');
-        print(position.accuracy);
-        LatLng location = LatLng(position.latitude, position.longitude);
-        if (widget.currentLocation.coordinates != location) {
-          widget.currentLocation.coordinates = location;
-          print(11111111111);
-          addMarker('current', widget.currentLocation.coordinates, widget.icon,
-              position.accuracy);
-          final GoogleMapController controller = await _controller.future;
 
-          _moveCameraToLocation(widget.currentLocation.coordinates);
-          print(location.latitude);
-          print(location.longitude);
-        }
-
-        // setState(() {});
-        await Future.delayed(Duration(seconds: 10));
-      }
-    } catch (e) {
-      throw Exception('Request failed with status: $e}');
-    }
+  // hàm lấy vị trí hiện tại
+  _init() async {
+    _location = Location();
+    _initLocation();
   }
 
+  _initLocation() {
+    _location?.getLocation().then((location) {
+      widget.currentLocation.accuracy = location.accuracy ?? 0;
+      widget.currentLocation.coordinates =
+          LatLng(location.latitude ?? 0, location.longitude ?? 0);
+      _currentLocation = location;
+    });
+    _location?.onLocationChanged.listen((newLocation) async {
+      double result = await Geolocator.distanceBetween(
+        widget.currentLocation.coordinates.latitude,
+        widget.currentLocation.coordinates.longitude,
+        newLocation.latitude!,
+        newLocation.longitude!,
+      );
+      // cứ đi được 100 mét là set lại vị trí
+      if (result > 100) {
+        _currentLocation = newLocation;
+        widget.currentLocation.coordinates =
+            LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0);
+        _moveCameraToLocation(LatLng(
+            _currentLocation?.latitude ?? 0, _currentLocation?.longitude ?? 0));
+        addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon,
+            newLocation.heading ?? 0);
+      }
+    });
+  }
+
+  // hàm duy chuyển camera tới vị trí LatLng
   void _moveCameraToLocation(LatLng location) async {
-    final GoogleMapController controller = await _controller.future;
-    controller.moveCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: location,
-          zoom: 16,
-        ),
-      ),
-    );
+    GoogleMapController mapController = await _controller.future;
+    mapController.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: location, zoom: 15)));
   }
 
   @override
   void initState() {
     super.initState();
     _loadMapStyle();
-    _getCurrentLocation();
+    // Khởi tạo vị trí
+    _init();
   }
 
   Future<void> _loadMapStyle() async {
@@ -91,21 +97,8 @@ class _MapScreenState extends State<MapScreen> {
     controller.setMapStyle(style);
   }
 
-  Future<void> _goToLatlng(LatLng position) async {
-    final GoogleMapController controller = await _controller.future;
-    await controller
-        .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-      // bearing: 192.8334901395799,
-      target: position,
-      // tilt: 59.440717697143555,
-      zoom: 16,
-    )));
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Thêm dòng sau để lấy tọa độ từ polylinePoints của bạn
-
     return GoogleMap(
       mapType: MapType.normal,
       initialCameraPosition: CameraPosition(
@@ -134,22 +127,16 @@ class _MapScreenState extends State<MapScreen> {
 
   void onCreated(GoogleMapController controller) async {
     _controller.complete(controller);
-    addMarker('current', widget.currentLocation.coordinates, widget.icon, 0);
-    print('aaaaaaaaaaaaaaaaaaaaaa');
+    addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon, 0);
     for (LatLng point in widget.listDrive) {
-      addMarker(const Uuid().v4(), point, 'assets/svgs/CarMap.svg',
+      addMarkerSVG(const Uuid().v4(), point, 'assets/svgs/CarMap.svg',
           Random().nextDouble() * 360 + 1);
     }
     if (widget.desLocation != null) addPolylineAndFitMap();
-    // else {
-    //   print('dd')
-    //   addMarkerPicture(
-    //       'current', widget.currentLocation, 'assets/svgs/manhtu.png');
-    // }
   }
 
   Future<void> addPolylineAndFitMap() async {
-    addMarker('marker', widget.desLocation!.coordinates!,
+    addMarkerSVG('marker', widget.desLocation!.coordinates!,
         'assets/svgs/DesDetail.svg', 0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       List<LatLng> points = widget.listPoint.map((e) {
@@ -234,7 +221,7 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
-  Future<void> addMarker(
+  Future<void> addMarkerSVG(
       String id, LatLng location, String assetName, double rotate) async {
     BitmapDescriptor svgIcon =
         await getBitmapDescriptorFromSvgAsset(assetName, const Size(40, 40));
