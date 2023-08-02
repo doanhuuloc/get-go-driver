@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_native/flutter_rating_native.dart';
+import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
 import 'package:getgodriver/widgets/home/acceptOrRejectTrip.dart';
 import 'package:getgodriver/widgets/address.dart';
@@ -26,8 +27,10 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
     cost: 100000,
     distance: 22.6,
     note: "Chở em gái đi học",
-    fromAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
-    toAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
+    fromAddress: LocationModel(
+        title: '', summary: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm"),
+    toAddress: LocationModel(
+        title: '', summary: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm"),
     scheduledDate: DateTime.utc(2023, 7, 25, 16, 00),
     paymentMethod: "tiền mặt",
     startDate: DateTime.utc(2023, 7, 25, 16, 00),
@@ -99,10 +102,10 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
                 style: const TextStyle(fontSize: 20),
               ),
               const SizedBox(height: 10),
-              Address(address: trip.fromAddress),
+              Address(address: trip.fromAddress.summary),
               const SizedBox(height: 15),
               Address(
-                address: trip.toAddress,
+                address: trip.toAddress.summary,
                 color: Theme.of(context).primaryColor,
               ),
               DistanceCost(

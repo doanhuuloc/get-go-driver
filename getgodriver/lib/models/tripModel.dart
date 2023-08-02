@@ -1,3 +1,5 @@
+import 'location.dart';
+
 class TripModel {
   final String avatar;
   final String name;
@@ -9,8 +11,8 @@ class TripModel {
 
   final String? typeCar;
   final String note;
-  final String fromAddress;
-  final String toAddress;
+  LocationModel fromAddress;
+  LocationModel toAddress;
 
   final DateTime startDate;
   final DateTime endDate;

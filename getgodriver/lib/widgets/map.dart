@@ -1,12 +1,32 @@
 import 'dart:async';
-import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:getgodriver/models/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:http/http.dart' as http;
+import 'dart:ui' as ui;
+import 'dart:math' as math;
+import 'package:uuid/uuid.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({Key? key}) : super(key: key);
+  LocationModel currentLocation;
+  LocationModel? desLocation;
+  List<PointLatLng> listPoint;
+  List<LatLng> listDrive;
+  String icon;
+  MapScreen(
+      {required this.currentLocation,
+      required this.icon,
+      this.desLocation,
+      this.listPoint = const [],
+      this.listDrive = const [],
+      Key? key})
+      : super(key: key);
 
   @override
   _MapScreenState createState() => _MapScreenState();
@@ -15,25 +35,54 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
-  final currentLocation = LatLng(10.728728, 106.718796);
-  final List<LatLng> destinationLocation = [
-    LatLng(10.7757, 106.7004),
-    LatLng(10.7240, 106.7356),
-    LatLng(10.7094, 106.7320),
-    LatLng(10.7219, 106.7281),
-  ];
-  static const CameraPosition _kLake = CameraPosition(
-    // bearing: 192.8334901395799,
-    target: LatLng(10.728728, 106.718796),
-    // tilt: 59.440717697143555,
-    zoom: 16,
-  );
+
   Map<String, Marker> _marker = {};
-  Set<Polyline> _polylines = {};
+  Future<void> _getCurrentLocation() async {
+    try {
+      while (true) {
+        await Permission.location.request();
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        print('ydddđfffffffff');
+        print(position.accuracy);
+        LatLng location = LatLng(position.latitude, position.longitude);
+        if (widget.currentLocation.coordinates != location) {
+          widget.currentLocation.coordinates = location;
+          print(11111111111);
+          addMarker('current', widget.currentLocation.coordinates, widget.icon,
+              position.accuracy);
+          final GoogleMapController controller = await _controller.future;
+
+          _moveCameraToLocation(widget.currentLocation.coordinates);
+          print(location.latitude);
+          print(location.longitude);
+        }
+
+        // setState(() {});
+        await Future.delayed(Duration(seconds: 10));
+      }
+    } catch (e) {
+      throw Exception('Request failed with status: $e}');
+    }
+  }
+
+  void _moveCameraToLocation(LatLng location) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.moveCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: location,
+          zoom: 16,
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     _loadMapStyle();
+    _getCurrentLocation();
   }
 
   Future<void> _loadMapStyle() async {
@@ -42,85 +91,164 @@ class _MapScreenState extends State<MapScreen> {
     controller.setMapStyle(style);
   }
 
+  Future<void> _goToLatlng(LatLng position) async {
+    final GoogleMapController controller = await _controller.future;
+    await controller
+        .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      // bearing: 192.8334901395799,
+      target: position,
+      // tilt: 59.440717697143555,
+      zoom: 16,
+    )));
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Thêm dòng sau để lấy tọa độ từ polylinePoints của bạn
+
     return GoogleMap(
       mapType: MapType.normal,
       initialCameraPosition: CameraPosition(
-        target: currentLocation,
-        zoom: 14,
+        target: widget.currentLocation.coordinates,
+        zoom: 16,
       ),
-      onMapCreated: (GoogleMapController controller) async {
-        _controller.complete(controller);
-        addMarker('test', currentLocation);
-        // addMarker('destination', destinationLocation);
-        // addMarker('destination1', destinationLocation1);
-        // _createPolylines(currentLocation, destinationLocation);
-        // List<LatLng> nearbyPlaces = await DirectionsRepository()
-        //     .calculateDistance(currentLocation, destinationLocation);
-        // int i = 0;
-        // for (LatLng x in nearbyPlaces) {
-        //   addMarker('destination${i.toString()}', x);
-        //   i++;
-        // }
-        // print('wwwwwwwwwwwwwwww');
-        // print(nearbyPlaces[0]);
-        // // destinationLocation1 = nearbyPlaces[0];
-        // print(1111111111111);
-        // print(DirectionsRepository.destinationLocation1!);
-        // await _createPolylines(
-        //     currentLocation, nearbyPlaces[0]);
-      },
+      onMapCreated: onCreated,
       markers: _marker.values.toSet(),
-      compassEnabled: true,
+      compassEnabled: false,
+      zoomControlsEnabled: false,
       myLocationEnabled: true,
-      // polylines: {
-      //   if (_info != null)
-      //     Polyline(
-      //       polylineId: const PolylineId('overview_polyline'),
-      //       color: Colors.blue,
-      //       // width: 5,
-      //       points: _info!.polylinePoints.map((e) {
-      //         print('eeeeeeeeee22222222222222222');
-      //         print(e);
-      //         return LatLng(e.latitude, e.longitude);
-      //       }).toList(),
-      //     ),
-      // },
+      myLocationButtonEnabled: widget.desLocation != null ? true : false,
+      polylines: {
+        if (widget.listPoint.isNotEmpty)
+          Polyline(
+            polylineId: const PolylineId('overview_polyline'),
+            color: Theme.of(context).primaryColor,
+            width: 4,
+            points: widget.listPoint.map((e) {
+              return LatLng(e.latitude, e.longitude);
+            }).toList(),
+          ),
+      },
     );
-    // floatingActionButton: FloatingActionButton.extended(
-    //   onPressed: _goToTheLake,
-    //   label: const Text('To the lake!'),
-    //   icon: const Icon(Icons.directions_boat),
-    // ),
-    // );
   }
 
-  // Future<void> _createPolylines(LatLng start, LatLng destination) async {
-  //   final directions = await DirectionsRepository()
-  //       .getDirections(origin: start, destination: destination);
-  //   print(destination);
-  //   print('dasssssssssssssss');
-  //   print(directions.polylinePoints);
-  //   setState(() => _info = directions);
-  // }
+  void onCreated(GoogleMapController controller) async {
+    _controller.complete(controller);
+    addMarker('current', widget.currentLocation.coordinates, widget.icon, 0);
+    print('aaaaaaaaaaaaaaaaaaaaaa');
+    for (LatLng point in widget.listDrive) {
+      addMarker(const Uuid().v4(), point, 'assets/svgs/CarMap.svg',
+          Random().nextDouble() * 360 + 1);
+    }
+    if (widget.desLocation != null) addPolylineAndFitMap();
+    // else {
+    //   print('dd')
+    //   addMarkerPicture(
+    //       'current', widget.currentLocation, 'assets/svgs/manhtu.png');
+    // }
+  }
 
-  addMarker(String id, LatLng location) {
+  Future<void> addPolylineAndFitMap() async {
+    addMarker('marker', widget.desLocation!.coordinates!,
+        'assets/svgs/DesDetail.svg', 0);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      List<LatLng> points = widget.listPoint.map((e) {
+        return LatLng(e.latitude, e.longitude);
+      }).toList();
+      await Future.delayed(Duration(milliseconds: 500));
+      await _setMapFitToTour(points);
+    });
+  }
+
+  Future<void> _setMapFitToTour(List<LatLng> points) async {
+    if (points.isEmpty) return;
+
+    final GoogleMapController controller = await _controller.future;
+
+    double minLat =
+        points.reduce((a, b) => a.latitude < b.latitude ? a : b).latitude;
+    double maxLat =
+        points.reduce((a, b) => a.latitude > b.latitude ? a : b).latitude;
+    double minLng =
+        points.reduce((a, b) => a.longitude < b.longitude ? a : b).longitude;
+    double maxLng =
+        points.reduce((a, b) => a.longitude > b.longitude ? a : b).longitude;
+
+    controller.animateCamera(CameraUpdate.newLatLngBounds(
+      LatLngBounds(
+        southwest: LatLng(minLat, minLng),
+        northeast: LatLng(maxLat, maxLng),
+      ),
+      60,
+    ));
+  }
+
+  Future<BitmapDescriptor> getBitmapDescriptorFromSvgAsset(
+    String assetName, [
+    Size size = const Size(48, 48),
+  ]) async {
+    final pictureInfo = await vg.loadPicture(SvgAssetLoader(assetName), null);
+
+    double devicePixelRatio = ui.window.devicePixelRatio;
+    int width = (size.width * devicePixelRatio).toInt();
+    int height = (size.height * devicePixelRatio).toInt();
+
+    final scaleFactor = math.min(
+      width / pictureInfo.size.width,
+      height / pictureInfo.size.height,
+    );
+
+    final recorder = ui.PictureRecorder();
+
+    ui.Canvas(recorder)
+      ..scale(scaleFactor)
+      ..drawPicture(pictureInfo.picture);
+
+    final rasterPicture = recorder.endRecording();
+
+    final image = rasterPicture.toImageSync(width, height);
+    final bytes = (await image.toByteData(format: ui.ImageByteFormat.png))!;
+
+    return BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
+  }
+
+  Future<void> addMarkerPicture(
+      String id, LatLng location, String assetName, double rotate) async {
+    // BitmapDescriptor.fromAssetImage(configuration, assetName)
+    BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(200, 200)),
+      assetName,
+    ).then((icon) {
+      var marker = Marker(
+        markerId: MarkerId(id),
+        position: location,
+        infoWindow: const InfoWindow(
+          title: 'End Point',
+          snippet: 'End Marker',
+        ),
+        icon: icon,
+        rotation: rotate,
+      );
+      _marker[id] = marker;
+      setState(() {});
+    });
+  }
+
+  Future<void> addMarker(
+      String id, LatLng location, String assetName, double rotate) async {
+    BitmapDescriptor svgIcon =
+        await getBitmapDescriptorFromSvgAsset(assetName, const Size(40, 40));
     var marker = Marker(
       markerId: MarkerId(id),
       position: location,
-      infoWindow: InfoWindow(
+      infoWindow: const InfoWindow(
         title: 'End Point',
         snippet: 'End Marker',
       ),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+      icon: svgIcon,
+      rotation: rotate,
     );
     _marker[id] = marker;
     setState(() {});
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
 import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
@@ -20,8 +21,10 @@ class DetailedTripScreen extends StatelessWidget {
       distance: 22.6,
       typeCar: "taxi 4 chỗ",
       note: "Chở em gái đi học",
-      fromAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
-      toAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
+      fromAddress: LocationModel(
+          title: '', summary: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm"),
+      toAddress: LocationModel(
+          title: '', summary: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm"),
       scheduledDate: DateTime.utc(2023, 7, 25, 16, 00),
       paymentMethod: "tiền mặt",
       startDate: DateTime.utc(2023, 7, 25, 16, 00),
@@ -83,12 +86,12 @@ class DetailedTripScreen extends StatelessWidget {
           UserLineInfo(title: "Lộ trình", info: "${trip.distance} km"),
           Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: Address(address: trip.fromAddress)),
+              child: Address(address: trip.fromAddress.summary)),
           const SizedBox(height: 10),
           Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: Address(
-                  address: trip.toAddress, color: themedata.primaryColor)),
+                  address: trip.toAddress.summary, color: themedata.primaryColor)),
           UserLineInfo(
               title: "Phương thức thanh toán", info: trip.paymentMethod),
           Container(

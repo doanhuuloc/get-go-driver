@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:getgodriver/models/location.dart';
+import 'package:getgodriver/widgets/Buider/GoogleMapBuider.dart';
 import 'package:getgodriver/widgets/appBarSetting.dart';
 import 'package:getgodriver/widgets/home/bottomSheetAcceptTrip.dart';
 import 'package:getgodriver/widgets/home/countDownAnimation.dart';
@@ -30,21 +32,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         //   isOnline: isOnline,
         //   title: "",
         // ),
-        body: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              showModalBottomSheet(
-                enableDrag: false,
-                isDismissible: false,
-                context: context,
-                builder: (context) {
-                  return BottomSheetAcceptTrip();
-                },
-              );
-            },
-            child: const Text("haha"),
-          ),
-        ),
+        body: GoogleMapBuider(
+                currentLocation: LocationModel(title: '', summary: ''))
+            .build(),
         floatingActionButton: const FloatingButtonMap(),
       ),
     );

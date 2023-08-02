@@ -52,9 +52,14 @@ dev_dependencies:
   google_maps_flutter: ^2.3.0
   http: ^0.13.6
   pinput: ^2.2.31
+  flutter_polyline_points: ^1.0.0
   flutter_rating_native: ^0.0.2
   intl: ^0.18.1
-
+  uuid: ^3.0.4
+  socket_io_client: ^2.0.2
+  permission_handler: ^10.3.0
+  geolocator: ^9.0.2
+  geocoding: ^2.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

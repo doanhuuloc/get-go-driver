@@ -52,10 +52,10 @@ class ApointmentBox extends StatelessWidget {
               width: (MediaQuery.of(context).size.width - 30 * 2) * 0.8,
               child: Column(
                 children: [
-                  Address(address: trip.fromAddress),
+                  Address(address: trip.fromAddress.summary),
                   const SizedBox(height: 10),
                   Address(
-                    address: trip.toAddress,
+                    address: trip.toAddress.summary,
                     color: Theme.of(context).primaryColor,
                   ),
                 ],
