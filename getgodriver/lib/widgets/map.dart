@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:getgodriver/models/location.dart';
+import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:ui' as ui;
@@ -14,6 +15,7 @@ import 'package:uuid/uuid.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
 class MapScreen extends StatefulWidget {
   LocationModel currentLocation;
@@ -37,26 +39,28 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
-  Location? _location;
-  LocationData? _currentLocation;
+  late Location _location;
+  // LocationData? _currentLocation;
   double _heading = 0.0;
 
   Map<String, Marker> _marker = {};
 
   // hàm lấy vị trí hiện tại
   _init() async {
+    print('hhhhhhhhh');
     _location = Location();
     _initLocation();
   }
 
   _initLocation() {
-    _location?.getLocation().then((location) {
-      widget.currentLocation.accuracy = location.accuracy ?? 0;
+    _location.getLocation().then((location) {
       widget.currentLocation.coordinates =
           LatLng(location.latitude ?? 0, location.longitude ?? 0);
-      _currentLocation = location;
+      // context.read<SocketService>().driverSendToServer(
+      //     widget.currentLocation.coordinates, location.heading ?? 0);
+      // _currentLocation = location;
     });
-    _location?.onLocationChanged.listen((newLocation) async {
+    _location.onLocationChanged.listen((newLocation) async {
       double result = await Geolocator.distanceBetween(
         widget.currentLocation.coordinates.latitude,
         widget.currentLocation.coordinates.longitude,
@@ -64,12 +68,17 @@ class _MapScreenState extends State<MapScreen> {
         newLocation.longitude!,
       );
       // cứ đi được 100 mét là set lại vị trí
-      if (result > 100) {
-        _currentLocation = newLocation;
+      print('result');
+      print(result);
+      if (result > 200) {
+        // _currentLocation = newLocation;
         widget.currentLocation.coordinates =
             LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0);
+        // gửi vị trí về server
+        context.read<SocketService>().driverUpdateServer(
+            widget.currentLocation.coordinates, newLocation.heading ?? 0);
         _moveCameraToLocation(LatLng(
-            _currentLocation?.latitude ?? 0, _currentLocation?.longitude ?? 0));
+            newLocation.latitude ?? 0, newLocation.longitude ?? 0));
         addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon,
             newLocation.heading ?? 0);
       }

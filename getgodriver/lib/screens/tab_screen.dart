@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/screens/auth/login/login_screen.dart';
 import 'package:getgodriver/screens/history/history_screen.dart';
 import 'package:getgodriver/screens/home/home_screen.dart';
@@ -7,6 +8,7 @@ import 'package:getgodriver/screens/setting/settingscreen.dart';
 import 'package:getgodriver/screens/user/userScreen.dart';
 import 'package:getgodriver/screens/detailedTrip/detailedTripscreen.dart';
 import 'package:getgodriver/widgets/appBarSetting.dart';
+import 'package:provider/provider.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -37,6 +39,13 @@ class _TabScreenState extends State<TabScreen> {
     setState(() {
       _selectedPageIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<SocketService>().connectserver();
   }
 
   @override

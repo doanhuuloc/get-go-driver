@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_native/flutter_rating_native.dart';
 import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
+import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/widgets/home/acceptOrRejectTrip.dart';
 import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/home/countDownAnimation.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
 import 'package:getgodriver/widgets/home/distanceCost.dart';
+import 'package:provider/provider.dart';
 
 class BottomSheetAcceptTrip extends StatefulWidget {
-  const BottomSheetAcceptTrip({super.key});
+  int stripId;
+  BottomSheetAcceptTrip({super.key, required this.stripId});
 
   @override
   State<BottomSheetAcceptTrip> createState() => _BottomSheetAcceptTripState();
@@ -38,8 +41,13 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
     setTripDate: DateTime.utc(2023, 7, 25, 16, 00),
   );
 
-  accpetTrip() {}
+  accpetTrip() {
+    context.read<SocketService>().driverIsAccept(widget.stripId, "Accept");
+    Navigator.pop(context);
+  }
+
   rejectTrip() {
+    context.read<SocketService>().driverIsAccept(widget.stripId, "Deny");
     Navigator.pop(context);
   }
 
