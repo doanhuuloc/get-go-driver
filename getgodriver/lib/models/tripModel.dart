@@ -1,6 +1,7 @@
 import 'location.dart';
 
 class TripModel {
+  final double id;
   final String avatar;
   final String name;
   final String phone;
@@ -22,10 +23,11 @@ class TripModel {
   DateTime? setTripDate;
   DateTime? scheduledDate;
   TripModel({
+    required this.id,
     required this.avatar,
     required this.name,
     required this.phone,
-    required this.rate,
+    this.rate = 5,
     required this.cost,
     required this.distance,
     this.typeCar,

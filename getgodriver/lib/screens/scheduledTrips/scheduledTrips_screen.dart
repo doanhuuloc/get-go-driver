@@ -20,6 +20,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
 
   List<TripModel> apointmentTripList = [
     TripModel(
+      id: 1,
       avatar: "assets/imgs/avatar.jpg",
       name: "Nguyễn Đăng Mạnh Tú",
       phone: "0909100509",
@@ -36,6 +37,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
       endDate: DateTime.utc(2023, 7, 25, 16, 00),
     ),
     TripModel(
+      id: 1,
       avatar: "assets/imgs/avatar.jpg",
       name: "Nguyễn Đăng Mạnh Tú",
       phone: "0909100509",
@@ -54,6 +56,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
       endDate: DateTime.utc(2023, 7, 25, 16, 00),
     ),
     TripModel(
+      id: 1,
       avatar: "assets/imgs/avatar.jpg",
       name: "Nguyễn Đăng Mạnh Tú",
       phone: "0909100509",
@@ -72,6 +75,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
       endDate: DateTime.utc(2023, 7, 25, 16, 00),
     ),
     TripModel(
+      id: 1,
       avatar: "assets/imgs/avatar.jpg",
       name: "Nguyễn Đăng Mạnh Tú",
       phone: "0909100509",

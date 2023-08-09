@@ -47,7 +47,6 @@ class _MapScreenState extends State<MapScreen> {
 
   // hàm lấy vị trí hiện tại
   _init() async {
-    print('hhhhhhhhh');
     _location = Location();
     _initLocation();
   }
@@ -68,8 +67,6 @@ class _MapScreenState extends State<MapScreen> {
         newLocation.longitude!,
       );
       // cứ đi được 100 mét là set lại vị trí
-      print('result');
-      print(result);
       if (result > 200) {
         // _currentLocation = newLocation;
         widget.currentLocation.coordinates =
@@ -77,8 +74,8 @@ class _MapScreenState extends State<MapScreen> {
         // gửi vị trí về server
         context.read<SocketService>().driverUpdateServer(
             widget.currentLocation.coordinates, newLocation.heading ?? 0);
-        _moveCameraToLocation(LatLng(
-            newLocation.latitude ?? 0, newLocation.longitude ?? 0));
+        _moveCameraToLocation(
+            LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0));
         addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon,
             newLocation.heading ?? 0);
       }
@@ -118,7 +115,7 @@ class _MapScreenState extends State<MapScreen> {
       markers: _marker.values.toSet(),
       compassEnabled: false,
       zoomControlsEnabled: false,
-      myLocationEnabled: true,
+      myLocationEnabled: false,
       myLocationButtonEnabled: widget.desLocation != null ? true : false,
       polylines: {
         if (widget.listPoint.isNotEmpty)

@@ -6,6 +6,7 @@ import 'package:getgodriver/screens/history/history_screen.dart';
 import 'package:getgodriver/screens/setting/settingscreen.dart';
 import 'package:getgodriver/screens/tab_screen.dart';
 import 'package:getgodriver/screens/scheduledTrips/scheduledTrips_screen.dart';
+import 'package:getgodriver/screens/trip/StripScreen.dart';
 import 'package:getgodriver/screens/user/userScreen.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
@@ -16,7 +17,8 @@ class Routes {
   static const String scheduledTrips = '/scheduledTrips';
   static const String setting = '/setting';
   static const String user = '/user';
-  static const String history='/history';
+  static const String history = '/history';
+  static const String arrived = '/arrived';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -34,8 +36,10 @@ class Routes {
         return MaterialPageRoute(builder: (_) => SettingScreen());
       case user:
         return MaterialPageRoute(builder: (_) => UserScreen());
-        case history:
+      case history:
         return MaterialPageRoute(builder: (_) => HistoryScreen());
+      case arrived:
+        return MaterialPageRoute(builder: (_) => TripScreen());
       default:
         return null;
     }

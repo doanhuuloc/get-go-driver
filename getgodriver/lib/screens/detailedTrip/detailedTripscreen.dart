@@ -13,6 +13,7 @@ class DetailedTripScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final format = DateFormat("dd/MM/yyyy");
     final trip = TripModel(
+      id: 1,
       avatar: "assets/imgs/avatar.jpg",
       name: "Nguyễn Đăng Mạnh Tú",
       phone: "0909100509",
@@ -91,7 +92,8 @@ class DetailedTripScreen extends StatelessWidget {
           Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: Address(
-                  address: trip.toAddress.summary, color: themedata.primaryColor)),
+                  address: trip.toAddress.summary,
+                  color: themedata.primaryColor)),
           UserLineInfo(
               title: "Phương thức thanh toán", info: trip.paymentMethod),
           Container(

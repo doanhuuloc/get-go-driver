@@ -12,7 +12,7 @@ import 'package:getgodriver/widgets/home/distanceCost.dart';
 import 'package:provider/provider.dart';
 
 class BottomSheetAcceptTrip extends StatefulWidget {
-  int stripId;
+  Map<String,dynamic> stripId;
   BottomSheetAcceptTrip({super.key, required this.stripId});
 
   @override
@@ -23,6 +23,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
   int remainingTime = 9;
   late Timer timer;
   final trip = TripModel(
+      id: 1,
     avatar: "assets/imgs/avatar.jpg",
     name: "Nguyễn Đăng Mạnh Tú",
     phone: "0909100509",

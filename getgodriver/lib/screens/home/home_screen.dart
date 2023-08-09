@@ -26,20 +26,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    context.read<SocketService>().socket.on("user-trip", (data) {
-      print('33333333333333333333333333333333333333');
-      print(data);
-      final jsonData = jsonDecode(data);
-      showModalBottomSheet(
-        enableDrag: false,
-        isDismissible: false,
-        context: context,
-        builder: (context) {
-          return BottomSheetAcceptTrip(
-              stripId: jsonData["trip_info"]['trip_id']);
-        },
-      );
-    });
+    // context.read<SocketService>().socket?.on("user-trip", (data) {
+    //   print('33333333333333333333333333333333333333');
+    //   print(data);
+    //   final jsonData = jsonDecode(data);
+    //   showModalBottomSheet(
+    //     enableDrag: false,
+    //     isDismissible: false,
+    //     context: context,
+    //     builder: (context) {
+    //       return BottomSheetAcceptTrip(
+    //           stripId: jsonData["trip_info"]);
+    //     },
+    //   );
+    // });
   }
 
   @override

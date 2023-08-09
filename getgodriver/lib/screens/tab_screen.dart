@@ -6,7 +6,7 @@ import 'package:getgodriver/screens/home/home_screen.dart';
 import 'package:getgodriver/screens/scheduledTrips/scheduledTrips_screen.dart';
 import 'package:getgodriver/screens/setting/settingscreen.dart';
 import 'package:getgodriver/screens/user/userScreen.dart';
-import 'package:getgodriver/screens/detailedTrip/detailedTripscreen.dart';
+import 'package:getgodriver/screens/detailedTrip/detailedTripScreen.dart';
 import 'package:getgodriver/widgets/appBarSetting.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +45,7 @@ class _TabScreenState extends State<TabScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    context.read<SocketService>().connectserver();
+    context.read<SocketService>().connectserver(context);
   }
 
   @override
