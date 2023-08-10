@@ -117,7 +117,7 @@ class SocketService with ChangeNotifier {
     _socket?.on("receive-trip-success", (data) {
       context.read<TripViewModel>().updateStatus('Confirmed');
 
-      Navigator.of(context).pushNamed(Routes.arrived);
+      Navigator.of(context).pushNamed(Routes.trip);
     });
   }
 

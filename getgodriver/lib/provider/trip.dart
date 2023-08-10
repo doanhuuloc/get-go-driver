@@ -23,7 +23,7 @@ class TripViewModel with ChangeNotifier {
     endDate: DateTime.utc(2023, 7, 25, 16, 00),
     setTripDate: DateTime.utc(2023, 7, 25, 16, 00),
   );
-  String _status = '';
+  String _status = 'Confirmed';
   set infoTrip(TripModel trip) {
     _infoTrip = trip;
     notifyListeners();
