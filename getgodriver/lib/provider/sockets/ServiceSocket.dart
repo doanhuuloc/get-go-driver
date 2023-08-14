@@ -30,8 +30,8 @@ class SocketService with ChangeNotifier {
               location.heading ?? 0);
         });
         print('cout<< www');
-        receiptClient(context);
         successReceipt(context);
+        receiptClient(context);
       },
     );
     _socket?.onDisconnect((data) {

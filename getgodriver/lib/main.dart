@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         title: "GetGoDriver",
-        initialRoute: Routes.home,
+        initialRoute: Routes.arrived,
         onGenerateRoute: Routes.generateRoute,
         // home: Scaffold(body: Text("hello")),
       ),
