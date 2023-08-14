@@ -16,7 +16,6 @@ class TripScreen extends StatefulWidget {
 }
 
 class _TripScreenState extends State<TripScreen> {
-  String status_test = "Confirmed"; // pickUp //Driving
   late LocationModel _currentLocation;
   late SocketService socketProvider;
   bool checkArrived = false;

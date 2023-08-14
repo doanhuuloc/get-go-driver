@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
-import 'package:getgodriver/provider/trip.dart';
+import 'package:getgodriver/provider/tripViewModel.dart';
 import 'package:getgodriver/routes/Routes.dart';
 import 'package:getgodriver/screens/auth/login/login_screen.dart';
 import 'package:getgodriver/screens/auth/verification/verification_screen.dart';
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(
+          value: DriverViewModel(),
+        ),
         ChangeNotifierProvider.value(
           value: SocketService(),
         ),

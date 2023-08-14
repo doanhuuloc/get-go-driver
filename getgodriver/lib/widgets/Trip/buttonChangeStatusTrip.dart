@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
-import 'package:getgodriver/provider/trip.dart';
+import 'package:getgodriver/provider/tripViewModel.dart';
 import 'package:getgodriver/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_to_act/slide_to_act.dart';
@@ -15,14 +16,14 @@ class ButtonChangeStatusTrip extends StatelessWidget {
 
     return Column(
       children: [
-        Selector<TripViewModel, String>(
+        Selector<DriverViewModel, String>(
             selector: (context, setting) => setting.status,
             builder: (context, status, child) {
               return status == 'Confirmed'
                   ? ButtonSizeL(
                       name: "Đã đến điểm đón",
                       onTap: () {
-                        context.read<TripViewModel>().updateStatus('pickUp');
+                        context.read<DriverViewModel>().updateStatus('pickUp');
                       })
                   : status == 'pickUp'
                       ? SlideAction(
@@ -39,7 +40,7 @@ class ButtonChangeStatusTrip extends StatelessWidget {
                       : SizedBox();
               // : SizedBox();
             }),
-        Selector<TripViewModel, String>(
+        Selector<DriverViewModel, String>(
             selector: (context, setting) => setting.status,
             builder: (context, status, child) {
               return status == 'Driving'

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
-import 'package:getgodriver/provider/trip.dart';
+import 'package:getgodriver/provider/tripViewModel.dart';
 import 'package:getgodriver/widgets/ButtonSizeL.dart';
 import 'package:getgodriver/widgets/Trip/buttonChangeStatusTrip.dart';
 import 'package:getgodriver/widgets/address.dart';
@@ -54,7 +54,6 @@ class _SlidingTripState extends State<SlidingTrip> {
 
   @override
   Widget build(BuildContext context) {
-    print(context.read<TripViewModel>().status);
     return Container(
       padding: EdgeInsets.all(16),
       // height: 300,

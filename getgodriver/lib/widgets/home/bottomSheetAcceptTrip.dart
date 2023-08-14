@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_native/flutter_rating_native.dart';
 import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
+import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/routes/Routes.dart';
 import 'package:getgodriver/widgets/home/acceptOrRejectTrip.dart';
@@ -45,6 +46,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
 
   accpetTrip() {
     // context.read<SocketService>().driverIsAccept(widget.stripId, "Accept");
+    context.read<DriverViewModel>().updateStatus('Confirmed');
 
     // Navigator.pop(context);
     timer.cancel();
@@ -54,7 +56,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
   }
 
   rejectTrip() {
-    // context.read<SocketService>().driverIsAccept(widget.stripId, "Deny");
+    context.read<SocketService>().driverIsAccept(widget.stripId, "Deny");
     Navigator.pop(context);
   }
 

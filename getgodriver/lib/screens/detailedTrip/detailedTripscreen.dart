@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
-import 'package:getgodriver/provider/trip.dart';
+import 'package:getgodriver/provider/driverViewModel.dart';
+import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
+import 'package:getgodriver/provider/tripViewModel.dart';
 import 'package:getgodriver/routes/routes.dart';
 import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
@@ -40,7 +42,10 @@ class DetailedTripScreen extends StatelessWidget {
         child: Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title:  Text("Chi tiết chuyến đi",style: TextStyle(color: themedata.primaryColor),),
+        title: Text(
+          "Chi tiết chuyến đi",
+          style: TextStyle(color: themedata.primaryColor),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(children: [
@@ -167,9 +172,12 @@ class DetailedTripScreen extends StatelessWidget {
               ]),
             ]),
           ),
-          context.read<TripViewModel>().status == "Pay"
+          context.read<DriverViewModel>().status == "Pay"
               ? InkWell(
                   onTap: () {
+                    context
+                        .read<SocketService>()
+                        .handleTripUpdate(context, 'waiting');
                     Navigator.of(context).pushReplacementNamed(Routes.home);
                   },
                   child: Container(

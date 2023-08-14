@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:getgodriver/configs/api_config.dart';
 import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
-import 'package:getgodriver/provider/trip.dart';
+import 'package:getgodriver/provider/driverViewModel.dart';
+import 'package:getgodriver/provider/tripViewModel.dart';
 import 'package:getgodriver/routes/Routes.dart';
 import 'package:getgodriver/widgets/home/bottomSheetAcceptTrip.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
@@ -14,7 +15,6 @@ import 'package:provider/provider.dart';
 
 class SocketService with ChangeNotifier {
   io.Socket? _socket;
-  io.Socket? get socket => _socket;
 
   void connectserver(BuildContext context) {
     _socket = io.io(
@@ -22,6 +22,7 @@ class SocketService with ChangeNotifier {
         io.OptionBuilder().setTransports(['websocket'])
             // .disableAutoConnect()
             .setQuery({'username': 'loc'}).build());
+
     _socket?.onConnect(
       (data) {
         Location location = Location();
@@ -29,19 +30,16 @@ class SocketService with ChangeNotifier {
           driverSendToServer(LatLng(location.latitude!, location.longitude!),
               location.heading ?? 0);
         });
-        print('cout<< www');
         receiptClient(context);
         successReceipt(context);
       },
     );
     _socket?.onDisconnect((data) {
-      print('cout<<' + data.toString());
-      print("cout<< disconnect");
+      print('disconnect' + data.toString());
     });
 
     _socket?.onConnectError((data) {
-      print("err:");
-      print(data);
+      print("err: $data");
     });
   }
 
@@ -104,7 +102,7 @@ class SocketService with ChangeNotifier {
   }
 
   void handleTripUpdate(BuildContext context, String status) {
-    context.read<TripViewModel>().updateStatus(status);
+    context.read<DriverViewModel>().updateStatus(status);
     print('cout<< tao nèww');
     Map<String, dynamic> data = {
       "trip_id": context.read<TripViewModel>().tripID,
@@ -115,7 +113,7 @@ class SocketService with ChangeNotifier {
 
   void successReceipt(BuildContext context) {
     _socket?.on("receive-trip-success", (data) {
-      context.read<TripViewModel>().updateStatus('Confirmed');
+      context.read<DriverViewModel>().updateStatus('Confirmed');
 
       Navigator.of(context).pushNamed(Routes.trip);
     });

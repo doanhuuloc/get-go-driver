@@ -72,8 +72,8 @@ class _MapScreenState extends State<MapScreen> {
         widget.currentLocation.coordinates =
             LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0);
         // gửi vị trí về server
-        context.read<SocketService>().driverUpdateServer(
-            widget.currentLocation.coordinates, newLocation.heading ?? 0);
+        // context.read<SocketService>().driverUpdateServer(
+        //     widget.currentLocation.coordinates, newLocation.heading ?? 0);
         _moveCameraToLocation(
             LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0));
         addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon,

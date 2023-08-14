@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getgodriver/main.dart';
 import 'package:getgodriver/screens/auth/login/login_screen.dart';
+import 'package:getgodriver/screens/auth/password/password_screen.dart';
 import 'package:getgodriver/screens/auth/verification/verification_screen.dart';
 import 'package:getgodriver/screens/detailedTrip/detailedTripscreen.dart';
 import 'package:getgodriver/screens/history/history_screen.dart';
@@ -14,6 +15,7 @@ import '../screens/trip/tripScreen.dart';
 class Routes {
   static const String home = '/';
   static const String verification = '/verification';
+  static const String password = '/password';
   static const String login = '/login';
   static const String scheduledTrips = '/scheduledTrips';
   static const String setting = '/setting';
@@ -32,6 +34,10 @@ class Routes {
         final String phone = settings.arguments as String;
         return MaterialPageRoute(
             builder: (_) => VerificationScreen(phone: phone));
+      case password:
+        final String phone = settings.arguments as String;
+        return MaterialPageRoute(
+            builder: (_) => PasswordScreen(phone: phone));
       case scheduledTrips:
         return MaterialPageRoute(builder: (_) => ScheduledTripsScreen());
       case setting:
