@@ -7,19 +7,17 @@ class CustomerInfo extends StatelessWidget {
     required this.avatar,
     required this.name,
     required this.phone,
-    required this.rate,
   });
   final String avatar;
   final String name;
   final String phone;
-  final double rate;
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         CircleAvatar(
           backgroundImage: AssetImage(avatar),
-          maxRadius:40,
+          maxRadius: 40,
         ),
         const SizedBox(width: 10),
         Column(
@@ -30,10 +28,6 @@ class CustomerInfo extends StatelessWidget {
             ),
             SizedBox(height: 5),
             Text(phone),
-            FlutterRating(
-              rating: rate,
-              size: 20,
-            ),
           ],
         ),
       ],

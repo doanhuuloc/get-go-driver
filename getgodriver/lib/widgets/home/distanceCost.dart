@@ -11,10 +11,10 @@ class DistanceCost extends StatelessWidget {
       alignment: Alignment.center,
       child: RichText(
           text: TextSpan(children: [
-        TextSpan(text: "${distance}km", style: TextStyle(color: Colors.black)),
+        TextSpan(text: "${distance}km", style: TextStyle(color: Colors.black,fontSize: 20)),
         TextSpan(
             text: "đ${cost}",
-            style: TextStyle(color: Theme.of(context).primaryColor))
+            style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 20))
       ])),
     );
   }

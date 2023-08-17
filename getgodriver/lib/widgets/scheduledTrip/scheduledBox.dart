@@ -27,7 +27,7 @@ class ApointmentBox extends StatelessWidget {
               avatar: trip.avatar,
               name: trip.name,
               phone: trip.phone,
-              rate: trip.rate),
+              ),
           Positioned(
             right: 0,
             top:5,
@@ -52,11 +52,12 @@ class ApointmentBox extends StatelessWidget {
               width: (MediaQuery.of(context).size.width - 30 * 2) * 0.8,
               child: Column(
                 children: [
-                  Address(address: trip.fromAddress.summary),
+                  Address(address: trip.fromAddress.summary,img: "assets/svgs/fromaddress.svg",),
                   const SizedBox(height: 10),
                   Address(
                     address: trip.toAddress.summary,
                     color: Theme.of(context).primaryColor,
+                    img: "assets/svgs/toaddress.svg"
                   ),
                 ],
               ),

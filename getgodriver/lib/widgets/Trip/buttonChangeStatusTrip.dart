@@ -56,8 +56,6 @@ class ButtonChangeStatusTrip extends StatelessWidget {
                         Navigator.of(context)
                             .pushReplacementNamed(Routes.detailedTrip);
                       },
-                      
-                      //  sliderButtonIcon: null,
                     )
                   : SizedBox();
             }),

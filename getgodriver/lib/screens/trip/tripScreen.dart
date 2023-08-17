@@ -44,7 +44,9 @@ class _TripScreenState extends State<TripScreen> {
     return Scaffold(
       // appBar: AppBar(),
       body: SlidingUpPanel(
-        maxHeight: 300,
+        maxHeight: MediaQuery.of(context).size.height * 0.97,
+
+        minHeight: 270,
         renderPanelSheet: false,
         collapsed: CollapsedTrip(),
         panel: SlidingTrip(),

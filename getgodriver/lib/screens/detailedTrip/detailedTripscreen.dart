@@ -17,26 +17,8 @@ class DetailedTripScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final format = DateFormat("dd/MM/yyyy");
-    final trip = TripModel(
-      id: 1,
-      avatar: "assets/imgs/avatar.jpg",
-      name: "Nguyễn Đăng Mạnh Tú",
-      phone: "0909100509",
-      rate: 3.7,
-      cost: 100000,
-      distance: 22.6,
-      typeCar: "taxi 4 chỗ",
-      note: "Chở em gái đi học",
-      fromAddress: LocationModel(
-          title: '', summary: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm"),
-      toAddress: LocationModel(
-          title: '', summary: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm"),
-      scheduledDate: DateTime.utc(2023, 7, 25, 16, 00),
-      paymentMethod: "tiền mặt",
-      startDate: DateTime.utc(2023, 7, 25, 16, 00),
-      endDate: DateTime.utc(2023, 7, 25, 16, 00),
-      setTripDate: DateTime.utc(2023, 7, 25, 16, 00),
-    );
+    final TripViewModel trip = context.read<TripViewModel>();
+
     final themedata = Theme.of(context);
     return SafeArea(
         child: Scaffold(
@@ -78,10 +60,10 @@ class DetailedTripScreen extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
             child: CustomerInfo(
-                avatar: trip.avatar,
-                name: trip.name,
-                phone: trip.phone,
-                rate: trip.rate),
+              avatar: trip.avatar,
+              name: trip.name,
+              phone: trip.phone,
+            ),
           ),
           const Divider(height: 1, color: Colors.black54),
           const SizedBox(height: 10),
@@ -99,13 +81,13 @@ class DetailedTripScreen extends StatelessWidget {
           UserLineInfo(title: "Lộ trình", info: "${trip.distance} km"),
           Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: Address(address: trip.fromAddress.summary)),
+              child: Address(address: trip.fromAddress.summary,img: "assets/svgs/fromaddress.svg",)),
           const SizedBox(height: 10),
           Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: Address(
                   address: trip.toAddress.summary,
-                  color: themedata.primaryColor)),
+                  color: themedata.primaryColor,img: "assets/svgs/toaddress.svg",)),
           UserLineInfo(
               title: "Phương thức thanh toán", info: trip.paymentMethod),
           Container(
