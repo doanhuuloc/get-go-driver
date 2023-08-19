@@ -103,9 +103,11 @@ class DetailedTripScreen extends StatelessWidget {
                     context
                         .read<SocketService>()
                         .handleTripUpdate(context, 'waiting');
-                    Navigator.of(context).pop();
 
+                            print("hhaa");
                     // Navigator.of(context).pushReplacementNamed(Routes.home);
+                     Navigator.of(context).pushNamedAndRemoveUntil(
+                            Routes.home, (route) => false);
                   },
                   child: Container(
                     height: 50,
@@ -115,7 +117,7 @@ class DetailedTripScreen extends StatelessWidget {
                       color: themedata.primaryColor,
                     ),
                     alignment: Alignment.center,
-                    child: Text(
+                    child: const Text(
                       "Hoàn thành chuyến đi",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),

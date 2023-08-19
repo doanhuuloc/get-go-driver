@@ -90,7 +90,7 @@ class SocketService with ChangeNotifier {
           paymentMethod: 'momo',
           startDate: DateTime.utc(2023, 7, 25, 16, 00),
           endDate: DateTime.utc(2023, 7, 25, 16, 00));
-      print(data);
+      // print(data);
       showModalBottomSheet(
         enableDrag: false,
         isDismissible: false,
@@ -116,7 +116,7 @@ class SocketService with ChangeNotifier {
     _socket?.on("receive-trip-success", (data) {
       context.read<DriverViewModel>().updateStatus('Confirmed');
 
-      Navigator.of(context).pushNamed(Routes.trip);
+      Navigator.of(context).pushReplacementNamed(Routes.trip);
     });
   }
 

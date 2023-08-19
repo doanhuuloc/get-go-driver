@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:getgodriver/provider/tripViewModel.dart';
+import 'package:getgodriver/services/googlemap/openGoogleMaps.dart';
 import 'package:getgodriver/widgets/Trip/buttonChangeStatusTrip.dart';
 import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CollapsedTrip extends StatelessWidget {
   const CollapsedTrip({super.key});
@@ -21,13 +23,17 @@ class CollapsedTrip extends StatelessWidget {
           color: theme.primaryColor,
           width: 2,
         ),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius:const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+        //  BorderRadius.all(Radius.circular(20)),
         color: Colors.white,
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Container(
-          margin: EdgeInsets.only(top: 20, bottom: 5),
-          padding: EdgeInsets.symmetric(horizontal: 175),
+          margin:const EdgeInsets.only(top: 20, bottom: 5),
+          padding:const  EdgeInsets.symmetric(horizontal: 175),
           child: Container(
             height: 6,
             decoration: BoxDecoration(
@@ -38,41 +44,37 @@ class CollapsedTrip extends StatelessWidget {
           ),
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 20),
+          margin:const  EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomerInfo(
-                        avatar: trip.avatar,
-                        name: trip.name,
-                        phone: trip.phone,
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        iconSize: 30,
-                        icon: Icon(
-                          Icons.chat,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.phone,
-                            color: Theme.of(context).primaryColor,
-                          ))
-                    ],
+                  CustomerInfo(
+                    avatar: trip.avatar,
+                    name: trip.name,
+                    phone: trip.phone,
                   ),
+                  IconButton(
+                    onPressed: () {},
+                    iconSize: 30,
+                    icon: Icon(
+                      Icons.chat,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.phone,
+                        color: Theme.of(context).primaryColor,
+                      ))
                 ],
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
+                margin:const EdgeInsets.symmetric(vertical: 10),
                 height: 1,
-                decoration: BoxDecoration(color: Colors.black38),
+                decoration:const BoxDecoration(color: Colors.black38),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -83,7 +85,9 @@ class CollapsedTrip extends StatelessWidget {
                     img: "assets/svgs/toaddress.svg",
                   )),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      OpenGoogleMaps.openGoogleMaps();
+                    },
                     child: SvgPicture.asset(
                       'assets/svgs/mapArrow.svg',
                       // width: 13,
@@ -93,7 +97,7 @@ class CollapsedTrip extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 15),
-              ButtonChangeStatusTrip(),
+              const ButtonChangeStatusTrip(),
             ],
           ),
         )

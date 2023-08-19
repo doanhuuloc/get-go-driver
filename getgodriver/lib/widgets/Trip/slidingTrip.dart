@@ -48,133 +48,135 @@ class _SlidingTripState extends State<SlidingTrip> {
         decoration: BoxDecoration(
           color: Colors.white,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              // height: 30,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(color: theme.primaryColor),
-              child: Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.white,
-                size: 40,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                // height: 30,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(color: theme.primaryColor),
+                child: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: Colors.white,
+                  size: 40,
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomerInfo(
-                    avatar: trip.avatar,
-                    name: trip.name,
-                    phone: trip.phone,
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    iconSize: 30,
-                    icon: Icon(
-                      Icons.chat,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    iconSize: 30,
-                    icon: Icon(
-                      Icons.phone,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            TitleInfo(title: "Lộ trình"),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Address(
-                address: trip.fromAddress.summary,
-                img: "assets/svgs/fromaddress.svg",
-                color: theme.primaryColor,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Address(
-                address: trip.toAddress.summary,
-                img: "assets/svgs/toaddress.svg",
-              ),
-            ),
-            const SizedBox(height: 10),
-            LineInfo(
-              title: "Khoảng cách",
-              content: "${trip.distance} km",
-              img: "assets/svgs/distance.svg",
-              colors: theme.primaryColor,
-            ),
-            TitleInfo(title: "Note"),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SvgPicture.asset(
-                    'assets/svgs/note.svg',
-                    width: 30,
-                    height: 30,
-                  ),
-                  const SizedBox(width: 16),
-                  Text(
-                    trip.note,
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
-            const TitleInfo(title: "Dịch Vụ"),
-            Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
+              const SizedBox(height: 10),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomerInfo(
+                      avatar: trip.avatar,
+                      name: trip.name,
+                      phone: trip.phone,
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      iconSize: 30,
+                      icon: Icon(
+                        Icons.chat,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      iconSize: 30,
+                      icon: Icon(
+                        Icons.phone,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              TitleInfo(title: "Lộ trình"),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Address(
+                  address: trip.fromAddress.summary,
+                  img: "assets/svgs/fromaddress.svg",
+                  color: theme.primaryColor,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Address(
+                  address: trip.toAddress.summary,
+                  img: "assets/svgs/toaddress.svg",
+                ),
+              ),
+              const SizedBox(height: 10),
+              LineInfo(
+                title: "Khoảng cách",
+                content: "${trip.distance} km",
+                img: "assets/svgs/distance.svg",
+                colors: theme.primaryColor,
+              ),
+              TitleInfo(title: "Note"),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SvgPicture.asset(
-                      'assets/svgs/taxi-service.svg',
+                      'assets/svgs/note.svg',
                       width: 30,
                       height: 30,
                     ),
-                    const SizedBox(width: 10),
-                    Text(trip.typeCar, style: TextStyle(fontSize: 18)),
+                    const SizedBox(width: 16),
+                    Text(
+                      trip.note,
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ],
-                )),
-            const TitleInfo(title: "Thanh toán"),
-            LineInfo(
-                title: "Phương thức thanh toán",
-                content: trip.paymentMethod,
-                img: "assets/svgs/payment-method.svg"),
-            const SizedBox(height: 10),
-            LineInfo(
-                title: "Thanh toán cho tài xế",
-                content: "${trip.cost}đ",
-                img: 'assets/svgs/money-cash.svg'),
-            const SizedBox(height: 50),
-            GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Center(
-                  child: Text(
-                    "Hủy Chuyến",
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ))
-
-      
-          ],
+                ),
+              ),
+              const TitleInfo(title: "Dịch Vụ"),
+              Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/svgs/taxi-service.svg',
+                        width: 30,
+                        height: 30,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(trip.typeCar, style: TextStyle(fontSize: 18)),
+                    ],
+                  )),
+              const TitleInfo(title: "Thanh toán"),
+              LineInfo(
+                  title: "Phương thức thanh toán",
+                  content: trip.paymentMethod,
+                  img: "assets/svgs/payment-method.svg"),
+              const SizedBox(height: 10),
+              LineInfo(
+                  title: "Thanh toán cho tài xế",
+                  content: "${trip.cost}đ",
+                  img: 'assets/svgs/money-cash.svg'),
+              const SizedBox(height: 20),
+              GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Center(
+                    child: Text(
+                      "Hủy Chuyến",
+                      style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ))
+        
+              
+            ],
+          ),
         ),
       ),
     );
