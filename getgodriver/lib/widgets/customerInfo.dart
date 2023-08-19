@@ -23,9 +23,7 @@ class CustomerInfo extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              name,
-            ),
+            Text(name),
             SizedBox(height: 5),
             Text(phone),
           ],

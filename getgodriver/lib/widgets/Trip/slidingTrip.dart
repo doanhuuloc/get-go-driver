@@ -3,6 +3,7 @@ import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/provider/tripViewModel.dart';
+import 'package:getgodriver/routes/routes.dart';
 import 'package:getgodriver/widgets/ButtonSizeL.dart';
 import 'package:getgodriver/widgets/Trip/buttonChangeStatusTrip.dart';
 import 'package:getgodriver/widgets/Trip/lineInfo.dart';
@@ -93,15 +94,27 @@ class _SlidingTripState extends State<SlidingTrip> {
             TitleInfo(title: "Lộ trình"),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Address(address: trip.fromAddress.summary,img:"assets/svgs/fromaddress.svg" ,),
+              child: Address(
+                address: trip.fromAddress.summary,
+                img: "assets/svgs/fromaddress.svg",
+                color: theme.primaryColor,
+              ),
             ),
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Address(address: trip.toAddress.summary, color: theme.primaryColor,img: "assets/svgs/toaddress.svg",),
+              child: Address(
+                address: trip.toAddress.summary,
+                img: "assets/svgs/toaddress.svg",
+              ),
             ),
             const SizedBox(height: 10),
-            LineInfo(title: "Khoảng cách", content: "${trip.distance} km", img: "assets/svgs/distance.svg"),
+            LineInfo(
+              title: "Khoảng cách",
+              content: "${trip.distance} km",
+              img: "assets/svgs/distance.svg",
+              colors: theme.primaryColor,
+            ),
             TitleInfo(title: "Note"),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
@@ -147,8 +160,10 @@ class _SlidingTripState extends State<SlidingTrip> {
                 img: 'assets/svgs/money-cash.svg'),
             const SizedBox(height: 50),
             GestureDetector(
-                onTap: () {},
-                child: Center(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Center(
                   child: Text(
                     "Hủy Chuyến",
                     style: TextStyle(
@@ -158,51 +173,7 @@ class _SlidingTripState extends State<SlidingTrip> {
                   ),
                 ))
 
-            // Container(
-            //   margin: const EdgeInsets.only(right: 18, left: 30),
-            //   child: Column(children: [
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         Text(
-            //           "Cước phí chuyến đi",
-            //           style: theme.textTheme.bodyMedium,
-            //         ),
-            //         Text(
-            //           "${trip.cost}đ",
-            //           style: theme.textTheme.bodyMedium,
-            //         ),
-            //       ],
-            //     ),
-            //     const SizedBox(height: 5),
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         Text(
-            //           "Chiết khấu",
-            //           style: theme.textTheme.bo,
-            //         ),
-            //         Text(
-            //           "${trip.cost}đ",
-            //           style: theme.textTheme.titleSmall,
-            //         ),
-            //       ],
-            //     ),
-            //     const SizedBox(height: 5),
-            //     Row(
-            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //         children: [
-            //           Text(
-            //             "Thuế TNCN",
-            //             style: theme.textTheme.bodySmall,
-            //           ),
-            //           Text(
-            //             "${trip.cost}đ",
-            //             style: theme.textTheme.titleSmall,
-            //           ),
-            //         ]),
-            //   ]),
-            // ),
+      
           ],
         ),
       ),

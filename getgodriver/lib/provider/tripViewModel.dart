@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
-
+import 'package:intl/intl.dart';
 class TripViewModel with ChangeNotifier {
   TripModel _infoTrip = TripModel(
     id: 1,
@@ -47,4 +47,9 @@ class TripViewModel with ChangeNotifier {
 
   DateTime? get setTripDate => _infoTrip.setTripDate;
   DateTime? get scheduledDate => _infoTrip.scheduledDate;
+
+  String formatCurrency(double cost){
+    final currencyFormatter = NumberFormat.currency(locale: 'vi_VN', symbol: 'đ');
+    return currencyFormatter.format(cost);
+  } 
 }

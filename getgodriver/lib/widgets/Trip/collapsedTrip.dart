@@ -80,7 +80,6 @@ class CollapsedTrip extends StatelessWidget {
                   Expanded(
                       child: Address(
                     address: trip.toAddress.summary,
-                    color: theme.primaryColor,
                     img: "assets/svgs/toaddress.svg",
                   )),
                   InkWell(

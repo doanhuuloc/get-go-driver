@@ -70,7 +70,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
   @override
   Widget build(BuildContext context) {
     final TripViewModel trip = context.read<TripViewModel>();
-
+    final theme = Theme.of(context);
     return Wrap(
       children: [
         Container(
@@ -104,20 +104,18 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
                 ],
               ),
               const SizedBox(height: 10),
-              Text(
-                "Note: ${trip.note}",
-                style: const TextStyle(fontSize: 20),
-              ),
+              Text("Note: ${trip.note}"),
               const SizedBox(height: 10),
               Address(
                 address: trip.fromAddress.summary,
                 img: "assets/svgs/fromaddress.svg",
+                color: theme.primaryColor,
               ),
               const SizedBox(height: 15),
               Address(
                 address: trip.toAddress.summary,
-                color: Theme.of(context).primaryColor,
                 img: "assets/svgs/toaddress.svg",
+
               ),
               const SizedBox(height: 10),
               DistanceCost(

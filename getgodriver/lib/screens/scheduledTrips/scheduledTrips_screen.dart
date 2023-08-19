@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
+import 'package:getgodriver/routes/routes.dart';
 import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/scheduledTrip/scheduledBox.dart';
 import 'package:getgodriver/widgets/appBarSetting.dart';
@@ -48,7 +49,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
       // toAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
       fromAddress: LocationModel(title: '', summary: ''),
       toAddress: LocationModel(title: '', summary: ''),
-      scheduledDate: DateTime.utc(2023, 7, 25, 16, 00),
+      scheduledDate: DateTime.utc(2023, 8, 17, 16, 00),
       paymentMethod: "tiền mặt",
       startDate: DateTime.utc(2023, 7, 25, 16, 00),
       endDate: DateTime.utc(2023, 7, 25, 16, 00),
@@ -66,7 +67,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
       // toAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
       fromAddress: LocationModel(title: '', summary: ''),
       toAddress: LocationModel(title: '', summary: ''),
-      scheduledDate: DateTime.utc(2023, 7, 25, 16, 00),
+      scheduledDate: DateTime.utc(2023, 8, 17, 16, 00),
       paymentMethod: "tiền mặt",
       startDate: DateTime.utc(2023, 7, 25, 16, 00),
       endDate: DateTime.utc(2023, 7, 25, 16, 00),
@@ -84,7 +85,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
       // toAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
       fromAddress: LocationModel(title: '', summary: ''),
       toAddress: LocationModel(title: '', summary: ''),
-      scheduledDate: DateTime.utc(2023, 7, 26, 16, 00),
+      scheduledDate: DateTime.utc(2023, 8, 17, 16, 00),
       paymentMethod: "tiền mặt",
       startDate: DateTime.utc(2023, 7, 25, 16, 00),
       endDate: DateTime.utc(2023, 7, 25, 16, 00),
@@ -112,39 +113,46 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
         appBar: const AppBarSetting(
           isOnline: false,
         ),
-        body: Column(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
-                onPressed:
-                    format.format(dateTime) == format.format(DateTime.now())
-                        ? null
-                        : backDate,
-                icon: const Icon(Icons.arrow_back_ios),
-                disabledColor: Colors.grey,
-              ),
-              Text(format.format(dateTime)),
-              IconButton(
-                onPressed: forwardDate,
-                icon: Icon(Icons.arrow_forward_ios),
-              ),
-            ],
-          ),
-          const Divider(height: 1),
-          Expanded(
-            child: ListView(
-              children: apointmentTripList.map((item) {
-                if (format.format(item.scheduledDate!) ==
-                    format.format(dateTime)) {
-                  return ApointmentBox(trip: item);
-                } else {
-                  return const SizedBox();
-                }
-              }).toList(),
+        body: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  onPressed:
+                      format.format(dateTime) == format.format(DateTime.now())
+                          ? null
+                          : backDate,
+                  icon: const Icon(Icons.arrow_back_ios),
+                  disabledColor: Colors.grey,
+                ),
+                Text(format.format(dateTime)),
+                IconButton(
+                  onPressed: forwardDate,
+                  icon: Icon(Icons.arrow_forward_ios),
+                ),
+              ],
             ),
-          ),
-        ]),
+            const Divider(height: 1),
+            Expanded(
+              child: ListView(
+                children: apointmentTripList.map((item) {
+                  if (format.format(item.scheduledDate!) ==
+                      format.format(dateTime)) {
+                    return InkWell(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(Routes.detailedScheduledTrip);
+                        },
+                        child: ApointmentBox(trip1: item));
+                  } else {
+                    return const SizedBox();
+                  }
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

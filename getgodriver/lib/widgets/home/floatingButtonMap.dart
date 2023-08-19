@@ -24,9 +24,10 @@ class FloatingButtonMap extends StatelessWidget {
           FloatingActionButton(
             backgroundColor: Theme.of(context).primaryColor,
             onPressed: () {
+              // Navigator.of(context).pushNamed(Routes.tripDriving);
+
               Location location = Location();
               location.getLocation().then((value) => {});
-
 
               showModalBottomSheet(
                 enableDrag: false,
@@ -38,7 +39,6 @@ class FloatingButtonMap extends StatelessWidget {
                   );
                 },
               );
-            
             },
             child: const Icon(Icons.my_location),
           ),
