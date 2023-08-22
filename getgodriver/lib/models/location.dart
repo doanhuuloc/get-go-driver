@@ -6,9 +6,11 @@ class LocationModel {
   String summary;
   String placeID;
   LatLng coordinates;
+  double heading;
   LocationModel(
       {required this.title,
       required this.summary,
       this.placeID = '',
+      this.heading=0,
       this.coordinates = const LatLng(10.7454, 106.7323)});
 }

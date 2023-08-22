@@ -48,7 +48,6 @@ class _TabScreenState extends State<TabScreen> {
     // context.read<SocketService>().connectserver(context);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(

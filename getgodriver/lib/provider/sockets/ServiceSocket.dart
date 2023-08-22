@@ -17,6 +17,7 @@ class SocketService with ChangeNotifier {
   io.Socket? _socket;
 
   void connectserver(BuildContext context) {
+    print('hhhhhhhh');
     _socket = io.io(
         ApiConfig.baseUrl,
         io.OptionBuilder().setTransports(['websocket'])
@@ -24,12 +25,17 @@ class SocketService with ChangeNotifier {
             .setQuery({'username': 'loc'}).build());
 
     _socket?.onConnect(
-      (data) {
-        Location location = Location();
-        location.getLocation().then((location) async {
-          driverSendToServer(LatLng(location.latitude!, location.longitude!),
-              location.heading ?? 0);
-        });
+      (data) async {
+        print('hhhhhh111hh');
+        driverSendToServer(
+            context.read<DriverViewModel>().myLocation.coordinates,
+            context.read<DriverViewModel>().myLocation.heading);
+        // Location location = Location();
+        // await location.getLocation().then((location) async {
+        //   print('hihihi');
+        //   driverSendToServer(LatLng(location.latitude!, location.longitude!),
+        //       location.heading ?? 0);
+        // });
         receiptClient(context);
         successReceipt(context);
       },
@@ -48,6 +54,7 @@ class SocketService with ChangeNotifier {
   }
 
   void driverSendToServer(LatLng location, double heading) {
+    print('heeeee');
     Map<String, dynamic> data = {
       "user_id": 2,
       'lat': location.latitude,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:getgodriver/models/location.dart';
+import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -53,8 +54,12 @@ class _MapScreenState extends State<MapScreen> {
 
   _initLocation() {
     _location.getLocation().then((location) {
+      print('heee');
       widget.currentLocation.coordinates =
           LatLng(location.latitude ?? 0, location.longitude ?? 0);
+      context.read<DriverViewModel>().updateMyLocation(
+          LatLng(location.latitude ?? 0, location.longitude ?? 0),
+          location.heading ?? 0);
       // context.read<SocketService>().driverSendToServer(
       //     widget.currentLocation.coordinates, location.heading ?? 0);
       // _currentLocation = location;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getgodriver/models/driverModel.dart';
+import 'package:getgodriver/models/location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DriverViewModel with ChangeNotifier {
   final DriverModel _item = const DriverModel(
@@ -16,8 +18,10 @@ class DriverViewModel with ChangeNotifier {
     descriptionCar:
         "mecedes màu đen có 4 cái cữa, có 4 bánh xe, có 4 chỗ, có tay lái, có phanh xe và có đứa ngáo ngáo tên Tú lái nó",
   );
-  
+  final LocationModel _myLocation = LocationModel(title: '', summary: '');
+
   String _status = "offline";
+  LocationModel get myLocation => _myLocation;
   String get avatar => _item.avatar;
   String get name => _item.name;
   String get phone => _item.phone;
@@ -36,4 +40,9 @@ class DriverViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateMyLocation(LatLng location, double heading) {
+    _myLocation.coordinates = location;
+    _myLocation.heading = heading;
+    notifyListeners();
+  }
 }
