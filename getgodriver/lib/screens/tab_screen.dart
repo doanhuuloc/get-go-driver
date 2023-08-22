@@ -45,8 +45,9 @@ class _TabScreenState extends State<TabScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    context.read<SocketService>().connectserver(context);
+    // context.read<SocketService>().connectserver(context);
   }
+
 
   @override
   Widget build(BuildContext context) {

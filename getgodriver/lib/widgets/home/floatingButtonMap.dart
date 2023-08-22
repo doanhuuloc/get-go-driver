@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getgodriver/routes/routes.dart';
+import 'package:getgodriver/widgets/home/bottomSheetAcceptTrip.dart';
+import 'package:location/location.dart';
 
 class FloatingButtonMap extends StatelessWidget {
   const FloatingButtonMap({super.key});
@@ -21,7 +23,22 @@ class FloatingButtonMap extends StatelessWidget {
           ),
           FloatingActionButton(
             backgroundColor: Theme.of(context).primaryColor,
-            onPressed: () {},
+            onPressed: () {
+              Location location = Location();
+              location.getLocation().then((value)=>{});
+
+              showModalBottomSheet(
+                enableDrag: false,
+                isDismissible: false,
+                context: context,
+                builder: (context) {
+                  return BottomSheetAcceptTrip(
+                    stripId: {'1': 1},
+                  );
+                },
+              );
+          
+            },
             child: const Icon(Icons.my_location),
           ),
         ],

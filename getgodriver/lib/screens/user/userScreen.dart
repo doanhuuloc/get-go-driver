@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:getgodriver/models/userModel.dart';
+import 'package:getgodriver/models/driverModel.dart';
 import 'package:getgodriver/widgets/userLineInfo.dart';
 
 class UserScreen extends StatelessWidget {
@@ -8,7 +8,7 @@ class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
-    const user = UserModel(
+    const user = DriverModel(
       avatar: "assets/imgs/avatar.jpg",
       name: "Nguyễn Đăng Mạnh Tú",
       phone: "0909100509",

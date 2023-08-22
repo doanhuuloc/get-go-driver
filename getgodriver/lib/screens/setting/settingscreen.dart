@@ -3,9 +3,17 @@ import 'package:getgodriver/routes/routes.dart';
 import 'package:getgodriver/widgets/appBarSetting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:getgodriver/widgets/setting/settingBox.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
+
+  @override
+  State<SettingScreen> createState() => _SettingScreenState();
+}
+
+class _SettingScreenState extends State<SettingScreen> {
+  bool item1 = true;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +65,7 @@ class SettingScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            
             ...(listSetting1.map((item) => SettingBox(
                   title: item['title'],
                   subtitle: item['subtitle'],

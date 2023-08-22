@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_native/flutter_rating_native.dart';
 import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
+import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
+import 'package:getgodriver/routes/Routes.dart';
 import 'package:getgodriver/widgets/home/acceptOrRejectTrip.dart';
 import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/home/countDownAnimation.dart';
@@ -12,7 +14,7 @@ import 'package:getgodriver/widgets/home/distanceCost.dart';
 import 'package:provider/provider.dart';
 
 class BottomSheetAcceptTrip extends StatefulWidget {
-  Map<String,dynamic> stripId;
+  Map<String, dynamic> stripId;
   BottomSheetAcceptTrip({super.key, required this.stripId});
 
   @override
@@ -23,7 +25,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
   int remainingTime = 9;
   late Timer timer;
   final trip = TripModel(
-      id: 1,
+    id: 1,
     avatar: "assets/imgs/avatar.jpg",
     name: "Nguyễn Đăng Mạnh Tú",
     phone: "0909100509",
@@ -43,8 +45,14 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
   );
 
   accpetTrip() {
-    context.read<SocketService>().driverIsAccept(widget.stripId, "Accept");
+    // context.read<SocketService>().driverIsAccept(widget.stripId, "Accept");
+    context.read<DriverViewModel>().updateStatus('Confirmed');
+
+    // Navigator.pop(context);
+    timer.cancel();
     Navigator.pop(context);
+
+    Navigator.of(context).pushReplacementNamed(Routes.trip);
   }
 
   rejectTrip() {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getgodriver/routes/Routes.dart';
+import 'package:getgodriver/services/api/api_auth.dart';
 import 'package:getgodriver/widgets/auth/login/inputPhone.dart';
 import 'package:getgodriver/widgets/auth/login/loginButton.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -28,12 +29,17 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  login() {
+  login() async {
     if (validPhone) {
-      Navigator.pushNamed(context, Routes.verification,
-          arguments: phone.phoneNumber);
+      final response = await ApiAuth.checkPhone(phone.phoneNumber!);
+      if (response['statusCode'] == 200) {
+        Navigator.pushNamed(context, Routes.password,
+            arguments: phone.phoneNumber);
+      } else {
+        _notifyErrorMessage("Không tìm thấy tài khoản");
+      }
     } else {
-      _notifyErrorMessage("lỗi");
+      _notifyErrorMessage("Số điện thoại chưa đúng định dạng");
     }
   }
 
