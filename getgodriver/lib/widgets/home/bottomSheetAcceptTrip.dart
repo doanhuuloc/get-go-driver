@@ -12,6 +12,7 @@ import 'package:getgodriver/widgets/home/countDownAnimation.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
 import 'package:getgodriver/widgets/home/distanceCost.dart';
 import 'package:provider/provider.dart';
+import '../../provider/tripViewModel.dart';
 
 class BottomSheetAcceptTrip extends StatefulWidget {
   Map<String, dynamic> stripId;
@@ -22,41 +23,23 @@ class BottomSheetAcceptTrip extends StatefulWidget {
 }
 
 class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
-  int remainingTime = 9;
+  int remainingTime = 15;
   late Timer timer;
-  final trip = TripModel(
-    id: 1,
-    avatar: "assets/imgs/avatar.jpg",
-    name: "Nguyễn Đăng Mạnh Tú",
-    phone: "0909100509",
-    rate: 3.7,
-    cost: 100000,
-    distance: 22.6,
-    note: "Chở em gái đi học",
-    fromAddress: LocationModel(
-        title: '', summary: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm"),
-    toAddress: LocationModel(
-        title: '', summary: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm"),
-    scheduledDate: DateTime.utc(2023, 7, 25, 16, 00),
-    paymentMethod: "tiền mặt",
-    startDate: DateTime.utc(2023, 7, 25, 16, 00),
-    endDate: DateTime.utc(2023, 7, 25, 16, 00),
-    setTripDate: DateTime.utc(2023, 7, 25, 16, 00),
-  );
 
   accpetTrip() {
-    // context.read<SocketService>().driverIsAccept(widget.stripId, "Accept");
     context.read<DriverViewModel>().updateStatus('Confirmed');
+    SocketService.driverIsAccept(widget.stripId, "Accept");
 
     // Navigator.pop(context);
     timer.cancel();
+    // Navigator.pop(context);
     Navigator.pop(context);
 
-    Navigator.of(context).pushReplacementNamed(Routes.trip);
+    // Navigator.of(context).pushReplacementNamed(Routes.trip);
   }
 
   rejectTrip() {
-    context.read<SocketService>().driverIsAccept(widget.stripId, "Deny");
+    SocketService.driverIsAccept(widget.stripId, "Deny");
     Navigator.pop(context);
   }
 
@@ -87,6 +70,8 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
 
   @override
   Widget build(BuildContext context) {
+    final TripViewModel trip = context.read<TripViewModel>();
+    final theme = Theme.of(context);
     return Wrap(
       children: [
         Container(
@@ -99,10 +84,10 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomerInfo(
-                      avatar: trip.avatar,
-                      name: trip.name,
-                      phone: trip.phone,
-                      rate: trip.rate),
+                    avatar: trip.avatar,
+                    name: trip.name,
+                    phone: trip.phone,
+                  ),
                   IconButton(
                     onPressed: () {},
                     iconSize: 30,
@@ -110,21 +95,29 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
                       Icons.chat,
                       color: Theme.of(context).primaryColor,
                     ),
-                  )
+                  ),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.phone,
+                        color: Theme.of(context).primaryColor,
+                      ))
                 ],
               ),
               const SizedBox(height: 10),
-              Text(
-                "Note: ${trip.note}",
-                style: const TextStyle(fontSize: 20),
-              ),
+              Text("Note: ${trip.note}"),
               const SizedBox(height: 10),
-              Address(address: trip.fromAddress.summary),
+              Address(
+                address: trip.fromAddress.summary,
+                img: "assets/svgs/fromaddress.svg",
+                color: theme.primaryColor,
+              ),
               const SizedBox(height: 15),
               Address(
                 address: trip.toAddress.summary,
-                color: Theme.of(context).primaryColor,
+                img: "assets/svgs/toaddress.svg",
               ),
+              const SizedBox(height: 10),
               DistanceCost(
                 distance: trip.distance,
                 cost: trip.cost,

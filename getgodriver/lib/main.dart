@@ -20,13 +20,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // SocketService.updateContext(context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
           value: DriverViewModel(),
-        ),
-        ChangeNotifierProvider.value(
-          value: SocketService(),
         ),
         ChangeNotifierProvider.value(
           value: TripViewModel(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/routes/routes.dart';
 import 'package:getgodriver/widgets/appBarSetting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,7 +15,10 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   bool item1 = true;
-
+   void initState() {
+    super.initState();
+    SocketService.updateContext(context);
+  }
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> listSetting1 = [

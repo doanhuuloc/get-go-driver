@@ -7,16 +7,22 @@ import 'package:getgodriver/models/tripModel.dart';
 import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/tripViewModel.dart';
 import 'package:getgodriver/routes/Routes.dart';
+import 'package:getgodriver/services/googlemap/api_places.dart';
 import 'package:getgodriver/widgets/home/bottomSheetAcceptTrip.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
-class SocketService with ChangeNotifier {
-  io.Socket? _socket;
+class SocketService {
+  static io.Socket? _socket;
+  static late BuildContext _context;
+  static updateContext(BuildContext context) {
+    _context = context;
+  }
 
-  void connectserver(BuildContext context) {
+  static void connectserver(BuildContext context) {
     print('hhhhhhhh');
     _socket = io.io(
         ApiConfig.baseUrl,
@@ -26,34 +32,36 @@ class SocketService with ChangeNotifier {
 
     _socket?.onConnect(
       (data) async {
-        print('hhhhhh111hh');
+        print("cout<< connect " + _socket!.id.toString());
+
         driverSendToServer(
-            context.read<DriverViewModel>().myLocation.coordinates,
-            context.read<DriverViewModel>().myLocation.heading);
+            _context.read<DriverViewModel>().myLocation.coordinates,
+            _context.read<DriverViewModel>().myLocation.heading);
         // Location location = Location();
         // await location.getLocation().then((location) async {
         //   print('hihihi');
         //   driverSendToServer(LatLng(location.latitude!, location.longitude!),
         //       location.heading ?? 0);
         // });
-        receiptClient(context);
-        successReceipt(context);
+        receiptClient();
+        successReceipt();
+        // receiptClient(context);
       },
     );
     _socket?.onDisconnect((data) {
-      print('disconnect' + data.toString());
+      print('cout<< disconnect' + data.toString());
     });
 
     _socket?.onConnectError((data) {
-      print("err: $data");
+      print("cout<< err: $data");
     });
   }
 
-  void disconnect() {
+  static void disconnect() {
     _socket?.disconnect();
   }
 
-  void driverSendToServer(LatLng location, double heading) {
+  static void driverSendToServer(LatLng location, double heading) {
     print('heeeee');
     Map<String, dynamic> data = {
       "user_id": 2,
@@ -66,73 +74,102 @@ class SocketService with ChangeNotifier {
     _socket?.emit('driver-login', data);
   }
 
-  void receiptClient(BuildContext context) {
+  static void receiptClient() {
     _socket?.on("user-trip", (data) {
+      print("cout<< trip có chuyến");
       // final jsonData = jsonDecode(data);
-      print('cout<< 11111111111111111111111111111111111111111');
-      print(data);
+      // print('cout<< 11111111111111111111111111111111111111111');
+      print('cout<< $data');
       Map<String, dynamic> trip_infor = data['trip_info'];
-      Map<String, dynamic> user_info = data['user_info'];
-      print(trip_infor);
-      print(trip_infor['start'] is String);
-      context.read<TripViewModel>().infoTrip = TripModel(
-          id: trip_infor['trip_id'] / 1,
-          avatar: 'avatar',
-          name: user_info['name'],
-          phone: user_info['phone'],
-          cost: trip_infor['price'] / 1,
-          distance: 1, // trip_infor['distance'],
-          note: 'note',
-          fromAddress: LocationModel(
-              title: '',
-              summary: jsonDecode(trip_infor['start'])['name'],
-              coordinates: LatLng(jsonDecode(trip_infor['start'])['lat'] / 1,
-                  jsonDecode(trip_infor['start'])['lng'] / 1)),
-          toAddress: LocationModel(
-              title: '',
-              summary: jsonDecode(trip_infor['end'])['name'],
-              coordinates: LatLng(jsonDecode(trip_infor['end'])['lat'] / 1,
-                  jsonDecode(trip_infor['end'])['lng'] / 1)),
-          paymentMethod: 'momo',
-          startDate: DateTime.utc(2023, 7, 25, 16, 00),
-          endDate: DateTime.utc(2023, 7, 25, 16, 00));
-      print(data);
-      showModalBottomSheet(
-        enableDrag: false,
-        isDismissible: false,
-        context: context,
-        builder: (context) {
-          return BottomSheetAcceptTrip(stripId: data["trip_info"]);
-        },
-      );
+      Map<String, dynamic> user_infor = data['user_info'];
+      print('cout<< ${trip_infor['start'] is String}');
+      print('cout<< ${user_infor is String}');
+      print('cout<< $trip_infor');
+      print('cout<< $trip_infor');
+      // print(trip_infor['start'] is String);
+      try {
+        TripModel tripne = TripModel(
+            id: trip_infor['trip_id'] / 1,
+            avatar: user_infor['avatar'],
+            name: user_infor['name'],
+            phone: user_infor['phone'],
+            typeCar: "xe 4 chỗ",
+            cost: trip_infor['price'] / 1,
+            distance: 1, // trip_infor['distance'],
+            note: 'note',
+            fromAddress: LocationModel(
+                title: '',
+                summary: trip_infor['start']['place'],
+                coordinates: LatLng(trip_infor['start']['lat'] / 1,
+                    trip_infor['start']['lng'] / 1)),
+            toAddress: LocationModel(
+                title: '',
+                summary: trip_infor['end']['place'],
+                coordinates: LatLng(trip_infor['end']['lat'] / 1,
+                    trip_infor['end']['lng'] / 1)),
+            paymentMethod: 'momo',
+            startDate: DateTime.utc(2023, 7, 25, 16, 00),
+            endDate: DateTime.utc(2023, 7, 25, 16, 00));
+        // print("cout<< $tripne");
+        // print("cout<'tu");
+        _context.read<TripViewModel>().updateInfoTrip(data);
+        // print(data);
+        print('cout<< thành công r nè');
+        showModalBottomSheet(
+          enableDrag: false,
+          isDismissible: false,
+          context: _context,
+          builder: (_context) {
+            return BottomSheetAcceptTrip(stripId: data["trip_info"]);
+          },
+        );
+      } catch (e) {
+        print("cout<< $e");
+        throw (e);
+      }
     });
   }
 
-  void handleTripUpdate(BuildContext context, String status) {
+  static Future<void> handleTripUpdate(
+      BuildContext context, String status) async {
     context.read<DriverViewModel>().updateStatus(status);
-    print('cout<< tao nèww');
+
+    // print('cout<< tao nèww');
     Map<String, dynamic> data = {
-      "trip_id": context.read<TripViewModel>().tripID,
+      "trip_id": context.read<TripViewModel>().id,
       "status": status
     };
     _socket?.emit('trip-update', data);
+    if (status == "Driving") {
+      final trip = context.read<TripViewModel>();
+      List<PointLatLng> directions = await APIPlace.getDirections(
+          origin: context.read<DriverViewModel>().myLocation.coordinates,
+          destination: trip.toAddress.coordinates);
+      await trip.updateDirection(directions);
+    }
   }
 
-  void successReceipt(BuildContext context) {
-    _socket?.on("receive-trip-success", (data) {
-      context.read<DriverViewModel>().updateStatus('Confirmed');
+  static void successReceipt() {
+    _socket?.on("receive-trip-success", (data) async {
+      final trip = _context.read<TripViewModel>();
+      _context.read<DriverViewModel>().updateStatus('Confirmed');
+      List<PointLatLng> directions = await APIPlace.getDirections(
+          origin: _context.read<DriverViewModel>().myLocation.coordinates,
+          destination: trip.fromAddress.coordinates);
+      await trip.updateDirection(directions);
 
-      Navigator.of(context).pushNamed(Routes.trip);
+      Navigator.of(_context).pushReplacementNamed(Routes.trip);
     });
   }
 
-  void failReceip(BuildContext context) {
+  static void failReceip(BuildContext context) {
     _socket?.on("received-trip-fail", (data) {
       final jsonData = jsonDecode(data);
     });
   }
 
-  void driverUpdateServer(LatLng location, double heading) {
+  static void driverUpdateServer(LatLng location, double heading) {
+    print('cout<< dd');
     Map<String, dynamic> data = {
       'lat': location.latitude,
       'lng': location.longitude,
@@ -141,8 +178,7 @@ class SocketService with ChangeNotifier {
     _socket?.emit('driver-location-update', data);
   }
 
-  void driverIsAccept(Map<String, dynamic> stripId, String status) {
-    _socket
-        ?.emit('driver-response-booking', {'trip': stripId, 'status': status});
+  static void driverIsAccept(Map<String, dynamic> trip, String status) {
+    _socket?.emit('driver-response-booking', {'trip': trip, 'status': status});
   }
 }

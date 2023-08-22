@@ -6,6 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
+import 'package:getgodriver/provider/tripViewModel.dart';
+import 'package:getgodriver/services/googlemap/api_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:ui' as ui;
@@ -60,27 +62,54 @@ class _MapScreenState extends State<MapScreen> {
       context.read<DriverViewModel>().updateMyLocation(
           LatLng(location.latitude ?? 0, location.longitude ?? 0),
           location.heading ?? 0);
+
+      addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon,
+          location.heading ?? 0);
+      if (context.read<TripViewModel>().direction.isEmpty) {
+        _moveCameraToLocation(
+            LatLng(location.latitude ?? 0, location.longitude ?? 0));
+      }
       // context.read<SocketService>().driverSendToServer(
       //     widget.currentLocation.coordinates, location.heading ?? 0);
       // _currentLocation = location;
     });
     _location.onLocationChanged.listen((newLocation) async {
-      double result = await Geolocator.distanceBetween(
+      double result = 0;
+      result = Geolocator.distanceBetween(
         widget.currentLocation.coordinates.latitude,
         widget.currentLocation.coordinates.longitude,
         newLocation.latitude!,
         newLocation.longitude!,
       );
+      // if (newLocation.heading != widget.currentLocation.heading)
+      //   addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon,
+      //       newLocation.heading ?? 0);
+      // print("cout<< $result");
       // cứ đi được 100 mét là set lại vị trí
       if (result > 200) {
-        // _currentLocation = newLocation;
+        context.read<DriverViewModel>().updateMyLocation(
+            LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0),
+            newLocation.heading ?? 0);
         widget.currentLocation.coordinates =
             LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0);
-        // gửi vị trí về server
-        // context.read<SocketService>().driverUpdateServer(
-        //     widget.currentLocation.coordinates, newLocation.heading ?? 0);
-        _moveCameraToLocation(
-            LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0));
+
+        if (context.read<DriverViewModel>().status != "offline") {
+          SocketService.driverUpdateServer(
+              LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0),
+              newLocation.heading ?? 0);
+        }
+        if (context.read<TripViewModel>().direction.isNotEmpty) {
+          List<PointLatLng> directions = await APIPlace.getDirections(
+              origin:
+                  LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0),
+              destination: widget.desLocation!.coordinates);
+          widget.listPoint = directions;
+
+          setState(() {});
+        } else {
+          _moveCameraToLocation(
+              LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0));
+        }
         addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon,
             newLocation.heading ?? 0);
       }
@@ -100,6 +129,14 @@ class _MapScreenState extends State<MapScreen> {
     _loadMapStyle();
     // Khởi tạo vị trí
     _init();
+  }
+
+  @override
+  void dispose() {
+    _controller.future.then((GoogleMapController controller) {
+      controller.dispose();
+    });
+    super.dispose();
   }
 
   Future<void> _loadMapStyle() async {
@@ -138,7 +175,8 @@ class _MapScreenState extends State<MapScreen> {
 
   void onCreated(GoogleMapController controller) async {
     _controller.complete(controller);
-    addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon, 0);
+    addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon,
+        widget.currentLocation.heading);
     for (LatLng point in widget.listDrive) {
       addMarkerSVG(const Uuid().v4(), point, 'assets/svgs/CarMap.svg',
           Random().nextDouble() * 360 + 1);
@@ -147,8 +185,8 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> addPolylineAndFitMap() async {
-    addMarkerSVG('marker', widget.desLocation!.coordinates!,
-        'assets/svgs/DesDetail.svg', 0);
+    addMarkerSVG(
+        'des', widget.desLocation!.coordinates, 'assets/svgs/DesDetail.svg', 0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       List<LatLng> points = widget.listPoint.map((e) {
         return LatLng(e.latitude, e.longitude);
@@ -236,17 +274,19 @@ class _MapScreenState extends State<MapScreen> {
       String id, LatLng location, String assetName, double rotate) async {
     BitmapDescriptor svgIcon =
         await getBitmapDescriptorFromSvgAsset(assetName, const Size(40, 40));
-    var marker = Marker(
-      markerId: MarkerId(id),
-      position: location,
-      infoWindow: const InfoWindow(
-        title: 'End Point',
-        snippet: 'End Marker',
-      ),
-      icon: svgIcon,
-      rotation: rotate,
-    );
-    _marker[id] = marker;
-    setState(() {});
+    if (mounted) {
+      var marker = Marker(
+        markerId: MarkerId(id),
+        position: location,
+        infoWindow: const InfoWindow(
+          title: 'End Point',
+          snippet: 'End Marker',
+        ),
+        icon: svgIcon,
+        rotation: rotate,
+      );
+      _marker[id] = marker;
+      setState(() {});
+    }
   }
 }

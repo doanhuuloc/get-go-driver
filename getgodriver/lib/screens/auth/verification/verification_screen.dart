@@ -52,8 +52,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments;
-    print(widget.phone);
-    print(args);
+    print("cout<< ${widget.phone}");
+    print("cout<< $args");
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

@@ -22,7 +22,7 @@ class _CountdownAnimationState extends State<CountdownAnimation>
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 10),
+      duration: Duration(seconds: 15),
     );
   }
 

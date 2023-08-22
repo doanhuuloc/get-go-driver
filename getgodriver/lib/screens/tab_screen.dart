@@ -45,7 +45,7 @@ class _TabScreenState extends State<TabScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // context.read<SocketService>().connectserver(context);
+    SocketService.connectserver(context);
   }
 
   @override
@@ -53,12 +53,13 @@ class _TabScreenState extends State<TabScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBarSetting(
-            isOnline: isOnline,
-            title: "haha"), //_pages[_selectedPageIndex]['title']
+          isOnline: isOnline,
+        ), //_pages[_selectedPageIndex]['title']
         body: _pages[_selectedPageIndex]['page'] as Widget,
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Theme.of(context).primaryColor,
           onTap: _selectPage,
-          selectedItemColor: Theme.of(context).primaryColor,
+          selectedItemColor: Colors.white,
           unselectedItemColor: Colors.black,
           currentIndex: _selectedPageIndex,
           items: const [

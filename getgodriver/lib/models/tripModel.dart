@@ -1,24 +1,23 @@
 import 'location.dart';
 
 class TripModel {
-  final double id;
-  final String avatar;
-  final String name;
-  final String phone;
-  final double rate;
+  double id;
+  String avatar;
+  String name;
+  String phone;
 
-  final double cost;
-  final double distance;
+  double cost;
+  double distance;
 
-  final String? typeCar;
-  final String note;
+  String typeCar;
+  String note;
   LocationModel fromAddress;
   LocationModel toAddress;
 
-  final DateTime startDate;
-  final DateTime endDate;
+  DateTime startDate;
+  DateTime endDate;
 
-  final String paymentMethod;
+  String paymentMethod;
 
   DateTime? setTripDate;
   DateTime? scheduledDate;
@@ -27,10 +26,9 @@ class TripModel {
     required this.avatar,
     required this.name,
     required this.phone,
-    this.rate = 5,
     required this.cost,
     required this.distance,
-    this.typeCar,
+    required this.typeCar,
     required this.note,
     required this.fromAddress,
     required this.toAddress,

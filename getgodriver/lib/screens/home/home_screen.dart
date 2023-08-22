@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    SocketService.updateContext(context);
     // context.read<SocketService>().socket?.on("user-trip", (data) {
     //   print('33333333333333333333333333333333333333');
     //   print(data);
