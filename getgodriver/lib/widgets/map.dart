@@ -142,7 +142,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> addPolylineAndFitMap() async {
-    addMarkerSVG('marker', widget.desLocation!.coordinates!,
+    addMarkerSVG('marker', widget.desLocation!.coordinates,
         'assets/svgs/DesDetail.svg', 0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       List<LatLng> points = widget.listPoint.map((e) {

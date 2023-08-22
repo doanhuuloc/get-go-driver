@@ -20,7 +20,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
     if (response['statusCode' == 200]) {
       Navigator.of(context).pushReplacementNamed(Routes.home);
     } else {
-      print("Sai mật khẩu");
+      print("cout<< Sai mật khẩu");
     }
   }
 

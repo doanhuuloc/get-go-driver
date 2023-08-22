@@ -35,31 +35,12 @@ class ButtonChangeStatusTrip extends StatelessWidget {
                           text: 'Bắt đầu chuyến đi',
                           onSubmit: () {
                             socketProvider.handleTripUpdate(context, 'Driving');
+                            Navigator.of(context)
+                                .pushReplacementNamed(Routes.tripDriving);
                           },
                         )
                       : SizedBox();
               // : SizedBox();
-            }),
-        Selector<DriverViewModel, String>(
-            selector: (context, setting) => setting.status,
-            builder: (context, status, child) {
-              return status == 'Driving'
-                  ? SlideAction(
-                      borderRadius: 10,
-                      height: 55,
-                      sliderButtonIconPadding: 10,
-                      innerColor: Colors.white,
-                      outerColor: Theme.of(context).primaryColor,
-                      text: 'Đã đến điểm đến',
-                      onSubmit: () {
-                        socketProvider.handleTripUpdate(context, 'Pay');
-                        Navigator.of(context)
-                            .pushReplacementNamed(Routes.detailedTrip);
-                      },
-                      
-                      //  sliderButtonIcon: null,
-                    )
-                  : SizedBox();
             }),
       ],
     );

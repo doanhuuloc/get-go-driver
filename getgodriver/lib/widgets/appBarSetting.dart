@@ -5,9 +5,8 @@ import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:provider/provider.dart';
 
 class AppBarSetting extends StatelessWidget implements PreferredSizeWidget {
-  const AppBarSetting({super.key, required this.isOnline, required this.title});
+  const AppBarSetting({super.key, required this.isOnline});
   final bool isOnline;
-  final String title;
 
   @override
   Size get preferredSize => const Size.fromHeight(60);
@@ -16,11 +15,10 @@ class AppBarSetting extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final DriverViewModel driver = context.read<DriverViewModel>();
     final SocketService socket = context.read<SocketService>();
-
+    final themeData = Theme.of(context);
     return AppBar(
-      iconTheme: const IconThemeData(color: Colors.black),
-      title: Text(title),
-      backgroundColor: Colors.white,
+      // iconTheme: const IconThemeData(color: Colors.black),
+      backgroundColor: themeData.primaryColor,
       actions: [
         Selector<DriverViewModel, String>(
             selector: (p0, p1) => driver.status,
@@ -33,7 +31,7 @@ class AppBarSetting extends StatelessWidget implements PreferredSizeWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.white,
                   borderRadius: const BorderRadius.all(Radius.circular(30)),
                 ),
                 child: InkWell(
@@ -51,10 +49,12 @@ class AppBarSetting extends StatelessWidget implements PreferredSizeWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      IsOnlineText(
-                                          isOnline: driver.status != "offline"
-                                              ? true
-                                              : false),
+                                      Row(
+                                        children: [
+                                          SizedBox(width: 10),
+                                          Text("Cài đặt nhận chuyến",style: TextStyle(fontSize: 20),),
+                                        ],
+                                      ),
                                       IconButton(
                                         onPressed: () => Navigator.pop(context),
                                         icon: const Icon(Icons.close),
@@ -98,7 +98,7 @@ class AppBarSetting extends StatelessWidget implements PreferredSizeWidget {
                                                 : false,
                                             onToggle: ((value) {
                                               if (value) {
-                                                print('hêl');
+                                                print('cout<< hêl');
                                                 driver.updateStatus("waiting");
                                                 socket.connectserver(context);
                                               } else {
@@ -121,9 +121,9 @@ class AppBarSetting extends StatelessWidget implements PreferredSizeWidget {
                     children: [
                       IsOnlineText(
                           isOnline: driver.status != "offline" ? true : false),
-                      const Icon(
+                      Icon(
                         Icons.arrow_forward_ios,
-                        color: Colors.white,
+                        color: themeData.primaryColor,
                         size: 15,
                       )
                     ],
@@ -153,7 +153,7 @@ class IsOnlineText extends StatelessWidget {
         const SizedBox(width: 10),
         Text(
           isOnline ? "Trực tuyến" : "Ngoại tuyến",
-          style: const TextStyle(fontSize: 18),
+          style:  TextStyle(fontSize: 20,color: Theme.of(context).primaryColor),
         ),
       ],
     );

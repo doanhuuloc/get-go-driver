@@ -30,17 +30,19 @@ class SocketService with ChangeNotifier {
           driverSendToServer(LatLng(location.latitude!, location.longitude!),
               location.heading ?? 0);
         });
+        print("cout<< connect " + _socket!.id.toString());
+
         print('cout<< www');
         successReceipt(context);
         receiptClient(context);
       },
     );
     _socket?.onDisconnect((data) {
-      print('disconnect' + data.toString());
+      print('cout<< disconnect' + data.toString());
     });
 
     _socket?.onConnectError((data) {
-      print("err: $data");
+      print("cout<< err: $data");
     });
   }
 
@@ -63,17 +65,18 @@ class SocketService with ChangeNotifier {
   void receiptClient(BuildContext context) {
     _socket?.on("user-trip", (data) {
       // final jsonData = jsonDecode(data);
-      print('cout<< 11111111111111111111111111111111111111111');
-      print(data);
-      Map<String, dynamic> trip_infor = jsonDecode(data['trip_info']);
-      Map<String, dynamic> user_info = jsonDecode(data['user_info']);
-      print(trip_infor);
-      print(trip_infor['start'] is String);
+      // print('cout<< 11111111111111111111111111111111111111111');
+      print('cout<< $data');
+      Map<String, dynamic> trip_infor = data['trip_info'];
+      Map<String, dynamic> user_info = data['user_info'];
+      // print(trip_infor);
+      // print(trip_infor['start'] is String);
       context.read<TripViewModel>().infoTrip = TripModel(
           id: trip_infor['trip_id'] / 1,
           avatar: 'avatar',
           name: user_info['name'],
           phone: user_info['phone'],
+          typeCar: "xe 4 chỗ",
           cost: trip_infor['price'] / 1,
           distance: 1, // trip_infor['distance'],
           note: 'note',
@@ -90,7 +93,7 @@ class SocketService with ChangeNotifier {
           paymentMethod: 'momo',
           startDate: DateTime.utc(2023, 7, 25, 16, 00),
           endDate: DateTime.utc(2023, 7, 25, 16, 00));
-      print(data);
+      // print(data);
       showModalBottomSheet(
         enableDrag: false,
         isDismissible: false,
@@ -104,9 +107,9 @@ class SocketService with ChangeNotifier {
 
   void handleTripUpdate(BuildContext context, String status) {
     context.read<DriverViewModel>().updateStatus(status);
-    print('cout<< tao nèww');
+    // print('cout<< tao nèww');
     Map<String, dynamic> data = {
-      "trip_id": context.read<TripViewModel>().tripID,
+      "trip_id": context.read<TripViewModel>().id,
       "status": status
     };
     _socket?.emit('trip-update', data);
@@ -116,7 +119,7 @@ class SocketService with ChangeNotifier {
     _socket?.on("receive-trip-success", (data) {
       context.read<DriverViewModel>().updateStatus('Confirmed');
 
-      Navigator.of(context).pushNamed(Routes.trip);
+      Navigator.of(context).pushReplacementNamed(Routes.trip);
     });
   }
 

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
-
+import 'package:intl/intl.dart';
 class TripViewModel with ChangeNotifier {
   TripModel _infoTrip = TripModel(
     id: 1,
     avatar: "assets/imgs/avatar.jpg",
     name: "Nguyễn Đăng Mạnh Tú",
     phone: "0909100509",
-    rate: 3.7,
     cost: 100000,
     distance: 22.6,
     typeCar: "taxi 4 chỗ",
@@ -28,6 +27,29 @@ class TripViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  double get tripID => _infoTrip.id;
+  double get id => _infoTrip.id;
+  String get avatar => _infoTrip.avatar;
+  String get name => _infoTrip.name;
+  String get phone => _infoTrip.phone;
 
+  double get cost => _infoTrip.cost;
+  double get distance => _infoTrip.distance;
+
+  String get typeCar => _infoTrip.typeCar;
+  String get note => _infoTrip.note;
+  LocationModel get fromAddress => _infoTrip.fromAddress;
+  LocationModel get toAddress => _infoTrip.toAddress;
+
+  DateTime get startDate => _infoTrip.startDate;
+  DateTime get endDate => _infoTrip.endDate;
+
+  String get paymentMethod => _infoTrip.paymentMethod;
+
+  DateTime? get setTripDate => _infoTrip.setTripDate;
+  DateTime? get scheduledDate => _infoTrip.scheduledDate;
+
+  String formatCurrency(double cost){
+    final currencyFormatter = NumberFormat.currency(locale: 'vi_VN', symbol: 'đ');
+    return currencyFormatter.format(cost);
+  } 
 }

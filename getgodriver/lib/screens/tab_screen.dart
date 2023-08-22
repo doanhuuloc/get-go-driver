@@ -55,11 +55,12 @@ class _TabScreenState extends State<TabScreen> {
       child: Scaffold(
         appBar: AppBarSetting(
             isOnline: isOnline,
-            title: "haha"), //_pages[_selectedPageIndex]['title']
+         ), //_pages[_selectedPageIndex]['title']
         body: _pages[_selectedPageIndex]['page'] as Widget,
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Theme.of(context).primaryColor,
           onTap: _selectPage,
-          selectedItemColor: Theme.of(context).primaryColor,
+          selectedItemColor: Colors.white,
           unselectedItemColor: Colors.black,
           currentIndex: _selectedPageIndex,
           items: const [
