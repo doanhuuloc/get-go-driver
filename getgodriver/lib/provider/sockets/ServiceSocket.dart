@@ -24,25 +24,29 @@ class SocketService {
 
   static void connectserver(BuildContext context) {
     print('hhhhhhhh');
+    print('hhhhhhhh $_socket');
     _socket = io.io(
         ApiConfig.baseUrl,
-        io.OptionBuilder().setTransports(['websocket'])
-            // .disableAutoConnect()
-            .setQuery({'username': 'loc'}).build());
+        io.OptionBuilder()
+            .setTransports(['websocket'])
+            .enableForceNew()
+            .build());
 
     _socket?.onConnect(
       (data) async {
         print("cout<< connect " + _socket!.id.toString());
-
+        print(
+            "cout<< ơi òi ${_context.read<DriverViewModel>().myLocation.coordinates}");
+        // driverSendToServer(
+        //     _context.read<DriverViewModel>().myLocation.coordinates,
+        //     _context.read<DriverViewModel>().myLocation.heading);
+        Location location = Location();
+        LocationData locationData = await location.getLocation();
+        // print('hihihi');
         driverSendToServer(
-            _context.read<DriverViewModel>().myLocation.coordinates,
-            _context.read<DriverViewModel>().myLocation.heading);
-        // Location location = Location();
-        // await location.getLocation().then((location) async {
-        //   print('hihihi');
-        //   driverSendToServer(LatLng(location.latitude!, location.longitude!),
-        //       location.heading ?? 0);
-        // });
+            LatLng(locationData.latitude!, locationData.longitude!),
+            locationData.heading ?? 0);
+
         receiptClient();
         successReceipt();
         // receiptClient(context);
@@ -133,30 +137,39 @@ class SocketService {
   static Future<void> handleTripUpdate(
       BuildContext context, String status) async {
     context.read<DriverViewModel>().updateStatus(status);
-
-    // print('cout<< tao nèww');
-    Map<String, dynamic> data = {
-      "trip_id": context.read<TripViewModel>().id,
-      "status": status
-    };
-    _socket?.emit('trip-update', data);
+    String directions = '';
     if (status == "Driving") {
       final trip = context.read<TripViewModel>();
-      List<PointLatLng> directions = await APIPlace.getDirections(
+      String directions = await APIPlace.getDirections(
           origin: context.read<DriverViewModel>().myLocation.coordinates,
           destination: trip.toAddress.coordinates);
-      await trip.updateDirection(directions);
+      await trip.updateDirection(PolylinePoints().decodePolyline(directions));
+      Map<String, dynamic> data = {
+        "trip_id": context.read<TripViewModel>().id,
+        "directions": directions,
+        "status": status
+      };
+      _socket?.emit('trip-update', data);
+      return;
+    } else {
+      Map<String, dynamic> data = {
+        "trip_id": context.read<TripViewModel>().id,
+        "directions": directions,
+        "status": status
+      };
+      _socket?.emit('trip-update', data);
     }
+    // print('cout<< tao nèww');
   }
 
   static void successReceipt() {
     _socket?.on("receive-trip-success", (data) async {
       final trip = _context.read<TripViewModel>();
       _context.read<DriverViewModel>().updateStatus('Confirmed');
-      List<PointLatLng> directions = await APIPlace.getDirections(
+      String directions = await APIPlace.getDirections(
           origin: _context.read<DriverViewModel>().myLocation.coordinates,
           destination: trip.fromAddress.coordinates);
-      await trip.updateDirection(directions);
+      await trip.updateDirection(PolylinePoints().decodePolyline(directions));
 
       Navigator.of(_context).pushReplacementNamed(Routes.trip);
     });
@@ -168,12 +181,14 @@ class SocketService {
     });
   }
 
-  static void driverUpdateServer(LatLng location, double heading) {
+  static void driverUpdateServer(
+      LatLng location, double heading, String directions) {
     print('cout<< dd');
     Map<String, dynamic> data = {
       'lat': location.latitude,
       'lng': location.longitude,
       'heading': heading,
+      'directions': directions
     };
     _socket?.emit('driver-location-update', data);
   }

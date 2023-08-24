@@ -21,27 +21,27 @@ class FloatingButtonMap extends StatelessWidget {
             },
             child: const Icon(Icons.calendar_month_outlined),
           ),
-          FloatingActionButton(
-            backgroundColor: Theme.of(context).primaryColor,
-            onPressed: () {
-              // Navigator.of(context).pushNamed(Routes.tripDriving);
+          // FloatingActionButton(
+          //   backgroundColor: Theme.of(context).primaryColor,
+          //   onPressed: () {
+          //     // Navigator.of(context).pushNamed(Routes.tripDriving);
 
-              Location location = Location();
-              location.getLocation().then((value) => {});
+          //     Location location = Location();
+          //     location.getLocation().then((value) => {});
 
-              showModalBottomSheet(
-                enableDrag: false,
-                isDismissible: false,
-                context: context,
-                builder: (context) {
-                  return BottomSheetAcceptTrip(
-                    stripId: {'1': 1},
-                  );
-                },
-              );
-            },
-            child: const Icon(Icons.my_location),
-          ),
+          //     showModalBottomSheet(
+          //       enableDrag: false,
+          //       isDismissible: false,
+          //       context: context,
+          //       builder: (context) {
+          //         return BottomSheetAcceptTrip(
+          //           stripId: {'1': 1},
+          //         );
+          //       },
+          //     );
+          //   },
+          //   child: const Icon(Icons.my_location),
+          // ),
         ],
       ),
     );
