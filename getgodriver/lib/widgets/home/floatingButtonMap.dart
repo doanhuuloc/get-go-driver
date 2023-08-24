@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:getgodriver/routes/routes.dart';
 import 'package:getgodriver/widgets/home/bottomSheetAcceptTrip.dart';
 import 'package:location/location.dart';
+import 'package:getgodriver/services/notification.dart';
 
 class FloatingButtonMap extends StatelessWidget {
   const FloatingButtonMap({super.key});
@@ -26,19 +27,23 @@ class FloatingButtonMap extends StatelessWidget {
             onPressed: () {
               // Navigator.of(context).pushNamed(Routes.tripDriving);
 
-              Location location = Location();
-              location.getLocation().then((value) => {});
+              final notify = Notifications();
+              // notify.showNotification("hello");
 
-              showModalBottomSheet(
-                enableDrag: false,
-                isDismissible: false,
-                context: context,
-                builder: (context) {
-                  return BottomSheetAcceptTrip(
-                    stripId: {'1': 1},
-                  );
-                },
-              );
+              // notify.showScheduledNotification("hello", 23, 33,30);
+              // Location location = Location();
+              // location.getLocation().then((value) => {});
+
+              // showModalBottomSheet(
+              //   enableDrag: false,
+              //   isDismissible: false,
+              //   context: context,
+              //   builder: (context) {
+              //     return BottomSheetAcceptTrip(
+              //       stripId: {'1': 1},
+              //     );
+              //   },
+              // );
             },
             child: const Icon(Icons.my_location),
           ),

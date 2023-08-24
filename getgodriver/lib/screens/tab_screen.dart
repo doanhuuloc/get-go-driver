@@ -52,14 +52,12 @@ class _TabScreenState extends State<TabScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBarSetting(
-          isOnline: isOnline,
-        ), //_pages[_selectedPageIndex]['title']
+        appBar: AppBarSetting(), //_pages[_selectedPageIndex]['title']
         body: _pages[_selectedPageIndex]['page'] as Widget,
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Colors.white,
           onTap: _selectPage,
-          selectedItemColor: Colors.white,
+          selectedItemColor: Theme.of(context).primaryColor,
           unselectedItemColor: Colors.black,
           currentIndex: _selectedPageIndex,
           items: const [

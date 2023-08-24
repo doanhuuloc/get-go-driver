@@ -3,11 +3,13 @@ import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/routes/routes.dart';
+import 'package:getgodriver/services/api/api_trip.dart';
 import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/scheduledTrip/scheduledBox.dart';
 import 'package:getgodriver/widgets/appBarSetting.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ScheduledTripsScreen extends StatefulWidget {
   const ScheduledTripsScreen({super.key});
@@ -19,9 +21,17 @@ class ScheduledTripsScreen extends StatefulWidget {
 class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
   final format = DateFormat("dd/MM/yyyy");
   DateTime dateTime = DateTime.now();
+  // late final List<TripModel> trips;
+  @override
   void initState() {
     super.initState();
     SocketService.updateContext(context);
+    // final response = await ApiTrip.getAllScheduledTrips();
+    // if (response['statusCode'] == 200) {
+    //   trips = response['trips'];
+    // } else {
+    //   print("cout<< lấy thông tin tất cả chuyến đi hẹn giờ có vấn đề");
+    // }
   }
 
   List<TripModel> apointmentTripList = [
@@ -50,8 +60,6 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
       distance: 22.6,
       typeCar: "taxi 4 chỗ",
       note: "Chở em gái đi học",
-      // fromAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
-      // toAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
       fromAddress: LocationModel(title: '', summary: ''),
       toAddress: LocationModel(title: '', summary: ''),
       scheduledDate: DateTime.utc(2023, 8, 17, 16, 00),
@@ -68,8 +76,6 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
       distance: 22.6,
       typeCar: "taxi 4 chỗ",
       note: "Chở em gái đi học",
-      // fromAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
-      // toAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
       fromAddress: LocationModel(title: '', summary: ''),
       toAddress: LocationModel(title: '', summary: ''),
       scheduledDate: DateTime.utc(2023, 8, 17, 16, 00),
@@ -86,11 +92,9 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
       distance: 22.6,
       typeCar: "taxi 4 chỗ",
       note: "Chở em gái đi học",
-      // fromAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
-      // toAddress: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm",
       fromAddress: LocationModel(title: '', summary: ''),
       toAddress: LocationModel(title: '', summary: ''),
-      scheduledDate: DateTime.utc(2023, 8, 17, 16, 00),
+      scheduledDate: DateTime.utc(2023, 8, 24, 16, 00),
       paymentMethod: "tiền mặt",
       startDate: DateTime.utc(2023, 7, 25, 16, 00),
       endDate: DateTime.utc(2023, 7, 25, 16, 00),
@@ -108,15 +112,16 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
       dateTime = dateTime.add(Duration(days: 1));
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
 
     return SafeArea(
       child: Scaffold(
-        appBar: const AppBarSetting(
-          isOnline: false,
+        appBar: AppBar(
+          backgroundColor: themeData.primaryColor,
+          title: const Text("Danh sách chuyến đi hẹn giờ"),
         ),
         body: Column(
           children: [

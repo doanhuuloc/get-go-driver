@@ -25,10 +25,7 @@ class DetailedScheduledTripScreen extends StatelessWidget {
         child: Scaffold(
       appBar: AppBar(
         backgroundColor: themedata.primaryColor,
-        title: Text(
-          "Chi tiết chuyến đi hẹn giờ",
-          style: TextStyle(color: Colors.white),
-        ),
+        title: const Text("Chi tiết chuyến đi hẹn giờ"),
       ),
       body: SingleChildScrollView(
         child: Column(children: [
@@ -106,7 +103,9 @@ class DetailedScheduledTripScreen extends StatelessWidget {
                 builder: (context) => AlertDialog(
                   title: const Text("Xác nhận"),
                   content: const Text(
-                      "Bạn có chấp nhận chuyến đi hẹn giờ này không?",style: TextStyle(fontWeight: FontWeight.normal),),
+                    "Bạn có chấp nhận chuyến đi hẹn giờ này không?",
+                    style: TextStyle(fontWeight: FontWeight.normal),
+                  ),
                   actions: [
                     InkWell(
                       onTap: () {

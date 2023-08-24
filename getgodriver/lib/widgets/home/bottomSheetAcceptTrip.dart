@@ -35,7 +35,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
     // Navigator.pop(context);
     Navigator.pop(context);
 
-    // Navigator.of(context).pushReplacementNamed(Routes.trip);
+    Navigator.of(context).pushReplacementNamed(Routes.trip);
   }
 
   rejectTrip() {
@@ -120,7 +120,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
               const SizedBox(height: 10),
               DistanceCost(
                 distance: trip.distance,
-                cost: trip.cost,
+                cost: trip.formatCurrency(trip.cost),
               ),
               const SizedBox(height: 10),
               AcceptOrRejectTrip(

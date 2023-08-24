@@ -15,7 +15,7 @@ class DialogMessage {
                 BorderRadius.circular(37.0), // Điều chỉnh bán kính của góc
           ),
           content: SizedBox(
-            height: MediaQuery.of(context).size.height / 2.5,
+            // height: MediaQuery.of(context).size.height / 2.5,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -43,7 +43,7 @@ class DialogMessage {
                     color: Color(0xff151b27),
                   ),
                 ),
-                const SizedBox(height: 60),
+                const SizedBox(height: 20),
                 ButtonSizeL(
                     onTap: () {
                       Navigator.of(context).pop();

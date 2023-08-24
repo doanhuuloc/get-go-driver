@@ -87,11 +87,11 @@ class ApointmentBox extends StatelessWidget {
             Address(
               address: trip.fromAddress.summary,
               img: "assets/svgs/fromaddress.svg",
+              color: themeData.primaryColor,
             ),
             const SizedBox(height: 10),
             Address(
                 address: trip.toAddress.summary,
-                color: Theme.of(context).primaryColor,
                 img: "assets/svgs/toaddress.svg"),
           ],
         ),

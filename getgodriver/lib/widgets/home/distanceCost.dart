@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+
 class DistanceCost extends StatelessWidget {
   const DistanceCost({super.key, required this.distance, required this.cost});
   final double distance;
-  final double cost;
+  final String cost;
 
   @override
   Widget build(BuildContext context) {
@@ -11,10 +12,13 @@ class DistanceCost extends StatelessWidget {
       alignment: Alignment.center,
       child: RichText(
           text: TextSpan(children: [
-        TextSpan(text: "${distance}km", style: TextStyle(color: Colors.black,fontSize: 20)),
         TextSpan(
-            text: "đ${cost}",
-            style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 20))
+            text: "$distance km - ",
+            style: TextStyle(color: Colors.black, fontSize: 20)),
+        TextSpan(
+            text: cost,
+            style:
+                TextStyle(color: Theme.of(context).primaryColor, fontSize: 20))
       ])),
     );
   }
