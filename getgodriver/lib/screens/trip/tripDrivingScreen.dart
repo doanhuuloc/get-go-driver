@@ -23,12 +23,23 @@ class TripDrivingScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          GoogleMapBuider(
-                  currentLocation: context.read<DriverViewModel>().myLocation)
-              .updateIconCurrent("assets/svgs/CarMap.svg")
-              .setDesLocation(context.read<TripViewModel>().toAddress)
-              .setPolyline(context.read<TripViewModel>().direction)
-              .build(),
+          SizedBox(
+            // color: Colors.red,
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+          ),
+          Positioned(
+            top: 0,
+            right: 0,
+            left: 0,
+            bottom: 155,
+            child: GoogleMapBuider(
+                    currentLocation: context.read<DriverViewModel>().myLocation)
+                .updateIconCurrent("assets/svgs/CarMap.svg")
+                .setDesLocation(context.read<TripViewModel>().toAddress)
+                .setPolyline(context.read<TripViewModel>().direction)
+                .build(),
+          ),
           Container(
             height: MediaQuery.of(context).size.height,
             alignment: Alignment.bottomCenter,

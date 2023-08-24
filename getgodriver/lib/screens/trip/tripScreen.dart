@@ -50,12 +50,28 @@ class _TripScreenState extends State<TripScreen> {
           //           .setPolyline(polylinePoints)
           //           .build();
           //     }),
-          body: GoogleMapBuider(
-                  currentLocation: context.read<DriverViewModel>().myLocation)
-              .updateIconCurrent("assets/svgs/CarMap.svg")
-              .setDesLocation(context.read<TripViewModel>().fromAddress)
-              .setPolyline(context.read<TripViewModel>().direction)
-              .build(),
+          body: Stack(
+            children: [
+              SizedBox(
+                // color: Colors.red,
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                left: 0,
+                bottom: 270,
+                child: GoogleMapBuider(
+                        currentLocation:
+                            context.read<DriverViewModel>().myLocation)
+                    .updateIconCurrent("assets/svgs/CarMap.svg")
+                    .setDesLocation(context.read<TripViewModel>().fromAddress)
+                    .setPolyline(context.read<TripViewModel>().direction)
+                    .build(),
+              ),
+            ],
+          ),
         ),
       ),
     );

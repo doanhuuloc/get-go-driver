@@ -74,44 +74,54 @@ class _MapScreenState extends State<MapScreen> {
       // _currentLocation = location;
     });
     _location.onLocationChanged.listen((newLocation) async {
-      double result = 0;
-      result = Geolocator.distanceBetween(
-        widget.currentLocation.coordinates.latitude,
-        widget.currentLocation.coordinates.longitude,
-        newLocation.latitude!,
-        newLocation.longitude!,
-      );
-      // if (newLocation.heading != widget.currentLocation.heading)
-      //   addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon,
-      //       newLocation.heading ?? 0);
-      // print("cout<< $result");
-      // cứ đi được 100 mét là set lại vị trí
-      if (result > 200) {
-        context.read<DriverViewModel>().updateMyLocation(
-            LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0),
-            newLocation.heading ?? 0);
-        widget.currentLocation.coordinates =
-            LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0);
-
-        if (context.read<DriverViewModel>().status != "offline") {
-          SocketService.driverUpdateServer(
+      if (mounted) {
+        final provider = context.read<DriverViewModel>();
+        double result = 0;
+        result = Geolocator.distanceBetween(
+          widget.currentLocation.coordinates.latitude,
+          widget.currentLocation.coordinates.longitude,
+          newLocation.latitude!,
+          newLocation.longitude!,
+        );
+        // if (newLocation.heading != widget.currentLocation.heading)
+        //   addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon,
+        //       newLocation.heading ?? 0);
+        // print("cout<< $result");
+        // cứ đi được 100 mét là set lại vị trí
+        if (result > 200) {
+          provider.updateMyLocation(
               LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0),
               newLocation.heading ?? 0);
-        }
-        if (context.read<TripViewModel>().direction.isNotEmpty) {
-          List<PointLatLng> directions = await APIPlace.getDirections(
-              origin:
-                  LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0),
-              destination: widget.desLocation!.coordinates);
-          widget.listPoint = directions;
+          widget.currentLocation.coordinates =
+              LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0);
 
-          setState(() {});
-        } else {
-          _moveCameraToLocation(
-              LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0));
+          if (provider.status != "offline") {
+            SocketService.driverUpdateServer(
+                LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0),
+                newLocation.heading ?? 0,
+                '');
+          }
+          if (context.read<TripViewModel>().direction.isNotEmpty) {
+            print('cout<<ne ${widget.desLocation!.coordinates}');
+            print(
+                'cout<<ne ${LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0)}');
+            String directions = await APIPlace.getDirections(
+                origin: LatLng(
+                    newLocation.latitude ?? 0, newLocation.longitude ?? 0),
+                destination: widget.desLocation!.coordinates);
+            SocketService.driverUpdateServer(
+                LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0),
+                newLocation.heading ?? 0,
+                directions);
+            widget.listPoint = PolylinePoints().decodePolyline(directions);
+            setState(() {});
+          } else {
+            _moveCameraToLocation(
+                LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0));
+          }
+          addMarkerSVG('current', widget.currentLocation.coordinates,
+              widget.icon, newLocation.heading ?? 0);
         }
-        addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon,
-            newLocation.heading ?? 0);
       }
     });
   }
@@ -147,29 +157,60 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
-      mapType: MapType.normal,
-      initialCameraPosition: CameraPosition(
-        target: widget.currentLocation.coordinates,
-        zoom: 16,
-      ),
-      onMapCreated: onCreated,
-      markers: _marker.values.toSet(),
-      compassEnabled: false,
-      zoomControlsEnabled: false,
-      myLocationEnabled: false,
-      myLocationButtonEnabled: widget.desLocation != null ? true : false,
-      polylines: {
-        if (widget.listPoint.isNotEmpty)
-          Polyline(
-            polylineId: const PolylineId('overview_polyline'),
-            color: Theme.of(context).primaryColor,
-            width: 4,
-            points: widget.listPoint.map((e) {
-              return LatLng(e.latitude, e.longitude);
-            }).toList(),
+    return Stack(
+      children: [
+        GoogleMap(
+          mapType: MapType.normal,
+          initialCameraPosition: CameraPosition(
+            target: widget.currentLocation.coordinates,
+            zoom: 16,
           ),
-      },
+          onMapCreated: onCreated,
+          markers: _marker.values.toSet(),
+          compassEnabled: false,
+          zoomControlsEnabled: false,
+          myLocationEnabled: false,
+          myLocationButtonEnabled: widget.desLocation != null ? true : false,
+          polylines: {
+            if (widget.listPoint.isNotEmpty)
+              Polyline(
+                polylineId: const PolylineId('overview_polyline'),
+                color: Theme.of(context).primaryColor,
+                width: 4,
+                points: widget.listPoint.map((e) {
+                  return LatLng(e.latitude, e.longitude);
+                }).toList(),
+              ),
+          },
+        ),
+        Positioned(
+          bottom: 15.0,
+          right: 16.0,
+          child: FloatingActionButton(
+            backgroundColor: Theme.of(context).primaryColor,
+            onPressed: () {
+              if (widget.desLocation != null) {
+                List<LatLng> points = widget.listPoint.map((e) {
+                  return LatLng(e.latitude, e.longitude);
+                }).toList();
+                _setMapFitToTour(points);
+              } else {
+                _moveCameraToLocation(widget.currentLocation.coordinates);
+              }
+            },
+            child: Icon(Icons.my_location),
+            // style: ElevatedButton.styleFrom(
+            //   backgroundColor: Theme.of(context).primaryColor,
+            //   padding: EdgeInsets.all(0), // Điều này sẽ loại bỏ padding tự động
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius:
+            //         BorderRadius.circular(10), // Điều này tạo nút hình vuông
+            //   ),
+            //   minimumSize: Size(45, 45), // Kích thước tối thiểu của nút
+            // ),
+          ),
+        ),
+      ],
     );
   }
 
