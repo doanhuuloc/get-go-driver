@@ -42,7 +42,7 @@ class AppBarSetting extends StatelessWidget implements PreferredSizeWidget {
                         return Selector<DriverViewModel, String>(
                           selector: (p0, p1) => driver.status,
                           builder: (context, value, child) {
-                            return const ModalBottomSheetAppBar();
+                            return  ModalBottomSheetAppBar();
                           },
                         );
                       },

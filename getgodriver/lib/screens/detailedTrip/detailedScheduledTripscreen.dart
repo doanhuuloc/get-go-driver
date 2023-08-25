@@ -11,14 +11,28 @@ import 'package:getgodriver/widgets/detailedTrip/infoStats.dart';
 import 'package:getgodriver/widgets/userLineInfo.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:getgodriver/services/notification.dart' as notify;
 
 class DetailedScheduledTripScreen extends StatelessWidget {
-  const DetailedScheduledTripScreen({super.key});
+  const DetailedScheduledTripScreen({super.key, required this.trip});
+
+  final TripModel trip;
+  acceptScheduledTrip() {
+    DateTime sheduledDate =
+        trip.scheduledDate!.subtract(const Duration(minutes: 15));
+    notify.Notifications()
+        // .showNotification(
+        //     "Chuyến đi hẹn giờ bạn đã chấp nhận sẽ bắt đầu vào lúc ${trip.startDate.hour.toString().padLeft(2, '0')} giờ ${trip.startDate.minute.toString().padLeft(2, '0')} phút.");
+        .showScheduledNotification(
+            "Chuyến đi hẹn giờ bạn đã chấp nhận sẽ bắt đầu vào lúc ${trip.startDate.hour.toString().padLeft(2, '0')} giờ ${trip.startDate.minute.toString().padLeft(2, '0')} phút.",
+            sheduledDate);
+  }
 
   @override
   Widget build(BuildContext context) {
+    print("cout << thông tin chi tiết chuyến đi đặt giờ ");
     final format = DateFormat("HH:mm dd/MM/yyyy");
-    final TripViewModel trip = context.read<TripViewModel>();
+    final TripViewModel tripView = context.read<TripViewModel>();
 
     final themedata = Theme.of(context);
     return SafeArea(
@@ -37,7 +51,7 @@ class DetailedScheduledTripScreen extends StatelessWidget {
                   padding: EdgeInsets.only(right: 5),
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.centerRight,
-                  child: Text(format.format(trip.endDate)),
+                  child: Text(format.format(trip.scheduledDate!)),
                 ),
               ),
               Container(
@@ -62,7 +76,7 @@ class DetailedScheduledTripScreen extends StatelessWidget {
               ),
               InfoStats(
                 title: "Giá tiền",
-                content: trip.formatCurrency(trip.cost),
+                content: tripView.formatCurrency(trip.cost),
                 color: themedata.primaryColor,
               ),
               Container(
@@ -102,13 +116,16 @@ class DetailedScheduledTripScreen extends StatelessWidget {
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const Text("Xác nhận"),
-                  content: const Text(
-                    "Bạn có chấp nhận chuyến đi hẹn giờ này không?",
+                  content: Text(
+                    "Bạn có chấp nhận chuyến đi hẹn giờ vào lúc "
+                    "${trip.scheduledDate!.hour.toString().padLeft(2, '0')} giờ ${trip.scheduledDate!.minute.toString().padLeft(2, '0')} phút, ngày ${trip.scheduledDate!.day} tháng ${trip.scheduledDate!.month} năm ${trip.scheduledDate!.year}"
+                    " không?",
                     style: TextStyle(fontWeight: FontWeight.normal),
                   ),
                   actions: [
                     InkWell(
                       onTap: () {
+                        acceptScheduledTrip();
                         Navigator.of(context).pop();
                       },
                       child: Container(

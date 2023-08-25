@@ -32,6 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
   login() async {
     if (validPhone) {
       final response = await ApiAuth.checkPhone(phone.phoneNumber!);
+      print("cout << $response  ${phone.phoneNumber}");
+
       if (response['statusCode'] == 200) {
         Navigator.pushNamed(context, Routes.password,
             arguments: phone.phoneNumber);
@@ -93,19 +95,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  InkWell(
-                    onTap: signup,
-                    child: Container(
-                        height: 40,
-                        width: MediaQuery.of(context).size.width - 20,
-                        child: Text(
-                          "ĐĂNG KÝ",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 20),
-                        )),
-                  ),
+                  // InkWell(
+                  //   onTap: signup,
+                  //   child: Container(
+                  //       height: 40,
+                  //       width: MediaQuery.of(context).size.width - 20,
+                  //       child: Text(
+                  //         "ĐĂNG KÝ",
+                  //         textAlign: TextAlign.center,
+                  //         style: TextStyle(
+                  //             color: Theme.of(context).primaryColor,
+                  //             fontSize: 20),
+                  //       )),
+                  // ),
+               
                 ])
               ],
             ),

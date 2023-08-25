@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_native/flutter_rating_native.dart';
 
 class CustomerInfo extends StatelessWidget {
   const CustomerInfo({

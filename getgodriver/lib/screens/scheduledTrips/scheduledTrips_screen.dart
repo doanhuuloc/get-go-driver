@@ -10,6 +10,7 @@ import 'package:getgodriver/widgets/appBarSetting.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ScheduledTripsScreen extends StatefulWidget {
   const ScheduledTripsScreen({super.key});
@@ -21,6 +22,8 @@ class ScheduledTripsScreen extends StatefulWidget {
 class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
   final format = DateFormat("dd/MM/yyyy");
   DateTime dateTime = DateTime.now();
+  bool flag = false;
+
   // late final List<TripModel> trips;
   @override
   void initState() {
@@ -76,8 +79,8 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
       distance: 22.6,
       typeCar: "taxi 4 chỗ",
       note: "Chở em gái đi học",
-      fromAddress: LocationModel(title: '', summary: ''),
-      toAddress: LocationModel(title: '', summary: ''),
+      fromAddress: LocationModel(title: '', summary: 'haha'),
+      toAddress: LocationModel(title: '', summary: 'haha'),
       scheduledDate: DateTime.utc(2023, 8, 17, 16, 00),
       paymentMethod: "tiền mặt",
       startDate: DateTime.utc(2023, 7, 25, 16, 00),
@@ -92,9 +95,9 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
       distance: 22.6,
       typeCar: "taxi 4 chỗ",
       note: "Chở em gái đi học",
-      fromAddress: LocationModel(title: '', summary: ''),
-      toAddress: LocationModel(title: '', summary: ''),
-      scheduledDate: DateTime.utc(2023, 8, 24, 16, 00),
+      fromAddress: LocationModel(title: 'ahah', summary: 'haha'),
+      toAddress: LocationModel(title: 'haha', summary: 'haha'),
+      scheduledDate: DateTime.utc(2023, 8, 26, 16, 00),
       paymentMethod: "tiền mặt",
       startDate: DateTime.utc(2023, 7, 25, 16, 00),
       endDate: DateTime.utc(2023, 7, 25, 16, 00),
@@ -116,7 +119,9 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
-
+    setState(() {
+      flag = false;
+    });
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -149,10 +154,14 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
                 children: apointmentTripList.map((item) {
                   if (format.format(item.scheduledDate!) ==
                       format.format(dateTime)) {
+                    setState(() {
+                      flag = true;
+                    });
                     return InkWell(
                         onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(Routes.detailedScheduledTrip);
+                          Navigator.of(context).pushNamed(
+                              Routes.detailedScheduledTrip,
+                              arguments: item);
                         },
                         child: ApointmentBox(trip1: item));
                   } else {
@@ -161,6 +170,14 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
                 }).toList(),
               ),
             ),
+            if (flag == false)
+              Expanded(
+                child: SvgPicture.asset(
+                  "assets/svgs/taxi.svg",
+                  height: 100,
+                  width: 100,
+                ),
+              ),
           ],
         ),
       ),

@@ -30,7 +30,7 @@ class Notifications {
   }
 
   Future<void> showScheduledNotification(
-      String content, int hour, int minute,int second) async {
+      String content, DateTime sheduledDate) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       '1', 'pushnotification', // Thay 'Channel name' bằng tên của channel
       channelDescription:
@@ -44,16 +44,15 @@ class Notifications {
       // iOS: iOSPlatformChannelSpecifics,
     );
 
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    print("cout << sheduledDate is ${sheduledDate}");
     final tz.TZDateTime scheduledTime = tz.TZDateTime(
-      tz.local,
-      now.year,
-      now.month,
-      now.day,
-      hour,
-      minute,
-      second,
-    );
+        tz.local,
+        sheduledDate.year,
+        sheduledDate.month,
+        sheduledDate.day,
+        sheduledDate.hour,
+        sheduledDate.minute,
+        sheduledDate.second);
     print("cout<< cài đặt thông báo");
 
     // Lên lịch hiển thị thông báo

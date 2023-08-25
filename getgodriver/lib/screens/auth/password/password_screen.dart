@@ -20,19 +20,22 @@ class PasswordScreen extends StatefulWidget {
 class _PasswordScreenState extends State<PasswordScreen> {
   login(pin) async {
     final response = await ApiAuth.login(widget.phone, pin);
-    if (response['statusCode' == 200]) {
+    print("cout << login $response");
+    if (response['statusCode'] == 200) {
       final driver = context.read<DriverViewModel>();
       driver.updateDriverId(response['user_info']['user_id']);
       driver.updatePhone(response['user_info']['phone']);
       driver.updateAccessToken(response['user_info']['accessToken']);
       final responseInfo = await ApiDriver.getDriverInfo(driver.driverId);
+      print("cout << info $responseInfo");
+
       if (responseInfo['statusCode'] == 200) {
         driver.updateDriverInfo(responseInfo['driver']['driver_info']);
       } else {
         print("cout<< lấy thông tin có vấn đề");
       }
 
-      Navigator.of(context).pushReplacementNamed(Routes.home);
+      Navigator.of(context).pushNamedAndRemoveUntil(Routes.home,(route) => false,);
     } else {
       print("cout<< Sai mật khẩu");
     }

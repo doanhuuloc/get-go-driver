@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/routes/routes.dart';
 import 'package:getgodriver/widgets/appBarSetting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:getgodriver/widgets/setting/settingBox.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -15,12 +17,14 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   bool item1 = true;
-   void initState() {
+  void initState() {
     super.initState();
     SocketService.updateContext(context);
   }
+
   @override
   Widget build(BuildContext context) {
+    final driver = context.read<DriverViewModel>();
     List<Map<String, dynamic>> listSetting1 = [
       {
         'title': "Mã QR của tôi",
@@ -30,9 +34,9 @@ class _SettingScreenState extends State<SettingScreen> {
         'navigate': Routes.user,
       },
       {
-        'title': "Nguyễn Đăng Mạnh Tú",
-        'subtitle': "Số điện thoại: 0909100509",
-        'img': "assets/imgs/userAvatar.png",
+        'title': driver.name,
+        'subtitle': "Số điện thoại: ${driver.phone}",
+        'img': driver.avatar,
         'navigate': Routes.user,
       },
     ];
@@ -69,7 +73,6 @@ class _SettingScreenState extends State<SettingScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            
             ...(listSetting1.map((item) => SettingBox(
                   title: item['title'],
                   subtitle: item['subtitle'],

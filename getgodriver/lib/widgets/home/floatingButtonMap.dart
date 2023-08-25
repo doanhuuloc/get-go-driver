@@ -23,6 +23,7 @@ class FloatingButtonMap extends StatelessWidget {
             child: const Icon(Icons.calendar_month_outlined),
           ),
           FloatingActionButton(
+            heroTag: null,
             backgroundColor: Theme.of(context).primaryColor,
             onPressed: () {
               // Navigator.of(context).pushNamed(Routes.tripDriving);

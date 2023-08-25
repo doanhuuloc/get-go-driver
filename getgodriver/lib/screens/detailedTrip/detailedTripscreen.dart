@@ -40,7 +40,7 @@ class DetailedTripScreen extends StatelessWidget {
                   padding: EdgeInsets.only(right: 5),
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.centerRight,
-                  child: Text(format.format(trip.endDate)),
+                  child: Text(format.format(trip.startDate)),
                 ),
               ),
               Container(

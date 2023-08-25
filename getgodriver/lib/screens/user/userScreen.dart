@@ -3,6 +3,7 @@ import 'package:getgodriver/models/driverModel.dart';
 import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/widgets/userLineInfo.dart';
 import 'package:provider/provider.dart';
+
 class UserScreen extends StatelessWidget {
   const UserScreen({super.key});
 
@@ -22,7 +23,12 @@ class UserScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(children: [
             Container(
-              color: themeData.primaryColor,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Colors.white, themeData.primaryColor],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter)),
+              // color: themeData.primaryColor,
               height: 200,
               width: MediaQuery.of(context).size.width,
               alignment: Alignment.center,
@@ -34,7 +40,8 @@ class UserScreen extends StatelessWidget {
                     radius: 65,
                   ),
                   const SizedBox(height: 5),
-                  Text(user.name, style: themeData.textTheme.titleLarge)
+                  Text(user.name,
+                      style: const TextStyle(fontSize: 24, color: Colors.white))
                 ],
               ),
             ),

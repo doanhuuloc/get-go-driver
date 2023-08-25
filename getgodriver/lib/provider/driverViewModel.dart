@@ -72,10 +72,10 @@ class DriverViewModel with ChangeNotifier {
     _item.gender = info['gender'];
     // _item.birthDate=info['birthday'];
     // _item.avatar = info['avatar'];
-    _item.driverLicense = info['driver_license'];
-    _item.vehicleRegistration = info['vehicle_registration'];
-    _item.licensePlate = info['license_plate'];
-    _item.descriptionCar = info['name'];
-    _item.typeCar = info['vehicle_type']['name'];
+    _item.driverLicense = info['driver_vehicle']['driver_license'];
+    _item.vehicleRegistration = info['driver_vehicle']['vehicle_registration'];
+    _item.licensePlate = info['driver_vehicle']['license_plate'];
+    _item.descriptionCar = info['driver_vehicle']['name'];
+    _item.typeCar = info['driver_vehicle']['vehicle_type']['name'];
   }
 }

@@ -5,11 +5,12 @@ import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/provider/tripViewModel.dart';
 import 'package:getgodriver/widgets/Buider/GoogleMapBuider.dart';
 import 'package:getgodriver/widgets/Trip/collapsedTrip.dart';
-import 'package:getgodriver/widgets/Trip/slidingTrip.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+
+import '../../widgets/Trip/slidingTrip.dart';
 
 class TripScreen extends StatefulWidget {
   const TripScreen({super.key});

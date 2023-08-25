@@ -12,6 +12,7 @@ import 'package:getgodriver/screens/scheduledTrips/scheduledTrips_screen.dart';
 import 'package:getgodriver/screens/trip/tripDrivingScreen.dart';
 import 'package:getgodriver/screens/user/userScreen.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import '../models/tripModel.dart';
 import '../screens/trip/tripScreen.dart';
 
 class Routes {
@@ -44,7 +45,9 @@ class Routes {
       case scheduledTrips:
         return MaterialPageRoute(builder: (_) => ScheduledTripsScreen());
       case detailedScheduledTrip:
-        return MaterialPageRoute(builder: (_) => DetailedScheduledTripScreen());
+        final TripModel trip = settings.arguments as TripModel;
+        return MaterialPageRoute(
+            builder: (_) => DetailedScheduledTripScreen(trip: trip));
       case setting:
         return MaterialPageRoute(builder: (_) => SettingScreen());
       case user:

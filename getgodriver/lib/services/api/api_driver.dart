@@ -10,6 +10,7 @@ class ApiDriver {
   // lấy thông tin driver
   static Future<Map<String, dynamic>> getDriverInfo(int id) async {
     try {
+      print("cout << get info api");
       final response = await _dio.get(RoutePathApi.getDriverInfo + "$id");
       return response.data;
     } catch (err) {

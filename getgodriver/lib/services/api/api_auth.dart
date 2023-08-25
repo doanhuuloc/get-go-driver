@@ -10,10 +10,9 @@ class ApiAuth {
   static Future<Map<String, dynamic>> checkPhone(String phone) async {
     try {
       final respone = await _dio
-          .get(RoutePathApi.checkPhone, queryParameters: {'phone': phone});
+          .get("${RoutePathApi.checkPhone}?phone=$phone");
       return respone.data;
     } catch (err) {
-      print(err);
       throw err;
     }
   }
@@ -21,6 +20,7 @@ class ApiAuth {
   static Future<Map<String, dynamic>> login(
       String phone, String password) async {
     try {
+      print("cout << api login");
       final response = await _dio.post(RoutePathApi.login,
           data: {'phone': phone, 'password': password});
           return response.data;
