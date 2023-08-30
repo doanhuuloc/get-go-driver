@@ -22,7 +22,7 @@ void main() async {
   final InitializationSettings initializationSettings =
       InitializationSettings(android: initializationSettingsAndroid);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  
+
   tzl.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('Asia/Ho_Chi_Minh'));
   runApp(const MyApp());
@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         title: "GetGoDriver",
-        initialRoute: Routes.login,
+        initialRoute: Routes.home,
         onGenerateRoute: Routes.generateRoute,
         // home: Scaffold(body: Text("hello")),
       ),

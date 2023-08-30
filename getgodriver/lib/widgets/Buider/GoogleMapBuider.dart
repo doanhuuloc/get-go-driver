@@ -8,7 +8,7 @@ class GoogleMapBuider {
   LocationModel? _desLocation;
   List<PointLatLng> _listPoint = [];
   List<LatLng> _listDrive = [];
-  String _icon = "assets/svgs/CarMap.svg";
+  String _icon = "assets/imgs/CarMap.png";
   GoogleMapBuider({required LocationModel currentLocation})
       : _currentLocation = currentLocation;
 

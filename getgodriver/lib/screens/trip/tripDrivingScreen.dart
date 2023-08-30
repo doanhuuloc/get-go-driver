@@ -35,7 +35,7 @@ class TripDrivingScreen extends StatelessWidget {
             bottom: 155,
             child: GoogleMapBuider(
                     currentLocation: context.read<DriverViewModel>().myLocation)
-                .updateIconCurrent("assets/svgs/CarMap.svg")
+                .updateIconCurrent("assets/imgs/CarMap.png")
                 .setDesLocation(context.read<TripViewModel>().toAddress)
                 .setPolyline(context.read<TripViewModel>().direction)
                 .build(),

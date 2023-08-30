@@ -57,18 +57,28 @@ class _MapScreenState extends State<MapScreen> {
   _initLocation() {
     _location.getLocation().then((location) {
       print('heee');
-      widget.currentLocation.coordinates =
-          LatLng(location.latitude ?? 0, location.longitude ?? 0);
-      context.read<DriverViewModel>().updateMyLocation(
-          LatLng(location.latitude ?? 0, location.longitude ?? 0),
-          location.heading ?? 0);
+      double result = 0;
+      result = Geolocator.distanceBetween(
+        widget.currentLocation.coordinates.latitude,
+        widget.currentLocation.coordinates.longitude,
+        location.latitude!,
+        location.longitude!,
+      );
+      if (result > 50) {
+        widget.currentLocation.coordinates =
+            LatLng(location.latitude ?? 0, location.longitude ?? 0);
+        context.read<DriverViewModel>().updateMyLocation(
+            LatLng(location.latitude ?? 0, location.longitude ?? 0),
+            location.heading ?? 0);
 
-      addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon,
-          location.heading ?? 0);
-      if (context.read<TripViewModel>().direction.isEmpty) {
-        _moveCameraToLocation(
-            LatLng(location.latitude ?? 0, location.longitude ?? 0));
+        addMarkerPicture('current', widget.currentLocation.coordinates,
+            widget.icon, location.heading ?? 0);
+        if (context.read<TripViewModel>().direction.isEmpty) {
+          _moveCameraToLocation(
+              LatLng(location.latitude ?? 0, location.longitude ?? 0));
+        }
       }
+
       // context.read<SocketService>().driverSendToServer(
       //     widget.currentLocation.coordinates, location.heading ?? 0);
       // _currentLocation = location;
@@ -119,7 +129,7 @@ class _MapScreenState extends State<MapScreen> {
             _moveCameraToLocation(
                 LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0));
           }
-          addMarkerSVG('current', widget.currentLocation.coordinates,
+          addMarkerPicture('current', widget.currentLocation.coordinates,
               widget.icon, newLocation.heading ?? 0);
         }
       }
@@ -130,11 +140,12 @@ class _MapScreenState extends State<MapScreen> {
   void _moveCameraToLocation(LatLng location) async {
     GoogleMapController mapController = await _controller.future;
     mapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: location, zoom: 15)));
+        CameraPosition(target: location, zoom: 16.5)));
   }
 
   @override
   void initState() {
+    print('fdsfsadfsdfs1111111111111111111111111111111');
     super.initState();
     _loadMapStyle();
     // Khởi tạo vị trí
@@ -216,10 +227,14 @@ class _MapScreenState extends State<MapScreen> {
 
   void onCreated(GoogleMapController controller) async {
     _controller.complete(controller);
-    addMarkerSVG('current', widget.currentLocation.coordinates, widget.icon,
+    print('LatLng( CURREN');
+    print(widget.currentLocation.coordinates);
+    addMarkerPicture('current', widget.currentLocation.coordinates, widget.icon,
         widget.currentLocation.heading);
+    print('LatLng( CURREN2');
+
     for (LatLng point in widget.listDrive) {
-      addMarkerSVG(const Uuid().v4(), point, 'assets/svgs/CarMap.svg',
+      addMarkerPicture(const Uuid().v4(), point, 'assets/imgs/CarMap.png',
           Random().nextDouble() * 360 + 1);
     }
     if (widget.desLocation != null) addPolylineAndFitMap();
@@ -285,6 +300,7 @@ class _MapScreenState extends State<MapScreen> {
 
     final image = rasterPicture.toImageSync(width, height);
     final bytes = (await image.toByteData(format: ui.ImageByteFormat.png))!;
+    print('LatLng( 1111111111');
 
     return BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
   }
@@ -292,29 +308,33 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> addMarkerPicture(
       String id, LatLng location, String assetName, double rotate) async {
     // BitmapDescriptor.fromAssetImage(configuration, assetName)
-    BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(200, 200)),
-      assetName,
-    ).then((icon) {
-      var marker = Marker(
-        markerId: MarkerId(id),
-        position: location,
-        infoWindow: const InfoWindow(
-          title: 'End Point',
-          snippet: 'End Marker',
-        ),
-        icon: icon,
-        rotation: rotate,
-      );
-      _marker[id] = marker;
-      setState(() {});
-    });
+    if (mounted) {
+      BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(size: Size(60, 60)),
+        assetName,
+      ).then((icon) {
+        var marker = Marker(
+          markerId: MarkerId(id),
+          position: location,
+          infoWindow: const InfoWindow(
+            title: 'End Point',
+            snippet: 'End Marker',
+          ),
+          icon: icon,
+          rotation: rotate,
+        );
+        _marker[id] = marker;
+        setState(() {});
+      });
+    }
   }
 
   Future<void> addMarkerSVG(
       String id, LatLng location, String assetName, double rotate) async {
+    print("LatLng( $assetName");
     BitmapDescriptor svgIcon =
         await getBitmapDescriptorFromSvgAsset(assetName, const Size(40, 40));
+    print("LatLng( $svgIcon");
     if (mounted) {
       var marker = Marker(
         markerId: MarkerId(id),

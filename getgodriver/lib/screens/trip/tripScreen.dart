@@ -66,7 +66,7 @@ class _TripScreenState extends State<TripScreen> {
                 child: GoogleMapBuider(
                         currentLocation:
                             context.read<DriverViewModel>().myLocation)
-                    .updateIconCurrent("assets/svgs/CarMap.svg")
+                    .updateIconCurrent("assets/imgs/CarMap.png")
                     .setDesLocation(context.read<TripViewModel>().fromAddress)
                     .setPolyline(context.read<TripViewModel>().direction)
                     .build(),

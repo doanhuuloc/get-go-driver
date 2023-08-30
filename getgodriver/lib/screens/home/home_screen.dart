@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:getgodriver/models/location.dart';
+import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/widgets/Buider/GoogleMapBuider.dart';
 import 'package:getgodriver/widgets/appBarSetting.dart';
@@ -22,11 +23,11 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  bool isOnline = true;
+class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    print('d,,,,,mm');
     SocketService.updateContext(context);
     // context.read<SocketService>().socket?.on("user-trip", (data) {
     //   print('33333333333333333333333333333333333333');
@@ -53,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         //   title: "",
         // ),
         body: GoogleMapBuider(
-                currentLocation: LocationModel(title: '', summary: ''))
+                currentLocation: context.read<DriverViewModel>().myLocation)
             .build(),
         floatingActionButton: const FloatingButtonMap(),
       ),

@@ -21,15 +21,15 @@ class _TabScreenState extends State<TabScreen> {
   bool isOnline = false;
   final List<Map<String, dynamic>> _pages = [
     {
-      'page': HomeScreen(),
+      'page': const HomeScreen(),
       'title': 'home',
     },
     {
-      'page': HistoryScreen(),
+      'page': const HistoryScreen(),
       'title': "history",
     },
     {
-      'page': SettingScreen(),
+      'page': const SettingScreen(),
       'title': 'setting',
     },
   ];
