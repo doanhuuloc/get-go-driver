@@ -28,23 +28,23 @@ class FloatingButtonMap extends StatelessWidget {
             onPressed: () {
               // Navigator.of(context).pushNamed(Routes.tripDriving);
 
-              final notify = Notifications();
+              // final notify = Notifications();
               // notify.showNotification("hello");
 
               // notify.showScheduledNotification("hello", 23, 33,30);
               // Location location = Location();
               // location.getLocation().then((value) => {});
 
-              // showModalBottomSheet(
-              //   enableDrag: false,
-              //   isDismissible: false,
-              //   context: context,
-              //   builder: (context) {
-              //     return BottomSheetAcceptTrip(
-              //       stripId: {'1': 1},
-              //     );
-              //   },
-              // );
+              showModalBottomSheet(
+                enableDrag: false,
+                isDismissible: false,
+                context: context,
+                builder: (context) {
+                  return BottomSheetAcceptTrip(
+                    stripId: {'1': 1},
+                  );
+                },
+              );
             },
             child: const Icon(Icons.my_location),
           ),

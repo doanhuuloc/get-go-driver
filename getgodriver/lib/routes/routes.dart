@@ -6,6 +6,7 @@ import 'package:getgodriver/screens/auth/verification/verification_screen.dart';
 import 'package:getgodriver/screens/detailedTrip/detailedScheduledTripscreen.dart';
 import 'package:getgodriver/screens/detailedTrip/detailedTripscreen.dart';
 import 'package:getgodriver/screens/history/history_screen.dart';
+import 'package:getgodriver/screens/searchAddress/searchAddress_screen.dart';
 import 'package:getgodriver/screens/setting/settingscreen.dart';
 import 'package:getgodriver/screens/tab_screen.dart';
 import 'package:getgodriver/screens/scheduledTrips/scheduledTrips_screen.dart';
@@ -28,6 +29,7 @@ class Routes {
   static const String trip = '/trip';
   static const String tripDriving = '/tripDriving';
   static const String detailedTrip = '/detailedTrip';
+  static const String searchAddress = '/searchAddress';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -60,6 +62,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => TripDrivingScreen());
       case detailedTrip:
         return MaterialPageRoute(builder: (_) => DetailedTripScreen());
+      case searchAddress:
+        return MaterialPageRoute(builder: (_) => SearchAddressScreen());
       default:
         return null;
     }
