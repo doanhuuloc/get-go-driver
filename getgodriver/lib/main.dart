@@ -55,9 +55,15 @@ class MyApp extends StatelessWidget {
             titleSmall: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
             titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
+          tabBarTheme: TabBarTheme(
+              labelColor: Colors.pink[800],
+              labelStyle: TextStyle(color: Colors.pink[800]), // color for text
+              indicator: UnderlineTabIndicator(
+                  // color for indicator (underline)
+                  borderSide: BorderSide(color: Colors.black))),
         ),
         title: "GetGoDriver",
-        initialRoute: Routes.searchAddress,
+        initialRoute: Routes.home,
         onGenerateRoute: Routes.generateRoute,
         // home: Scaffold(body: Text("hello")),
       ),

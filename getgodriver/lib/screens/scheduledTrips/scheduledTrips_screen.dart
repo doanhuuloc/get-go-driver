@@ -5,7 +5,8 @@ import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/routes/routes.dart';
 import 'package:getgodriver/services/api/api_trip.dart';
 import 'package:getgodriver/widgets/address.dart';
-import 'package:getgodriver/widgets/scheduledTrip/scheduledBox.dart';
+import 'package:getgodriver/widgets/scheduledTrips/changeDate.dart';
+import 'package:getgodriver/widgets/scheduledTrips/scheduledBox.dart';
 import 'package:getgodriver/widgets/appBarSetting.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +22,7 @@ class ScheduledTripsScreen extends StatefulWidget {
 
 class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
   final format = DateFormat("dd/MM/yyyy");
+  final formatDateApi = DateFormat("dd-MM-yyyy");
   DateTime dateTime = DateTime.now();
   bool flag = false;
 
@@ -29,9 +31,10 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
   void initState() {
     super.initState();
     SocketService.updateContext(context);
-    // final response = await ApiTrip.getAllScheduledTrips();
+    // final response =
+    //     await ApiTrip.getScheduledTripsByDate(formatDateApi.format(dateTime));
     // if (response['statusCode'] == 200) {
-    //   trips = response['trips'];
+    //   // trips = response['trips'];
     // } else {
     //   print("cout<< lấy thông tin tất cả chuyến đi hẹn giờ có vấn đề");
     // }
@@ -123,62 +126,124 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
       flag = false;
     });
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: themeData.primaryColor,
-          title: const Text("Danh sách chuyến đi hẹn giờ"),
-        ),
-        body: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: themeData.primaryColor,
+            title: const Text("Danh sách chuyến đi hẹn giờ"),
+          ),
+          body: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              toolbarHeight: 0,
+              bottom: TabBar(
+                indicator: BoxDecoration(
+                    border: Border(
+                  bottom: BorderSide(
+                    color: themeData.primaryColor,
+                    width: 2,
+                  ),
+                )),
+                labelColor: themeData.primaryColor,
+                unselectedLabelColor: Colors.black,
+                tabs: [
+                  Tab(
+                      child: const Text(
+                    "Danh sách",
+                    style: TextStyle(fontSize: 16),
+                  )),
+                  Tab(
+                      child: const Text(
+                    "Đã nhận",
+                    style: TextStyle(fontSize: 16),
+                  )),
+                ],
+              ),
+            ),
+            body: TabBarView(
               children: [
-                IconButton(
-                  onPressed:
-                      format.format(dateTime) == format.format(DateTime.now())
-                          ? null
-                          : backDate,
-                  icon: const Icon(Icons.arrow_back_ios),
-                  disabledColor: Colors.grey,
+                Column(
+                  children: [
+                    ChangeDate(
+                      dateTime: dateTime,
+                      backDate: backDate,
+                      forwardDate: forwardDate,
+                    ),
+                    const Divider(height: 1),
+                    Expanded(
+                      child: ListView(
+                        children: apointmentTripList.map((item) {
+                          if (format.format(item.scheduledDate!) ==
+                              format.format(dateTime)) {
+                            setState(() {
+                              flag = true;
+                            });
+                            return InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      Routes.detailedScheduledTrip,
+                                      arguments: item);
+                                },
+                                child: ApointmentBox(trip1: item));
+                          } else {
+                            return const SizedBox();
+                          }
+                        }).toList(),
+                      ),
+                    ),
+                    if (flag == false)
+                      Expanded(
+                        child: SvgPicture.asset(
+                          "assets/svgs/taxi.svg",
+                          height: 100,
+                          width: 100,
+                        ),
+                      ),
+                  ],
                 ),
-                Text(format.format(dateTime)),
-                IconButton(
-                  onPressed: forwardDate,
-                  icon: Icon(Icons.arrow_forward_ios),
+                Column(
+                  children: [
+                    ChangeDate(
+                      dateTime: dateTime,
+                      backDate: backDate,
+                      forwardDate: forwardDate,
+                    ),
+                    const Divider(height: 1),
+                    Expanded(
+                      child: ListView(
+                        children: apointmentTripList.map((item) {
+                          if (format.format(item.scheduledDate!) ==
+                              format.format(dateTime)) {
+                            setState(() {
+                              flag = true;
+                            });
+                            return InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      Routes.detailedScheduledTrip,
+                                      arguments: item);
+                                },
+                                child: ApointmentBox(trip1: item));
+                          } else {
+                            return const SizedBox();
+                          }
+                        }).toList(),
+                      ),
+                    ),
+                    if (flag == false)
+                      Expanded(
+                        child: SvgPicture.asset(
+                          "assets/svgs/taxi.svg",
+                          height: 100,
+                          width: 100,
+                        ),
+                      ),
+                  ],
                 ),
               ],
             ),
-            const Divider(height: 1),
-            Expanded(
-              child: ListView(
-                children: apointmentTripList.map((item) {
-                  if (format.format(item.scheduledDate!) ==
-                      format.format(dateTime)) {
-                    setState(() {
-                      flag = true;
-                    });
-                    return InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                              Routes.detailedScheduledTrip,
-                              arguments: item);
-                        },
-                        child: ApointmentBox(trip1: item));
-                  } else {
-                    return const SizedBox();
-                  }
-                }).toList(),
-              ),
-            ),
-            if (flag == false)
-              Expanded(
-                child: SvgPicture.asset(
-                  "assets/svgs/taxi.svg",
-                  height: 100,
-                  width: 100,
-                ),
-              ),
-          ],
+          ),
         ),
       ),
     );

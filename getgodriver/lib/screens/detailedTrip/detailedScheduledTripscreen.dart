@@ -5,6 +5,7 @@ import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/provider/tripViewModel.dart';
 import 'package:getgodriver/routes/routes.dart';
+import 'package:getgodriver/services/api/api_trip.dart';
 import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
 import 'package:getgodriver/widgets/detailedTrip/infoStats.dart';
@@ -17,15 +18,21 @@ class DetailedScheduledTripScreen extends StatelessWidget {
   const DetailedScheduledTripScreen({super.key, required this.trip});
 
   final TripModel trip;
-  acceptScheduledTrip() {
+  acceptScheduledTrip() async {
     DateTime sheduledDate =
         trip.scheduledDate!.subtract(const Duration(minutes: 15));
-    notify.Notifications()
-        // .showNotification(
-        //     "Chuyến đi hẹn giờ bạn đã chấp nhận sẽ bắt đầu vào lúc ${trip.startDate.hour.toString().padLeft(2, '0')} giờ ${trip.startDate.minute.toString().padLeft(2, '0')} phút.");
-        .showScheduledNotification(
-            "Chuyến đi hẹn giờ bạn đã chấp nhận sẽ bắt đầu vào lúc ${trip.startDate.hour.toString().padLeft(2, '0')} giờ ${trip.startDate.minute.toString().padLeft(2, '0')} phút.",
-            sheduledDate);
+    // notify.Notifications()
+    //     // .showNotification(
+    //     //     "Chuyến đi hẹn giờ bạn đã chấp nhận sẽ bắt đầu vào lúc ${trip.startDate.hour.toString().padLeft(2, '0')} giờ ${trip.startDate.minute.toString().padLeft(2, '0')} phút.");
+    //     .showScheduledNotification(
+    //         "Chuyến đi hẹn giờ bạn đã chấp nhận sẽ bắt đầu vào lúc ${trip.startDate.hour.toString().padLeft(2, '0')} giờ ${trip.startDate.minute.toString().padLeft(2, '0')} phút.",
+    //         sheduledDate);
+    final response = await ApiTrip.acceptScheduledTrip(trip.id.toString());
+    if (response['StatusCode'] == 200) {
+      print("cout << Nhận chuyến thành công");
+    } else {
+      print("cout << nhận chuyến thất bại");
+    }
   }
 
   @override

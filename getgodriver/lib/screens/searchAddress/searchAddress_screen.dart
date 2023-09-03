@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/services/googlemap/api_places.dart';
-import 'package:getgodriver/widgets/searchAddress/itemSearchAddress.dart';
 import 'package:getgodriver/widgets/searchAddress/locationListTitle.dart';
 import 'package:getgodriver/widgets/textInputField.dart';
 
@@ -61,6 +60,7 @@ class _SearchAddressScreenState extends State<SearchAddressScreen> {
           children: [
             const SizedBox(height: 20),
             TextInputField(
+              focus: _focusNode,
               controller: _inputAddress,
               hintText: "Nhập địa chỉ đến",
             ),
@@ -74,10 +74,7 @@ class _SearchAddressScreenState extends State<SearchAddressScreen> {
               locations: locations,
               onClick: onLocationListTitleTap,
             ),
-            // ItemSearchAddress(),
-            // ItemSearchAddress(),
-            // ItemSearchAddress(),
-            // ItemSearchAddress(),
+         
           ],
         ),
       ),

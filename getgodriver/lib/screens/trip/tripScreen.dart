@@ -4,8 +4,8 @@ import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/provider/tripViewModel.dart';
 import 'package:getgodriver/widgets/Buider/GoogleMapBuider.dart';
-import 'package:getgodriver/widgets/Trip/collapsedTrip.dart';
-import 'package:getgodriver/widgets/Trip/collapsedTripWithCallCenter.dart';
+import 'package:getgodriver/widgets/Trip/collapsedTripFromClient.dart';
+import 'package:getgodriver/widgets/Trip/collapsedTripFromCallCenter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -38,7 +38,7 @@ class _TripScreenState extends State<TripScreen> {
           minHeight: 240,//270
           renderPanelSheet: false,
           // isDraggable: !trip.isCallCenter,
-          collapsed: CollapsedTripWithCallCenter(), //CollapsedTrip(),
+          collapsed: CollapsedTripFromCallCenter(), //CollapsedTripFromClient(),
           panel: SlidingTrip(),
           body: Scaffold(
             // body: GoogleMapBuider(

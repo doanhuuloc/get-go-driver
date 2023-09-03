@@ -7,7 +7,7 @@ class RoutePathApi {
   static const String checkPhone = '${ApiConfig.baseUrl}/v1/phone';
 
   static const String getDriverInfo = '${ApiConfig.baseUrl}/v1/driver/';
-  static const String getAllScheduledTrips = '${ApiConfig.baseUrl}/v1/drivers/apointment_trips';
-
+  static const String getScheduledTripsByDate = '${ApiConfig.baseUrl}/v1/drivers/apointment_trips';
+  static const String acceptScheduledTrip = '${ApiConfig.baseUrl}/v1/trips/accept/';
 
 }

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:getgodriver/provider/tripViewModel.dart';
 import 'package:getgodriver/services/googlemap/openGoogleMaps.dart';
 import 'package:getgodriver/widgets/Trip/buttonChangeStatusTrip.dart';
 import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class CollapsedTripWithCallCenter extends StatelessWidget {
-  const CollapsedTripWithCallCenter({super.key});
+class CollapsedTripFromClient extends StatelessWidget {
+  const CollapsedTripFromClient({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,20 +50,24 @@ class CollapsedTripWithCallCenter extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(trip.name),
-                      const SizedBox(height: 5),
-                      Text(trip.phone),
-                    ],
+                  CustomerInfo(
+                    avatar: trip.avatar,
+                    name: trip.name,
+                    phone: trip.phone,
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    iconSize: 30,
+                    icon: Icon(
+                      Icons.chat,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                   IconButton(
                       onPressed: () {},
                       icon: Icon(
                         Icons.phone,
                         color: Theme.of(context).primaryColor,
-                        size: 30,
                       ))
                 ],
               ),
@@ -76,14 +81,15 @@ class CollapsedTripWithCallCenter extends StatelessWidget {
                 children: [
                   Expanded(
                       child: Address(
-                    address: trip.fromAddress.summary,
-                    img: "assets/svgs/fromaddress.svg",
-                    color: theme.primaryColor,
+                    address: trip.toAddress.summary,
+                    img: "assets/svgs/toaddress.svg",
                   )),
                   InkWell(
                     onTap: () {
-                      OpenGoogleMaps.openGoogleMaps(
-                          trip.fromAddress.coordinates);
+                      OpenGoogleMaps.openGoogleMaps(context
+                          .read<TripViewModel>()
+                          .fromAddress
+                          .coordinates);
                     },
                     child: SvgPicture.asset(
                       'assets/svgs/mapArrow.svg',
