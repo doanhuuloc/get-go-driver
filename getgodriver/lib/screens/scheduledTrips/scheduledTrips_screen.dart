@@ -54,14 +54,14 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
                 )),
                 labelColor: themeData.primaryColor,
                 unselectedLabelColor: Colors.black,
-                tabs: [
+                tabs: const [
                   Tab(
-                      child: const Text(
+                      child: Text(
                     "Danh sách",
                     style: TextStyle(fontSize: 16),
                   )),
                   Tab(
-                      child: const Text(
+                      child: Text(
                     "Đã nhận",
                     style: TextStyle(fontSize: 16),
                   )),

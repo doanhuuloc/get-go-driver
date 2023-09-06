@@ -2,9 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:getgodriver/models/location.dart';
+import 'package:getgodriver/provider/driverViewModel.dart';
+import 'package:getgodriver/provider/tripViewModel.dart';
+import 'package:getgodriver/routes/routes.dart';
+import 'package:getgodriver/services/api/api_trip.dart';
 import 'package:getgodriver/services/googlemap/api_places.dart';
 import 'package:getgodriver/widgets/searchAddress/locationListTitle.dart';
 import 'package:getgodriver/widgets/textInputField.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 class SearchAddressScreen extends StatefulWidget {
   const SearchAddressScreen({super.key});
@@ -39,8 +45,20 @@ class _SearchAddressScreenState extends State<SearchAddressScreen> {
 
   void onLocationListTitleTap(LocationModel location) async {
     _inputAddress.text = location.summary;
+    final trip = context.read<TripViewModel>();
+    final driver = context.read<DriverViewModel>();
+    Map<String, dynamic> detail = await APIPlace.getDirectionAndDistance(
+        origin: driver.myLocation.coordinates,
+        destination: location.coordinates);
+    trip.updateDirection(
+        PolylinePoints().decodePolyline(detail['polylinePoints']));
+    detail['price'] = trip.updateTrip(detail['distance']);
+    await ApiTrip.updateTripCallcenter(
+        detail, driver.accessToken, trip.id.toString(), location);
+    Navigator.of(context).pushNamed(Routes.tripDriving);
     // Navi ở đây
     locations = [];
+    // vẽ đường đi, duration, distance, end, price
     setState(() {});
   }
 
@@ -74,7 +92,6 @@ class _SearchAddressScreenState extends State<SearchAddressScreen> {
               locations: locations,
               onClick: onLocationListTitleTap,
             ),
-         
           ],
         ),
       ),

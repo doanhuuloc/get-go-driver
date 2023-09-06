@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:getgodriver/models/tripModel.dart';
 import 'package:getgodriver/provider/tripViewModel.dart';
@@ -41,7 +43,7 @@ class ApointmentBox extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Address(
-                address: trip['end']['place'],
+                address:trip['end']['place'],
                 img: "assets/svgs/toaddress.svg"),
           ],
         ),

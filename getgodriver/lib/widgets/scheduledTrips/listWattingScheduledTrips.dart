@@ -34,8 +34,9 @@ class _ListWattingScheduledTripsState extends State<ListWattingScheduledTrips> {
     print("cout << $trips");
 
     print("cout << $currentTrips");
-
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void getListScheduledTrips() async {
@@ -48,7 +49,9 @@ class _ListWattingScheduledTripsState extends State<ListWattingScheduledTrips> {
     } else {
       print("cout<< lấy thông tin tất cả chuyến đi hẹn giờ có vấn đề");
     }
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   backDate() {
@@ -70,6 +73,12 @@ class _ListWattingScheduledTripsState extends State<ListWattingScheduledTrips> {
     // TODO: implement initState
     super.initState();
     getListScheduledTrips();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override

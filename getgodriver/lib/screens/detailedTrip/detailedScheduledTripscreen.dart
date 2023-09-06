@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
@@ -38,7 +40,7 @@ class _DetailedScheduledTripScreenState
 
     final response =
         await ApiTrip.acceptScheduledTrip("${widget.trip['id']}", accessToken);
-    if (response['StatusCode'] == 200) {
+    if (response['statusCode'] == 200) {
       print("cout << Nhận chuyến thành công");
     } else {
       print("cout << nhận chuyến thất bại");
@@ -48,6 +50,7 @@ class _DetailedScheduledTripScreenState
   @override
   Widget build(BuildContext context) {
     print("cout << thông tin chi tiết chuyến đi đặt giờ ");
+    print('cout<<<<<<<< ${widget.trip.toString()}');
     final tripProvider = context.read<TripViewModel>();
     final driver = context.read<DriverViewModel>();
     final format = DateFormat("HH:mm dd/MM/yyyy");
@@ -76,11 +79,17 @@ class _DetailedScheduledTripScreenState
               ),
               Container(
                 margin: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                child: CustomerInfo(
-                  avatar: widget.trip['user']['avatar'],
-                  name: widget.trip['user']['name'],
-                  phone: widget.trip['user']['phone'],
-                ),
+                child: widget.trip['user'] != null
+                    ? CustomerInfo(
+                        avatar: widget.trip['user']['avatar'],
+                        name: widget.trip['user']['name'],
+                        phone: widget.trip['user']['phone'],
+                      )
+                    : CustomerInfo(
+                        avatar: 'https://picsum.photos/200/300',
+                        name: 'CallCenter',
+                        phone: widget.trip['user']['phone'],
+                      ),
               ),
             ],
           ),
@@ -150,7 +159,7 @@ class _DetailedScheduledTripScreenState
                         widget.trip['status'] == "Pending"
                             ? acceptScheduledTrip(driver.accessToken)
                             : print("cout << hủy");
-                        Navigator.of(context).pop();
+                        Navigator.of(context).pushReplacementNamed(Routes.home);
                         setState(() {});
                       },
                       child: Container(

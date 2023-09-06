@@ -116,6 +116,84 @@ class APIPlace {
     throw Exception('Request failed with status: ');
   }
 
+  static Future<Map<String, dynamic>> getDirectionAndDistance(
+      {required LatLng origin, required LatLng destination}) async {
+    print('cout<<<<<$origin');
+    print('cout<<<<<$destination');
+    try {
+      print('cout<< ooi doi oi');
+      final url = 'https://routes.googleapis.com/directions/v2:computeRoutes';
+
+      final headers = {
+        'Content-Type': 'application/json',
+        'X-Goog-Api-Key': 'AIzaSyBLAnygT3LzvYGdMD43t12_zw79CXC0O2w',
+        'X-Goog-FieldMask':
+            'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline',
+      };
+
+      final body = {
+        "origin": {
+          "location": {
+            "latLng": {
+              "latitude": origin.latitude,
+              "longitude": origin.longitude
+            }
+          }
+        },
+        "destination": {
+          "location": {
+            "latLng": {
+              "latitude": destination.latitude,
+              "longitude": destination.longitude
+            }
+          }
+        },
+        "travelMode": "DRIVE",
+        "routingPreference": "TRAFFIC_AWARE",
+        "departureTime": "2023-10-15T15:01:23.045123456Z",
+        "computeAlternativeRoutes": false,
+        "routeModifiers": {
+          "avoidTolls": false,
+          "avoidHighways": false,
+          "avoidFerries": false
+        },
+        "languageCode": "en-US",
+        "units": "IMPERIAL"
+      };
+
+      final response =
+          await _dio.post(url, options: Options(headers: headers), data: body);
+      print('cout<< helloq242');
+      print(response);
+      if (response.statusCode == 200) {
+        // Successful response
+        // TODO: Handle and display the response data as per your requirement
+        // print(response.data);
+        // PolylinePoints().decodePolyline(
+        //     response.data['routes'][0]['polyline']['encodedPolyline']);
+        // print('cout<<<< ${response.data}');
+        // print('cout<<<< ${response.data['routes'][0]['distanceMeters']}');
+        // print('cout<<<< ${response.data['routes'][0]['duration']}');
+        double distance = response.data['routes'][0]['distanceMeters'] / 1000;
+        String duration =
+            (double.parse(response.data['routes'][0]['duration'].replaceAll('s', '')) / 60)
+                .round()
+                .toString();
+        Map<String, dynamic> detail = {
+          "polylinePoints": response.data['routes'][0]['polyline']
+              ['encodedPolyline'],
+          "distance": distance,
+          "duration": duration,
+        };
+        return detail;
+      }
+      throw Exception('Request failed with status: ${response.statusCode}');
+    } catch (e) {
+      print("cout<< neeee $e");
+    }
+    throw Exception('Request failed with status: ');
+  }
+
   // static Future<LatLng> getCurrentLocation() async {
   //   try {
   //     await Permission.location.request();

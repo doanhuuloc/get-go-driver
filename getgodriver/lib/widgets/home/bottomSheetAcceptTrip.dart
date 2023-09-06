@@ -35,7 +35,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
 
     timer.cancel();
     Navigator.pop(context);
-    Navigator.of(context).pushReplacementNamed(Routes.trip);
+    // Navigator.of(context).pushReplacementNamed(Routes.trip);
   }
 
   rejectTrip() {

@@ -40,27 +40,27 @@ class ButtonChangeStatusTrip extends StatelessWidget {
                         //   DialogMessage.show(context);
                       })
                   : status == 'pickUp'
-                      ? ButtonSizeL(
+                      ? trip.isCallcenter?
+                      ButtonSizeL(
                           name: "Nhập thông tin điểm đến",
                           onTap: () {
-                            Navigator.pushNamed(context, Routes.tripDriving);
+                            Navigator.pushNamed(context, Routes.searchAddress);
+                          },
+                        ):
+                      SlideAction(
+                          borderRadius: 10,
+                          height: 55,
+                          sliderButtonIconPadding: 10,
+                          innerColor: Colors.white,
+                          outerColor: Theme.of(context).primaryColor,
+                          text: 'Bắt đầu chuyến đi',
+                          onSubmit: () async {
+                            await SocketService.handleTripUpdate(
+                                context, 'Driving');
+                            Navigator.of(context)
+                                .pushReplacementNamed(Routes.tripDriving);
                           },
                         )
-                      // ? trip.isCallCenter?
-                      // SlideAction(
-                      //     borderRadius: 10,
-                      //     height: 55,
-                      //     sliderButtonIconPadding: 10,
-                      //     innerColor: Colors.white,
-                      //     outerColor: Theme.of(context).primaryColor,
-                      //     text: 'Bắt đầu chuyến đi',
-                      //     onSubmit: () async {
-                      //       await SocketService.handleTripUpdate(
-                      //           context, 'Driving');
-                      //       Navigator.of(context)
-                      //           .pushReplacementNamed(Routes.tripDriving);
-                      //     },
-                      //   )
                       : SizedBox();
               // : SizedBox();
             }),

@@ -36,9 +36,9 @@ class _TripScreenState extends State<TripScreen> {
         // appBar: AppBar(),
         body: SlidingUpPanel(
           maxHeight: MediaQuery.of(context).size.height * 0.97,
-          minHeight: 240, //270
+          minHeight: trip.isCallcenter ? 240 : 270,
           renderPanelSheet: false,
-          isDraggable: trip.isCallcenter,
+          isDraggable: !trip.isCallcenter,
           collapsed: trip.isCallcenter
               ? CollapsedTripFromCallCenter()
               : CollapsedTripFromClient(),

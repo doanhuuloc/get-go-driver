@@ -69,7 +69,7 @@ class SocketService {
   static void driverSendToServer(LatLng location, double heading) {
     print('heeeee');
     Map<String, dynamic> data = {
-      "user_id": 2,
+      "user_id": 9,
       'lat': location.latitude,
       'lng': location.longitude,
       'status': "Idle", // Idle,offline,driving
@@ -86,40 +86,10 @@ class SocketService {
       // final jsonData = jsonDecode(data);
       // print('cout<< 11111111111111111111111111111111111111111');
       print('cout<< $data');
-      // Map<String, dynamic> trip_infor = data['trip_info'];
-      // Map<String, dynamic> user_infor = data['user_info'];
-      // print('cout<< ${trip_infor['start'] is String}');
-      // print('cout<< ${user_infor is String}');
-      // print('cout<< $trip_infor');
-      // print('cout<< $trip_infor');
-      // print(trip_infor['start'] is String);
+
       try {
-        // TripModel tripne = TripModel(
-        //     id: trip_infor['trip_id'] / 1,
-        //     avatar: user_infor['avatar'],
-        //     name: user_infor['name'],
-        //     phone: user_infor['phone'],
-        //     typeCar: "xe 4 chỗ",
-        //     cost: trip_infor['price'] / 1,
-        //     distance: 1, // trip_infor['distance'],
-        //     note: 'note',
-        //     fromAddress: LocationModel(
-        //         title: '',
-        //         summary: trip_infor['start']['place'],
-        //         coordinates: LatLng(trip_infor['start']['lat'] / 1,
-        //             trip_infor['start']['lng'] / 1)),
-        //     toAddress: LocationModel(
-        //         title: '',
-        //         summary: trip_infor['end']['place'],
-        //         coordinates: LatLng(trip_infor['end']['lat'] / 1,
-        //             trip_infor['end']['lng'] / 1)),
-        //     paymentMethod: 'momo',
-        //     is_scheduled: trip_infor['is_scheduled'],
-        //     is_callCenter: trip_infor['is_callcenter'],
-        //     startDate: DateTime.utc(2023, 7, 25, 16, 00),
-        //     endDate: DateTime.utc(2023, 7, 25, 16, 00));
-        // // print("cout<< $tripne");
-        // print("cout<'tu");
+        print('cout<<<<<<<<<<<<<<<<<<<');
+        print(data['trip_info']['is_callcenter']);
         data['trip_info']['is_callcenter']
             ? trip.updateInfoCallCenterTrip(data)
             : trip.updateInfoTrip(data);
@@ -134,7 +104,7 @@ class SocketService {
           },
         );
       } catch (e) {
-        print("cout<< $e");
+        print("cout<<< $e");
         throw (e);
       }
     });
@@ -144,14 +114,15 @@ class SocketService {
       BuildContext context, String status) async {
     context.read<DriverViewModel>().updateStatus(status);
     String directions = '';
+    final trip = context.read<TripViewModel>();
     if (status == "Driving") {
-      final trip = context.read<TripViewModel>();
       String directions = await APIPlace.getDirections(
           origin: context.read<DriverViewModel>().myLocation.coordinates,
           destination: trip.toAddress.coordinates);
       await trip.updateDirection(PolylinePoints().decodePolyline(directions));
+      print('beff ${trip.id}');
       Map<String, dynamic> data = {
-        "trip_id": context.read<TripViewModel>().id,
+        "trip_id": trip.id,
         "directions": directions,
         "status": status
       };
@@ -159,7 +130,7 @@ class SocketService {
       return;
     } else {
       Map<String, dynamic> data = {
-        "trip_id": context.read<TripViewModel>().id,
+        "trip_id": trip.id,
         "directions": directions,
         "status": status
       };
@@ -170,6 +141,7 @@ class SocketService {
 
   static void successReceipt() {
     _socket?.on("receive-trip-success", (data) async {
+      print('cccccccccccccccccccccccccc');
       final trip = _context.read<TripViewModel>();
       _context.read<DriverViewModel>().updateStatus('Confirmed');
       String directions = await APIPlace.getDirections(
@@ -204,12 +176,18 @@ class SocketService {
   }
 
   static void startScheduledTrip() {
-    _socket?.on("schedule-notice", (data) {
-      Map<String, dynamic> trip_infor = data['trip_info'];
-      Map<String, dynamic> user_infor = data['user_info'];
-      print("cout << run scheduled");
+    _socket?.on("schedule-notice", (data) async {
       try {
+      print("cout << run scheduled");
+      print(data);
+      print("cout << run scheduled");
         _context.read<TripViewModel>().updateInfoTrip(data);
+        final trip = _context.read<TripViewModel>();
+        _context.read<DriverViewModel>().updateStatus('Confirmed');
+        String directions = await APIPlace.getDirections(
+            origin: _context.read<DriverViewModel>().myLocation.coordinates,
+            destination: trip.fromAddress.coordinates);
+        await trip.updateDirection(PolylinePoints().decodePolyline(directions));
         Navigator.of(_context)
             .pushNamedAndRemoveUntil(Routes.trip, (route) => false);
       } catch (err) {

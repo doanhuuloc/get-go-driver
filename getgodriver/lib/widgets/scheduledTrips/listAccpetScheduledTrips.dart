@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/routes/Routes.dart';
+import 'package:getgodriver/services/api/api_driver.dart';
 import 'package:getgodriver/services/api/api_trip.dart';
 import 'package:getgodriver/widgets/scheduledTrips/changeDate.dart';
 import 'package:getgodriver/widgets/scheduledTrips/scheduledBox.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ListAcceptScheduledTrips extends StatefulWidget {
   const ListAcceptScheduledTrips({super.key});
@@ -22,7 +25,8 @@ class _ListAcceptScheduledTripsState extends State<ListAcceptScheduledTrips> {
   DateTime dateTime = DateTime.now();
 
   void getListScheduledTrips() async {
-    final response = await ApiTrip.getScheduledTripsByDate();
+    final response = await ApiDriver.getScheduledTrips(
+        context.read<DriverViewModel>().driverId);
     print("cout << get api");
     print("cout << $response");
     if (response['statusCode'] == 200) {
@@ -30,7 +34,8 @@ class _ListAcceptScheduledTripsState extends State<ListAcceptScheduledTrips> {
     } else {
       print("cout<< lấy thông tin tất cả chuyến đi hẹn giờ có vấn đề");
     }
-    setState(() {});
+    if(mounted){
+    setState(() {});}
   }
 
   @override

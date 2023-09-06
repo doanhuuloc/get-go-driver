@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:getgodriver/configs/route_path_api.dart';
+import 'package:getgodriver/models/location.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 import '../DioInterceptorManager.dart';
@@ -38,6 +39,34 @@ class ApiTrip {
       return response.data;
     } catch (err) {
       throw (err);
+    }
+  }
+
+  static Future<Map<String, dynamic>> updateTripCallcenter(
+      Map<String, dynamic> data, String token, String tripId,LocationModel location) async {
+    try {
+      Map<String,dynamic> req={
+        "distance":data['distance'],
+        "duration":data['duration'],
+        "price":data['price'],
+        "end":{
+          "place":location.summary,
+          "lat":location.coordinates.latitude,
+          "lng":location.coordinates.longitude
+        }
+      };
+      final response =
+          await _dio.put('${RoutePathApi.updateTripCallcenter}$tripId',
+              options: Options(headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': "Bearer $token",
+              }),
+              data: req);
+      print("cout << ${response.data}");
+      return response.data;
+    } catch (e) {
+      throw (e);
     }
   }
 }
