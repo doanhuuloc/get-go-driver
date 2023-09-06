@@ -88,9 +88,39 @@ class TripViewModel with ChangeNotifier {
         coordinates:
             LatLng(trip_infor['end']['lat'] / 1, trip_infor['end']['lng'] / 1));
     _infoTrip.paymentMethod = 'momo';
+    _infoTrip.is_scheduled=trip_infor['is_scheduled'];
+    _infoTrip.is_callCenter=trip_infor['is_callcenter'];
     _infoTrip.startDate = DateTime.utc(2023, 7, 25, 16, 00);
     _infoTrip.endDate = DateTime.utc(2023, 7, 25, 16, 00);
 
     // notifyListeners();
   }
+
+  
+  void updateInfoCallCenterTrip(Map<String, dynamic> data) {
+    Map<String, dynamic> trip_infor = data['trip_info'];
+    Map<String, dynamic> user_infor = data['user_info'];
+
+    _infoTrip.id = trip_infor['trip_id'] / 1;
+    _infoTrip.phone = user_infor['phone'];
+    _infoTrip.typeCar = "xe 4 chỗ";
+    _infoTrip.fromAddress = LocationModel(
+        title: '',
+        summary: trip_infor['start']['place'],
+        coordinates: LatLng(
+            trip_infor['start']['lat'] / 1, trip_infor['start']['lng'] / 1));
+    _infoTrip.toAddress = LocationModel(
+        title: '',
+        summary: trip_infor['end']['place'],
+        coordinates:
+            LatLng(trip_infor['end']['lat'] / 1, trip_infor['end']['lng'] / 1));
+    _infoTrip.paymentMethod = "Cash";
+    _infoTrip.is_scheduled=trip_infor['is_scheduled'];
+    _infoTrip.is_callCenter=trip_infor['is_callcenter'];
+    _infoTrip.startDate = DateTime.utc(2023, 7, 25, 16, 00);
+    _infoTrip.endDate = DateTime.utc(2023, 7, 25, 16, 00);
+
+    // notifyListeners();
+  }
+
 }

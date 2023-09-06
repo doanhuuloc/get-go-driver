@@ -81,45 +81,48 @@ class SocketService {
 
   static void receiptClient() {
     _socket?.on("user-trip", (data) {
+      final trip = _context.read<TripViewModel>();
       print("cout<< trip có chuyến");
       // final jsonData = jsonDecode(data);
       // print('cout<< 11111111111111111111111111111111111111111');
       print('cout<< $data');
-      Map<String, dynamic> trip_infor = data['trip_info'];
-      Map<String, dynamic> user_infor = data['user_info'];
-      print('cout<< ${trip_infor['start'] is String}');
-      print('cout<< ${user_infor is String}');
-      print('cout<< $trip_infor');
-      print('cout<< $trip_infor');
+      // Map<String, dynamic> trip_infor = data['trip_info'];
+      // Map<String, dynamic> user_infor = data['user_info'];
+      // print('cout<< ${trip_infor['start'] is String}');
+      // print('cout<< ${user_infor is String}');
+      // print('cout<< $trip_infor');
+      // print('cout<< $trip_infor');
       // print(trip_infor['start'] is String);
       try {
-        TripModel tripne = TripModel(
-            id: trip_infor['trip_id'] / 1,
-            avatar: user_infor['avatar'],
-            name: user_infor['name'],
-            phone: user_infor['phone'],
-            typeCar: "xe 4 chỗ",
-            cost: trip_infor['price'] / 1,
-            distance: 1, // trip_infor['distance'],
-            note: 'note',
-            fromAddress: LocationModel(
-                title: '',
-                summary: trip_infor['start']['place'],
-                coordinates: LatLng(trip_infor['start']['lat'] / 1,
-                    trip_infor['start']['lng'] / 1)),
-            toAddress: LocationModel(
-                title: '',
-                summary: trip_infor['end']['place'],
-                coordinates: LatLng(trip_infor['end']['lat'] / 1,
-                    trip_infor['end']['lng'] / 1)),
-            paymentMethod: 'momo',
-            is_scheduled: trip_infor['is_scheduled'],
-            is_callCenter: trip_infor['is_callcenter'],
-            startDate: DateTime.utc(2023, 7, 25, 16, 00),
-            endDate: DateTime.utc(2023, 7, 25, 16, 00));
-        // print("cout<< $tripne");
+        // TripModel tripne = TripModel(
+        //     id: trip_infor['trip_id'] / 1,
+        //     avatar: user_infor['avatar'],
+        //     name: user_infor['name'],
+        //     phone: user_infor['phone'],
+        //     typeCar: "xe 4 chỗ",
+        //     cost: trip_infor['price'] / 1,
+        //     distance: 1, // trip_infor['distance'],
+        //     note: 'note',
+        //     fromAddress: LocationModel(
+        //         title: '',
+        //         summary: trip_infor['start']['place'],
+        //         coordinates: LatLng(trip_infor['start']['lat'] / 1,
+        //             trip_infor['start']['lng'] / 1)),
+        //     toAddress: LocationModel(
+        //         title: '',
+        //         summary: trip_infor['end']['place'],
+        //         coordinates: LatLng(trip_infor['end']['lat'] / 1,
+        //             trip_infor['end']['lng'] / 1)),
+        //     paymentMethod: 'momo',
+        //     is_scheduled: trip_infor['is_scheduled'],
+        //     is_callCenter: trip_infor['is_callcenter'],
+        //     startDate: DateTime.utc(2023, 7, 25, 16, 00),
+        //     endDate: DateTime.utc(2023, 7, 25, 16, 00));
+        // // print("cout<< $tripne");
         // print("cout<'tu");
-        _context.read<TripViewModel>().updateInfoTrip(data);
+        data['trip_info']['is_callcenter']
+            ? trip.updateInfoCallCenterTrip(data)
+            : trip.updateInfoTrip(data);
         // print(data);
         print('cout<< thành công r nè');
         showModalBottomSheet(
@@ -206,7 +209,7 @@ class SocketService {
       Map<String, dynamic> user_infor = data['user_info'];
       print("cout << run scheduled");
       try {
-         _context.read<TripViewModel>().updateInfoTrip(data);
+        _context.read<TripViewModel>().updateInfoTrip(data);
         Navigator.of(_context)
             .pushNamedAndRemoveUntil(Routes.trip, (route) => false);
       } catch (err) {
