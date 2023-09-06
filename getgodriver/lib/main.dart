@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getgodriver/utils/firebase_options.dart';
 import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/provider/tripViewModel.dart';
@@ -11,27 +12,45 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:timezone/data/latest.dart' as tzl;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings("app_icon");
-  final InitializationSettings initializationSettings =
-      InitializationSettings(android: initializationSettingsAndroid);
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform, name: "taxi_getgo");
 
   tzl.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('Asia/Ho_Chi_Minh'));
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
+  // FlutterLocalNotificationsPlugin fltNotification;
+}
+
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+  late final FirebaseMessaging _messaging;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    registerNotification();
+  }
+
   @override
   Widget build(BuildContext context) {
     // SocketService.updateContext(context);
@@ -68,5 +87,82 @@ class MyApp extends StatelessWidget {
         // home: Scaffold(body: Text("hello")),
       ),
     );
+  }
+
+  void registerNotification() async {
+    await Firebase.initializeApp();
+    _messaging = FirebaseMessaging.instance;
+    NotificationSettings settings = await _messaging.requestPermission(
+      alert: true,
+      badge: true,
+      provisional: false,
+      sound: true,
+    );
+    String? token = await _messaging.getToken();
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler);
+      var initiizationSettingsAndroid =
+          const AndroidInitializationSettings('@mipmap/ic_launcher');
+      var iosInit = const DarwinInitializationSettings(
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission: true,
+      );
+      var initializationSettings = InitializationSettings(
+          android: initiizationSettingsAndroid, iOS: iosInit);
+
+      flutterLocalNotificationsPlugin.initialize(
+        initializationSettings,
+        onDidReceiveNotificationResponse:
+            (NotificationResponse notificationResponse) {
+          switch (notificationResponse.notificationResponseType) {
+            case NotificationResponseType.selectedNotification:
+              // selectNotification(notificationResponse.id.toString());
+              break;
+            case NotificationResponseType.selectedNotificationAction:
+              // if (notificationResponse.actionId == navigationActionId) {
+              //   selectNotificationStream.add(notificationResponse.payload);
+              // }
+              break;
+          }
+        },
+      );
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        RemoteNotification? notification = message.notification;
+        var data = message.data;
+
+        // AndroidNotification? android = message.notification?.android;
+        if (notification != null) {
+          flutterLocalNotificationsPlugin.show(
+              notification.hashCode,
+              notification.title,
+              notification.body,
+              const NotificationDetails(
+                  iOS: DarwinNotificationDetails(
+                    presentAlert: true,
+                    presentBadge: true,
+                    presentSound: true,
+                  ),
+                  android: AndroidNotificationDetails('1', 'pushnotification',
+                      channelDescription: 'Test',
+                      color: Color(0xffff9d89),
+                      colorized: true,
+                      priority: Priority.max,
+                      channelShowBadge: true,
+                      importance: Importance.high,
+                      playSound: true)));
+        }
+      });
+    }
+  }
+
+  Future<String?> getToken() async {
+    final token = await FirebaseMessaging.instance.getToken();
+
+    // String token = FirebaseMessaging.instance.getToken();
+    print(token);
+    return token;
   }
 }
