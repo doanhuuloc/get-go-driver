@@ -17,4 +17,14 @@ class ApiDriver {
       throw (err);
     }
   }
+
+  static Future<Map<String, dynamic>> getScheduledTrips(int id) async {
+    try {
+      print("cout << get scheduled trips");
+      final response = await _dio.get("${RoutePathApi.getAcceptScheduledTrips}$id");
+      return response.data;
+    } catch (err) {
+      throw (err);
+    }
+  }
 }

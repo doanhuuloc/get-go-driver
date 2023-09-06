@@ -47,7 +47,7 @@ class Routes {
       case scheduledTrips:
         return MaterialPageRoute(builder: (_) => ScheduledTripsScreen());
       case detailedScheduledTrip:
-        final TripModel trip = settings.arguments as TripModel;
+        final Map<String,dynamic> trip = settings.arguments as Map<String,dynamic>;
         return MaterialPageRoute(
             builder: (_) => DetailedScheduledTripScreen(trip: trip));
       case setting:

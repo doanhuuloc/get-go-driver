@@ -17,8 +17,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform, name: "taxi_getgo");
+  // await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform, name: "taxi_getgo");
 
   tzl.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('Asia/Ho_Chi_Minh'));
@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    registerNotification();
+    // registerNotification();
   }
 
   @override

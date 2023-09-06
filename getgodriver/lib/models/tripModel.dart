@@ -18,7 +18,8 @@ class TripModel {
   DateTime endDate;
 
   String paymentMethod;
-
+  bool is_scheduled;
+  bool is_callCenter;
   DateTime? setTripDate;
   DateTime? scheduledDate;
   TripModel({
@@ -35,6 +36,8 @@ class TripModel {
     required this.paymentMethod,
     required this.startDate,
     required this.endDate,
+    required this.is_scheduled,
+    required this.is_callCenter,
     this.scheduledDate,
     this.setTripDate,
   });

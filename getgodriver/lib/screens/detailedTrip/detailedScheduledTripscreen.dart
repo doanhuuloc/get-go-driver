@@ -17,17 +17,19 @@ import 'package:getgodriver/services/notification.dart' as notify;
 class DetailedScheduledTripScreen extends StatelessWidget {
   const DetailedScheduledTripScreen({super.key, required this.trip});
 
-  final TripModel trip;
-  acceptScheduledTrip() async {
-    DateTime sheduledDate =
-        trip.scheduledDate!.subtract(const Duration(minutes: 15));
+  final Map<String, dynamic> trip;
+  acceptScheduledTrip(String accessToken) async {
+    // DateTime sheduledDate =
+    //     trip.scheduledDate!.subtract(const Duration(minutes: 15));
     // notify.Notifications()
     //     // .showNotification(
     //     //     "Chuyến đi hẹn giờ bạn đã chấp nhận sẽ bắt đầu vào lúc ${trip.startDate.hour.toString().padLeft(2, '0')} giờ ${trip.startDate.minute.toString().padLeft(2, '0')} phút.");
     //     .showScheduledNotification(
     //         "Chuyến đi hẹn giờ bạn đã chấp nhận sẽ bắt đầu vào lúc ${trip.startDate.hour.toString().padLeft(2, '0')} giờ ${trip.startDate.minute.toString().padLeft(2, '0')} phút.",
     //         sheduledDate);
-    final response = await ApiTrip.acceptScheduledTrip(trip.id.toString());
+
+    final response =
+        await ApiTrip.acceptScheduledTrip("${trip['id']}", accessToken);
     if (response['StatusCode'] == 200) {
       print("cout << Nhận chuyến thành công");
     } else {
@@ -38,6 +40,8 @@ class DetailedScheduledTripScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("cout << thông tin chi tiết chuyến đi đặt giờ ");
+    final tripProvider = context.read<TripViewModel>();
+    final driver = context.read<DriverViewModel>();
     final format = DateFormat("HH:mm dd/MM/yyyy");
     final TripViewModel tripView = context.read<TripViewModel>();
 
@@ -58,15 +62,16 @@ class DetailedScheduledTripScreen extends StatelessWidget {
                   padding: EdgeInsets.only(right: 5),
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.centerRight,
-                  child: Text(format.format(trip.scheduledDate!)),
+                  child: Text(
+                      format.format(DateTime.parse(trip['schedule_time']))),
                 ),
               ),
               Container(
                 margin: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
                 child: CustomerInfo(
-                  avatar: trip.avatar,
-                  name: trip.name,
-                  phone: trip.phone,
+                  avatar: trip['user']['avatar'],
+                  name: trip['user']['name'],
+                  phone: trip['user']['phone'],
                 ),
               ),
             ],
@@ -75,7 +80,7 @@ class DetailedScheduledTripScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              InfoStats(title: "Khoảng cách", content: "${trip.distance} km"),
+              InfoStats(title: "Khoảng cách", content: "12 km"),
               Container(
                 height: MediaQuery.of(context).size.height * 0.08,
                 width: 1,
@@ -83,7 +88,7 @@ class DetailedScheduledTripScreen extends StatelessWidget {
               ),
               InfoStats(
                 title: "Giá tiền",
-                content: tripView.formatCurrency(trip.cost),
+                content: tripView.formatCurrency(double.parse(trip['price'])),
                 color: themedata.primaryColor,
               ),
               Container(
@@ -91,7 +96,7 @@ class DetailedScheduledTripScreen extends StatelessWidget {
                 width: 1,
                 decoration: BoxDecoration(color: Colors.black54),
               ),
-              InfoStats(title: "Dịch vụ", content: trip.typeCar),
+              InfoStats(title: "Dịch vụ", content: "car"),
             ],
           ),
           const Divider(height: 1, color: Colors.black54),
@@ -99,7 +104,7 @@ class DetailedScheduledTripScreen extends StatelessWidget {
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
             child: Address(
-              address: trip.fromAddress.summary,
+              address: trip['start']['place'],
               img: "assets/svgs/fromaddress.svg",
               color: themedata.primaryColor,
             ),
@@ -108,14 +113,14 @@ class DetailedScheduledTripScreen extends StatelessWidget {
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
             child: Address(
-              address: trip.toAddress.summary,
+              address: trip['end']['place'],
               img: "assets/svgs/toaddress.svg",
             ),
           ),
           const SizedBox(height: 15),
           UserLineInfo(
-              title: "Phương thức thanh toán", info: trip.paymentMethod),
-          UserLineInfo(title: "Lưu ý", info: trip.note),
+              title: "Phương thức thanh toán", info: trip['paymentMethod']),
+          UserLineInfo(title: "Lưu ý", info: trip['note'].toString()),
           const SizedBox(height: 30),
           InkWell(
             onTap: () {
@@ -125,14 +130,14 @@ class DetailedScheduledTripScreen extends StatelessWidget {
                   title: const Text("Xác nhận"),
                   content: Text(
                     "Bạn có chấp nhận chuyến đi hẹn giờ vào lúc "
-                    "${trip.scheduledDate!.hour.toString().padLeft(2, '0')} giờ ${trip.scheduledDate!.minute.toString().padLeft(2, '0')} phút, ngày ${trip.scheduledDate!.day} tháng ${trip.scheduledDate!.month} năm ${trip.scheduledDate!.year}"
+                    // "${trip.scheduledDate!.hour.toString().padLeft(2, '0')} giờ ${trip.scheduledDate!.minute.toString().padLeft(2, '0')} phút, ngày ${trip.scheduledDate!.day} tháng ${trip.scheduledDate!.month} năm ${trip.scheduledDate!.year}"
                     " không?",
                     style: TextStyle(fontWeight: FontWeight.normal),
                   ),
                   actions: [
                     InkWell(
                       onTap: () {
-                        acceptScheduledTrip();
+                        acceptScheduledTrip(driver.accessToken);
                         Navigator.of(context).pop();
                       },
                       child: Container(

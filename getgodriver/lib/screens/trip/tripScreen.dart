@@ -30,15 +30,18 @@ class _TripScreenState extends State<TripScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final trip = context.read<TripViewModel>();
     return SafeArea(
       child: Scaffold(
         // appBar: AppBar(),
         body: SlidingUpPanel(
           maxHeight: MediaQuery.of(context).size.height * 0.97,
-          minHeight: 240,//270
+          minHeight: 240, //270
           renderPanelSheet: false,
-          // isDraggable: !trip.isCallCenter,
-          collapsed: CollapsedTripFromCallCenter(), //CollapsedTripFromClient(),
+          isDraggable: trip.isCallcenter,
+          collapsed: trip.isCallcenter
+              ? CollapsedTripFromCallCenter()
+              : CollapsedTripFromClient(),
           panel: SlidingTrip(),
           body: Scaffold(
             // body: GoogleMapBuider(

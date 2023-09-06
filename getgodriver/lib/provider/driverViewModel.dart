@@ -6,7 +6,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class DriverViewModel with ChangeNotifier {
   final DriverModel _item = DriverModel(
     driverId: 1,
-    token: "",
+    token:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwicGhvbmUiOiIrODQ5NDE1NDQ1NjkiLCJ0eXBlIjoiRHJpdmVyIiwiaWF0IjoxNjkzOTcxNzI3LCJleHAiOjE2OTUwNTE3Mjd9.faBWtmNSmAPnJsC5m43rxUwi06g3TU_H1b1PQoHsbCo",
     avatar: "assets/imgs/avatar.jpg",
     name: "Nguyễn Đăng Mạnh Tú",
     phone: "0909100509",
@@ -29,6 +30,7 @@ class DriverViewModel with ChangeNotifier {
   String _status = "offline";
   LocationModel get myLocation => _myLocation;
   int get driverId => _item.driverId;
+  String get accessToken => _item.token;
   String get avatar => _item.avatar;
   String get name => _item.name;
   String get phone => _item.phone;

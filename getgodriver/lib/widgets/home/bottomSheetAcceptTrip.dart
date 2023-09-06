@@ -8,6 +8,7 @@ import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/routes/Routes.dart';
 import 'package:getgodriver/widgets/home/acceptOrRejectTrip.dart';
 import 'package:getgodriver/widgets/address.dart';
+import 'package:getgodriver/widgets/home/contentTripFromCallCenter.dart';
 import 'package:getgodriver/widgets/home/contentTripFromClient.dart';
 import 'package:getgodriver/widgets/home/countDownAnimation.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
@@ -71,7 +72,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
   @override
   Widget build(BuildContext context) {
     // final theme = Theme.of(context);
-
+    final trip = context.read<TripViewModel>();
     return Wrap(
       children: [
         Container(
@@ -79,8 +80,9 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // isCallCenter? ContentTripFromCallCenter(): ContentTripFromClient(),
-              ContentTripFromClient(),
+              trip.isCallcenter
+                  ? ContentTripFromCallCenter()
+                  : ContentTripFromClient(),
               AcceptOrRejectTrip(
                 accept: accpetTrip,
                 reject: rejectTrip,

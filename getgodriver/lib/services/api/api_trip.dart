@@ -12,21 +12,29 @@ class ApiTrip {
 
   // cần lấy api hết tất cả chuyến đi hẹn giờ
   // accept chuyến đi hẹn giờ
-  static Future<Map<String, dynamic>> getScheduledTripsByDate(
-      String date) async {
+  static Future<Map<String, dynamic>> getScheduledTripsByDate() async {
     try {
       final response =
-          await _dio.get('${RoutePathApi.getScheduledTripsByDate}?date=$date');
+          await _dio.get('${RoutePathApi.getScheduledTripsByDate}');
+      print('${RoutePathApi.getScheduledTripsByDate}');
       return response.data;
     } catch (err) {
       throw (err);
     }
   }
 
-  static Future<Map<String, dynamic>> acceptScheduledTrip(String tripId) async {
+  static Future<Map<String, dynamic>> acceptScheduledTrip(
+      String tripId, String token) async {
     try {
-      final response =
-          await _dio.put('${RoutePathApi.acceptScheduledTrip}$tripId');
+      final response = await _dio.put(
+        '${RoutePathApi.acceptScheduledTrip}$tripId',
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': "Bearer $token",
+        }),
+      );
+      print("cout << ${response.data}");
       return response.data;
     } catch (err) {
       throw (err);

@@ -42,8 +42,9 @@ class TripDrivingScreen extends StatelessWidget {
                 .setPolyline(context.read<TripViewModel>().direction)
                 .build(),
           ),
-          // ContentDrivingTripFromClient(),
-          ContentDrivingTripFromCallCenter()
+          trip.isCallcenter
+              ? ContentDrivingTripFromCallCenter()
+              : ContentDrivingTripFromClient(),
         ],
       ),
     );

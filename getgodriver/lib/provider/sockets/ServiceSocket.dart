@@ -49,6 +49,7 @@ class SocketService {
 
         receiptClient();
         successReceipt();
+        startScheduledTrip();
         // receiptClient(context);
       },
     );
@@ -112,6 +113,8 @@ class SocketService {
                 coordinates: LatLng(trip_infor['end']['lat'] / 1,
                     trip_infor['end']['lng'] / 1)),
             paymentMethod: 'momo',
+            is_scheduled: trip_infor['is_scheduled'],
+            is_callCenter: trip_infor['is_callcenter'],
             startDate: DateTime.utc(2023, 7, 25, 16, 00),
             endDate: DateTime.utc(2023, 7, 25, 16, 00));
         // print("cout<< $tripne");
@@ -175,7 +178,7 @@ class SocketService {
     });
   }
 
-  static void failReceip(BuildContext context) {
+  static void failReceipt(BuildContext context) {
     _socket?.on("received-trip-fail", (data) {
       final jsonData = jsonDecode(data);
     });
@@ -195,5 +198,24 @@ class SocketService {
 
   static void driverIsAccept(Map<String, dynamic> trip, String status) {
     _socket?.emit('driver-response-booking', {'trip': trip, 'status': status});
+  }
+
+  static void startScheduledTrip() {
+    _socket?.on("schedule-notice", (data) {
+      Map<String, dynamic> trip_infor = data['trip_info'];
+      Map<String, dynamic> user_infor = data['user_info'];
+      print("cout << run scheduled");
+      try {
+         _context.read<TripViewModel>().updateInfoTrip(data);
+        Navigator.of(_context)
+            .pushNamedAndRemoveUntil(Routes.trip, (route) => false);
+      } catch (err) {
+        throw (err);
+      }
+    });
+  }
+
+  static void newScheduledTrip() {
+    _socket?.on("new-scheduled-trip", (data) {});
   }
 }

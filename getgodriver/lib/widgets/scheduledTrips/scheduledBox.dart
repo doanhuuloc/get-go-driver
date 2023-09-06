@@ -8,15 +8,18 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ApointmentBox extends StatelessWidget {
-  const ApointmentBox({super.key, required this.trip1});
-  final TripModel trip1;
+  const ApointmentBox({super.key, required this.trip});
+  final Map<String, dynamic> trip;
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     final formatApointmentDate = DateFormat.Hm();
-    final TripViewModel trip = context.read<TripViewModel>();
+    final TripViewModel tripProvider = context.read<TripViewModel>();
+
+    print("cout << box");
+
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         border: Border.all(color: themeData.primaryColor),
@@ -25,10 +28,22 @@ class ApointmentBox extends StatelessWidget {
         ),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        CustomerInfo(
-          avatar: trip.avatar,
-          name: trip.name,
-          phone: trip.phone,
+        Container(
+            margin: EdgeInsets.only(left: 10),
+            child: Text(trip['user']['name'])),
+        const SizedBox(height: 10),
+        Column(
+          children: [
+            Address(
+              address: trip['start']['place'],
+              img: "assets/svgs/fromaddress.svg",
+              color: themeData.primaryColor,
+            ),
+            const SizedBox(height: 10),
+            Address(
+                address: trip['end']['place'],
+                img: "assets/svgs/toaddress.svg"),
+          ],
         ),
         const SizedBox(height: 10),
         Row(
@@ -43,7 +58,7 @@ class ApointmentBox extends StatelessWidget {
                   height: 25,
                 ),
                 const SizedBox(width: 5),
-                Text("${trip.distance} km")
+                Text("${2} km")
               ],
             ),
             Row(
@@ -53,11 +68,10 @@ class ApointmentBox extends StatelessWidget {
                   width: 25,
                   height: 25,
                   color: themeData.primaryColor,
-
                 ),
                 const SizedBox(width: 5),
                 Text(
-                  trip.formatCurrency(trip.cost),
+                  tripProvider.formatCurrency(double.parse(trip['price'])),
                   // style: TextStyle(color: themeData.primaryColor),
                 )
               ],
@@ -69,30 +83,12 @@ class ApointmentBox extends StatelessWidget {
                   width: 25,
                   height: 25,
                   color: themeData.primaryColor,
-
                 ),
                 const SizedBox(width: 5),
-                Text(formatApointmentDate.format(trip.scheduledDate!))
+                Text(formatApointmentDate
+                    .format(DateTime.parse(trip['schedule_time'])))
               ],
             ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        Text("Dịch vụ: ${trip.typeCar}"),
-        const SizedBox(height: 5),
-        Text("Note: ${trip.note}"),
-        const SizedBox(height: 10),
-        Column(
-          children: [
-            Address(
-              address: trip.fromAddress.summary,
-              img: "assets/svgs/fromaddress.svg",
-              color: themeData.primaryColor,
-            ),
-            const SizedBox(height: 10),
-            Address(
-                address: trip.toAddress.summary,
-                img: "assets/svgs/toaddress.svg"),
           ],
         ),
       ]),

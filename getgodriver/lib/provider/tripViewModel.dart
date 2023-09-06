@@ -21,6 +21,8 @@ class TripViewModel with ChangeNotifier {
         title: '', summary: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm"),
     scheduledDate: DateTime.utc(2023, 7, 25, 16, 00),
     paymentMethod: "tiền mặt",
+    is_scheduled: false,
+    is_callCenter: false,
     startDate: DateTime.utc(2023, 7, 25, 16, 00),
     endDate: DateTime.utc(2023, 7, 25, 16, 00),
     setTripDate: DateTime.utc(2023, 7, 25, 16, 00),
@@ -46,6 +48,8 @@ class TripViewModel with ChangeNotifier {
 
   String get paymentMethod => _infoTrip.paymentMethod;
 
+  bool get isScheduled => _infoTrip.is_scheduled;
+  bool get isCallcenter => _infoTrip.is_callCenter;
   DateTime? get setTripDate => _infoTrip.setTripDate;
   DateTime? get scheduledDate => _infoTrip.scheduledDate;
 
