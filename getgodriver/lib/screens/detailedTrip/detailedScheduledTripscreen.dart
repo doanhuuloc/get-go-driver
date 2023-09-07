@@ -42,6 +42,9 @@ class _DetailedScheduledTripScreenState
         await ApiTrip.acceptScheduledTrip("${widget.trip['id']}", accessToken);
     if (response['statusCode'] == 200) {
       print("cout << Nhận chuyến thành công");
+      setState(() {
+        widget.trip['status'] = "Confirmed";
+      });
     } else {
       print("cout << nhận chuyến thất bại");
     }
@@ -145,7 +148,7 @@ class _DetailedScheduledTripScreenState
             onTap: () {
               showDialog(
                 context: context,
-                builder: (context) => AlertDialog(
+                builder: (cxt) => AlertDialog(
                   title: const Text("Xác nhận"),
                   content: Text(
                     "Bạn có chấp nhận chuyến đi hẹn giờ vào lúc "
@@ -155,11 +158,15 @@ class _DetailedScheduledTripScreenState
                   ),
                   actions: [
                     InkWell(
-                      onTap: () {
+                      onTap: () async{
                         widget.trip['status'] == "Pending"
-                            ? acceptScheduledTrip(driver.accessToken)
+                            ? await acceptScheduledTrip(driver.accessToken)
                             : print("cout << hủy");
-                        Navigator.of(context).pushReplacementNamed(Routes.home);
+                        // Navigator.of(context).pushReplacementNamed(Routes.home);
+                        Navigator.of(cxt).pop();
+                        Navigator.of(context).pop("confirmed");
+
+                        // Navigator.pop(context,"confirmed");
                         setState(() {});
                       },
                       child: Container(

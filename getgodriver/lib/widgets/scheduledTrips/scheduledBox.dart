@@ -88,7 +88,7 @@ class ApointmentBox extends StatelessWidget {
                 ),
                 const SizedBox(width: 5),
                 Text(formatApointmentDate
-                    .format(DateTime.parse(trip['schedule_time'])))
+                    .format(DateTime.parse(trip['schedule_time']).add(const Duration(hours: 8))))
               ],
             ),
           ],

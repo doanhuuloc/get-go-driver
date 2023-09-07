@@ -31,9 +31,9 @@ class _ListWattingScheduledTripsState extends State<ListWattingScheduledTrips> {
       return format.format(schedule_time) == format.format(dateTime);
     }).toList();
     print("cout << change");
-    print("cout << $trips");
+    // print("cout << $trips");
 
-    print("cout << $currentTrips");
+    // print("cout << $currentTrips");
     if (mounted) {
       setState(() {});
     }
@@ -69,10 +69,17 @@ class _ListWattingScheduledTripsState extends State<ListWattingScheduledTrips> {
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    getListScheduledTrips();
+  }
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getListScheduledTrips();
+    // getListScheduledTrips();
   }
 
   @override
@@ -83,7 +90,6 @@ class _ListWattingScheduledTripsState extends State<ListWattingScheduledTrips> {
 
   @override
   Widget build(BuildContext context) {
-    // getListScheduledTrips();
     return Column(
       children: [
         ChangeDate(
@@ -97,10 +103,15 @@ class _ListWattingScheduledTripsState extends State<ListWattingScheduledTrips> {
               ? ListView(
                   children: currentTrips.map((item) {
                     return InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
+                        onTap: () async {
+                          final result = await Navigator.of(context).pushNamed(
                               Routes.detailedScheduledTrip,
                               arguments: item);
+                          print("cout <<< $result");
+
+                          if (result == "confirmed") {
+                            getListScheduledTrips();
+                          }
                         },
                         child:
                             ApointmentBox(trip: item as Map<String, dynamic>));
