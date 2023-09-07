@@ -101,8 +101,10 @@ class ContentDrivingTripFromCallCenter extends StatelessWidget {
                           text: 'Bắt đầu chuyến đi',
                           onSubmit: () {
                             SocketService.handleTripUpdate(context, 'Driving');
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                                Routes.detailedTrip, (route) => false);
+                            // Navigator.of(context).pushNamedAndRemoveUntil(
+                            //     Routes.detailedTrip, (route) => false);
+                            // Navigator.of(context)
+                            //     .pushReplacementNamed(Routes.tripDriving);
                           },
                         )
                       : const SizedBox();

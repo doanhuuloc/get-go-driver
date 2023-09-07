@@ -97,6 +97,7 @@ class TripViewModel with ChangeNotifier {
     // notifyListeners();
   }
 
+
   double updateTrip(double distance) {
     _infoTrip.distance = distance;
     _infoTrip.cost = distance * price1km;

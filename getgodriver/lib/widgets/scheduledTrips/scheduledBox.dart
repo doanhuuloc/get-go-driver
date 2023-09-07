@@ -19,7 +19,7 @@ class ApointmentBox extends StatelessWidget {
     final TripViewModel tripProvider = context.read<TripViewModel>();
 
     print("cout << box");
-
+    print('cout<<$trip');
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       padding: const EdgeInsets.all(10),
@@ -42,9 +42,10 @@ class ApointmentBox extends StatelessWidget {
               color: themeData.primaryColor,
             ),
             const SizedBox(height: 10),
-            Address(
-                address:trip['end']['place'],
-                img: "assets/svgs/toaddress.svg"),
+            if (trip['end'] != null)
+              Address(
+                  address: trip['end']['place'],
+                  img: "assets/svgs/toaddress.svg"),
           ],
         ),
         const SizedBox(height: 10),
@@ -72,10 +73,11 @@ class ApointmentBox extends StatelessWidget {
                   color: themeData.primaryColor,
                 ),
                 const SizedBox(width: 5),
-                Text(
-                  tripProvider.formatCurrency(double.parse(trip['price'])),
-                  // style: TextStyle(color: themeData.primaryColor),
-                )
+                if (trip['price'] != null)
+                  Text(
+                    tripProvider.formatCurrency(double.parse(trip['price'])),
+                    // style: TextStyle(color: themeData.primaryColor),
+                  )
               ],
             ),
             Row(
@@ -87,8 +89,9 @@ class ApointmentBox extends StatelessWidget {
                   color: themeData.primaryColor,
                 ),
                 const SizedBox(width: 5),
-                Text(formatApointmentDate
-                    .format(DateTime.parse(trip['schedule_time']).add(const Duration(hours: 8))))
+                Text(formatApointmentDate.format(
+                    DateTime.parse(trip['schedule_time'])
+                        .add(const Duration(hours: 8))))
               ],
             ),
           ],

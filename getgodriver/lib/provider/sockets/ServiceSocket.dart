@@ -50,6 +50,7 @@ class SocketService {
         receiptClient();
         successReceipt();
         startScheduledTrip();
+        startScheduledCallcenterTrip();
         // receiptClient(context);
       },
     );
@@ -177,11 +178,28 @@ class SocketService {
 
   static void startScheduledTrip() {
     _socket?.on("schedule-notice", (data) async {
+      final trip = _context.read<TripViewModel>();
+      final driver = _context.read<DriverViewModel>();
+      bool check = data['trip_info']['is_callcenter'];
+      print('print($check)');
+      check ? trip.updateInfoCallCenterTrip(data) : trip.updateInfoTrip(data);
+      driver.updateStatus('Confirmed');
+      String directions = await APIPlace.getDirections(
+          origin: driver.myLocation.coordinates,
+          destination: trip.fromAddress.coordinates);
+      await trip.updateDirection(PolylinePoints().decodePolyline(directions));
+      Navigator.of(_context)
+          .pushNamedAndRemoveUntil(Routes.trip, (route) => false);
+    });
+  }
+
+  static void startScheduledCallcenterTrip() {
+    _socket?.on("schedule-notice-callcenter", (data) async {
       try {
         print("cout << run scheduled");
         print(data);
         print("cout << run scheduled");
-        _context.read<TripViewModel>().updateInfoTrip(data);
+        _context.read<TripViewModel>().updateInfoCallCenterTrip(data);
         final trip = _context.read<TripViewModel>();
         _context.read<DriverViewModel>().updateStatus('Confirmed');
         String directions = await APIPlace.getDirections(

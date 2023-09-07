@@ -106,12 +106,13 @@ class _DetailedScheduledTripScreenState
                 width: 1,
                 decoration: BoxDecoration(color: Colors.black54),
               ),
-              InfoStats(
-                title: "Giá tiền",
-                content:
-                    tripView.formatCurrency(double.parse(widget.trip['price'])),
-                color: themedata.primaryColor,
-              ),
+              if (widget.trip['price'] != null)
+                InfoStats(
+                  title: "Giá tiền",
+                  content: tripView
+                      .formatCurrency(double.parse(widget.trip['price'])),
+                  color: themedata.primaryColor,
+                ),
               Container(
                 height: MediaQuery.of(context).size.height * 0.08,
                 width: 1,
@@ -130,18 +131,21 @@ class _DetailedScheduledTripScreenState
               color: themedata.primaryColor,
             ),
           ),
-          const SizedBox(height: 15),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            child: Address(
-              address: widget.trip['end']['place'],
-              img: "assets/svgs/toaddress.svg",
+          if (widget.trip['end'] != null) const SizedBox(height: 15),
+          if (widget.trip['end'] != null)
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: Address(
+                address: widget.trip['end']['place'],
+                img: "assets/svgs/toaddress.svg",
+              ),
             ),
-          ),
           const SizedBox(height: 15),
           UserLineInfo(
               title: "Phương thức thanh toán",
-              info: widget.trip['paymentMethod']),
+              info: widget.trip['paymentMethod'] != null
+                  ? widget.trip['paymentMethod']
+                  : "Tiền mặt"),
           UserLineInfo(title: "Lưu ý", info: widget.trip['note'].toString()),
           const SizedBox(height: 30),
           InkWell(
@@ -150,7 +154,7 @@ class _DetailedScheduledTripScreenState
                 context: context,
                 builder: (cxt) => AlertDialog(
                   title: const Text("Xác nhận"),
-                  content: Text(
+                  content:const Text(
                     "Bạn có chấp nhận chuyến đi hẹn giờ vào lúc "
                     // "${trip.scheduledDate!.hour.toString().padLeft(2, '0')} giờ ${trip.scheduledDate!.minute.toString().padLeft(2, '0')} phút, ngày ${trip.scheduledDate!.day} tháng ${trip.scheduledDate!.month} năm ${trip.scheduledDate!.year}"
                     " không?",
@@ -158,7 +162,7 @@ class _DetailedScheduledTripScreenState
                   ),
                   actions: [
                     InkWell(
-                      onTap: () async{
+                      onTap: () async {
                         widget.trip['status'] == "Pending"
                             ? await acceptScheduledTrip(driver.accessToken)
                             : print("cout << hủy");
