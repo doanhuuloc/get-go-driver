@@ -120,7 +120,7 @@ class ContentDrivingTripFromCallCenter extends StatelessWidget {
                           sliderButtonIconPadding: 10,
                           innerColor: Colors.white,
                           outerColor: Theme.of(context).primaryColor,
-                          text: 'Đã đến điểm đón',
+                          text: 'Đã đến điểm đến',
                           onSubmit: () {
                             SocketService.handleTripUpdate(context, 'Done');
                             Navigator.of(context).pushNamedAndRemoveUntil(

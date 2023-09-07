@@ -1,4 +1,5 @@
 import 'dart:convert';
+// import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:getgodriver/configs/api_config.dart';
@@ -50,7 +51,8 @@ class SocketService {
         receiptClient();
         successReceipt();
         startScheduledTrip();
-        startScheduledCallcenterTrip();
+        driverReconnect();
+        // startScheduledCallcenterTrip();
         // receiptClient(context);
       },
     );
@@ -193,23 +195,24 @@ class SocketService {
     });
   }
 
-  static void startScheduledCallcenterTrip() {
-    _socket?.on("schedule-notice-callcenter", (data) async {
-      try {
-        print("cout << run scheduled");
-        print(data);
-        print("cout << run scheduled");
-        _context.read<TripViewModel>().updateInfoCallCenterTrip(data);
-        final trip = _context.read<TripViewModel>();
-        _context.read<DriverViewModel>().updateStatus('Confirmed');
+  static void driverReconnect() {
+    _socket?.on("driver-reconnect", (data) async {
+      final trip = _context.read<TripViewModel>();
+      final driver = _context.read<DriverViewModel>();
+      _context.read<TripViewModel>().updateInfoTrip(data);
+      driver.updateStatus(data['trip_info']['status']);
+      if (data['trip_info']['status'] == "Confirmed") {
         String directions = await APIPlace.getDirections(
             origin: _context.read<DriverViewModel>().myLocation.coordinates,
             destination: trip.fromAddress.coordinates);
         await trip.updateDirection(PolylinePoints().decodePolyline(directions));
-        Navigator.of(_context)
-            .pushNamedAndRemoveUntil(Routes.trip, (route) => false);
-      } catch (err) {
-        throw (err);
+        Navigator.of(_context).pushReplacementNamed(Routes.trip);
+      } else if (data['trip_info']['status'] == 'Driving') {
+        String directions = await APIPlace.getDirections(
+            origin: driver.myLocation.coordinates,
+            destination: trip.toAddress.coordinates);
+        await trip.updateDirection(PolylinePoints().decodePolyline(directions));
+        Navigator.of(_context).pushReplacementNamed(Routes.tripDriving);
       }
     });
   }
