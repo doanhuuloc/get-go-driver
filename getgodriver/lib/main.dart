@@ -48,7 +48,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // registerNotification();
+
+    registerNotification();
   }
 
   @override
@@ -82,7 +83,7 @@ class _MyAppState extends State<MyApp> {
                   borderSide: BorderSide(color: Colors.black))),
         ),
         title: "GetGoDriver",
-        initialRoute: Routes.home,
+        initialRoute: Routes.login,
         onGenerateRoute: Routes.generateRoute,
         // home: Scaffold(body: Text("hello")),
       ),
