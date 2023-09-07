@@ -34,8 +34,9 @@ class _ListAcceptScheduledTripsState extends State<ListAcceptScheduledTrips> {
     } else {
       print("cout<< lấy thông tin tất cả chuyến đi hẹn giờ có vấn đề");
     }
-    if(mounted){
-    setState(() {});}
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -47,32 +48,49 @@ class _ListAcceptScheduledTripsState extends State<ListAcceptScheduledTrips> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime checkScheduled = DateTime.now().subtract(const Duration(days: 1));
     final themeData = Theme.of(context);
     // getListScheduledTrips();
     return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(color: Colors.grey.shade400),
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.only(left: 10),
-          height: 30,
-          alignment: Alignment.centerLeft,
-          child: Text("Lịch sử", style: themeData.textTheme.bodyLarge),
-        ),
         Expanded(
           child: !trips.isEmpty
-              ? ListView(
-                  children: trips.map((item) {
-                    return InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                              Routes.detailedScheduledTrip,
-                              arguments: item);
-                        },
-                        child:
-                            ApointmentBox(trip: item as Map<String, dynamic>));
-                  }).toList(),
-                )
+              ? ListView.builder(
+                  itemCount: trips.length,
+                  itemBuilder: (context, index) {
+                    DateTime schedule_time =
+                        DateTime.parse(trips[index]['schedule_time']);
+                    return Column(
+                      children: [
+                        if (format.format(schedule_time) !=
+                            format.format(checkScheduled))
+                          Container(
+                            decoration:
+                                BoxDecoration(color: Colors.grey.shade400),
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.only(left: 10),
+                            height: 30,
+                            alignment: Alignment.centerLeft,
+                            child: Text(format.format(schedule_time),
+                                style: themeData.textTheme.bodyLarge),
+                          ),
+                        Builder(builder: (context) {
+                          if (format.format(schedule_time) !=
+                              format.format(checkScheduled)) {
+                            checkScheduled = schedule_time;
+                          }
+                          return InkWell(
+                              onTap: () {
+                                Navigator.of(context).pushNamed(
+                                    Routes.detailedScheduledTrip,
+                                    arguments: trips[index]);
+                              },
+                              child: ApointmentBox(
+                                  trip: trips[index] as Map<String, dynamic>));
+                        }),
+                      ],
+                    );
+                  })
               : SvgPicture.asset(
                   "assets/svgs/taxi.svg",
                   height: 100,
