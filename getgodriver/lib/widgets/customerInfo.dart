@@ -16,7 +16,7 @@ class CustomerInfo extends StatelessWidget {
       children: [
         CircleAvatar(
           backgroundImage: NetworkImage(avatar), // ,AssetImage(avatar)
-          maxRadius: 40,
+          // maxRadius: 40,
         ),
         const SizedBox(width: 10),
         Column(

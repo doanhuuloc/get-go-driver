@@ -35,8 +35,8 @@ class SocketService {
     _socket?.onConnect(
       (data) async {
         print("cout<< connect " + _socket!.id.toString());
-        print(
-            "cout<< ơi òi ${_context.read<DriverViewModel>().myLocation.coordinates}");
+        // print(
+        //     "cout<< ơi òi ${_context.read<DriverViewModel>().myLocation.coordinates}");
         // driverSendToServer(
         //     _context.read<DriverViewModel>().myLocation.coordinates,
         //     _context.read<DriverViewModel>().myLocation.heading);
@@ -178,9 +178,9 @@ class SocketService {
   static void startScheduledTrip() {
     _socket?.on("schedule-notice", (data) async {
       try {
-      print("cout << run scheduled");
-      print(data);
-      print("cout << run scheduled");
+        print("cout << run scheduled");
+        print(data);
+        print("cout << run scheduled");
         _context.read<TripViewModel>().updateInfoTrip(data);
         final trip = _context.read<TripViewModel>();
         _context.read<DriverViewModel>().updateStatus('Confirmed');
