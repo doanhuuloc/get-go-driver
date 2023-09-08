@@ -8,6 +8,8 @@ import 'package:getgodriver/widgets/customerInfo.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../routes/routes.dart';
+
 class CollapsedTripFromClient extends StatelessWidget {
   const CollapsedTripFromClient({super.key});
 
@@ -56,7 +58,9 @@ class CollapsedTripFromClient extends StatelessWidget {
                     phone: trip.phone,
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.message);
+                    },
                     iconSize: 30,
                     icon: Icon(
                       Icons.chat,

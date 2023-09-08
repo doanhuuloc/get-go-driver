@@ -29,6 +29,14 @@ class TripViewModel with ChangeNotifier {
   );
   double price1km = 7;
   List<PointLatLng> _direction = [];
+  final List<Map<String, String>> _message = [
+    {"5": 'Chào em', "time": '10:00'},
+    {"0": 'Chào anh', "time": '10:05'}
+  ];
+  List<Map<String, String>> get message => _message;
+  void pushMessage(String text, String id, String time) {
+    _message.add({id: text, "time": time});
+  }
 
   List<PointLatLng> get direction => _direction;
   double get id => _infoTrip.id;
@@ -96,7 +104,6 @@ class TripViewModel with ChangeNotifier {
 
     // notifyListeners();
   }
-
 
   double updateTrip(double distance) {
     _infoTrip.distance = distance;
