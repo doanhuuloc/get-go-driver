@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     print('d,,,,,mm');
-    SocketService.updateContext(context);
+    // SocketService.updateContext(context);
     // context.read<SocketService>().socket?.on("user-trip", (data) {
     //   print('33333333333333333333333333333333333333');
     //   print(data);

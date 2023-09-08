@@ -138,12 +138,12 @@ class _MessageScreenState extends State<MessageScreen>
                                       child: Text(
                                         e[context
                                                     .read<DriverViewModel>()
-                                                    .driverId] ==
+                                                    .driverId.toString()] ==
                                                 null
                                             ? e['0'].toString()
                                             : e[context
                                                     .read<DriverViewModel>()
-                                                    .driverId]
+                                                    .driverId.toString()]
                                                 .toString(),
                                         style: const TextStyle(
                                           fontSize: 15,
@@ -155,8 +155,8 @@ class _MessageScreenState extends State<MessageScreen>
                                     const SizedBox(
                                       height: 4,
                                     ),
-                                    const Text(
-                                      '10:00',
+                                     Text(
+                                      e['time'].toString(),
                                       style: TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.w400,
