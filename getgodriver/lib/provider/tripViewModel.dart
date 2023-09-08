@@ -8,7 +8,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 class TripViewModel with ChangeNotifier {
   TripModel _infoTrip = TripModel(
     id: 1,
-    avatar: "assets/imgs/avatar.jpg",
+    avatar: "https://picsum.photos/200/300",
     name: "Nguyễn Đăng Mạnh Tú",
     phone: "0909100509",
     cost: 100000,

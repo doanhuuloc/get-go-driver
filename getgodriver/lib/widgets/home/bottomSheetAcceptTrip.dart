@@ -6,6 +6,8 @@ import 'package:getgodriver/models/tripModel.dart';
 import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/sockets/ServiceSocket.dart';
 import 'package:getgodriver/routes/Routes.dart';
+import 'package:getgodriver/utils/helper.dart';
+import 'package:getgodriver/utils/initValue.dart';
 import 'package:getgodriver/widgets/home/acceptOrRejectTrip.dart';
 import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/home/contentTripFromCallCenter.dart';
@@ -30,6 +32,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
   late Timer timer;
 
   accpetTrip() {
+    Helper.stopRingSound();
     context.read<DriverViewModel>().updateStatus('Confirmed');
     SocketService.driverIsAccept(widget.stripId, "Accept");
 
@@ -39,6 +42,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
   }
 
   rejectTrip() {
+    Helper.stopRingSound();
     SocketService.driverIsAccept(widget.stripId, "Deny");
     Navigator.pop(context);
   }
@@ -58,6 +62,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
 
   @override
   void initState() {
+    Helper.playRingSound(InitValue.ringSound[0]['assetUrl'].toString(), 1);
     TripViewModel trip = context.read<TripViewModel>();
     startCountdown();
     super.initState();

@@ -42,7 +42,7 @@ class ApointmentBox extends StatelessWidget {
               color: themeData.primaryColor,
             ),
             const SizedBox(height: 10),
-            if (trip['end'] != null)
+            if (!trip['is_callcenter'])
               Address(
                   address: trip['end']['place'],
                   img: "assets/svgs/toaddress.svg"),
@@ -73,7 +73,7 @@ class ApointmentBox extends StatelessWidget {
                   color: themeData.primaryColor,
                 ),
                 const SizedBox(width: 5),
-                if (trip['price'] != null)
+                if (!trip['is_callcenter'])
                   Text(
                     tripProvider.formatCurrency(double.parse(trip['price'])),
                     // style: TextStyle(color: themeData.primaryColor),
@@ -91,7 +91,7 @@ class ApointmentBox extends StatelessWidget {
                 const SizedBox(width: 5),
                 Text(formatApointmentDate.format(
                     DateTime.parse(trip['schedule_time'])
-                        .add(const Duration(hours: 8))))
+                        .add(const Duration(hours: 0))))
               ],
             ),
           ],

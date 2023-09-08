@@ -9,6 +9,8 @@ import 'package:getgodriver/provider/driverViewModel.dart';
 import 'package:getgodriver/provider/tripViewModel.dart';
 import 'package:getgodriver/routes/Routes.dart';
 import 'package:getgodriver/services/googlemap/api_places.dart';
+import 'package:getgodriver/utils/helper.dart';
+import 'package:getgodriver/utils/initValue.dart';
 import 'package:getgodriver/widgets/home/bottomSheetAcceptTrip.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -83,7 +85,7 @@ class SocketService {
   }
 
   static void receiptClient() {
-    _socket?.on("user-trip", (data) {
+    _socket?.on("user-trip", (data) async {
       final trip = _context.read<TripViewModel>();
       print("cout<< trip có chuyến");
       // final jsonData = jsonDecode(data);
@@ -98,6 +100,7 @@ class SocketService {
             : trip.updateInfoTrip(data);
         // print(data);
         print('cout<< thành công r nè');
+        
         showModalBottomSheet(
           enableDrag: false,
           isDismissible: false,

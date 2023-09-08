@@ -82,7 +82,7 @@ class _DetailedScheduledTripScreenState
               ),
               Container(
                 margin: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                child: widget.trip['user'] != null
+                child: !widget.trip['is_callcenter']
                     ? CustomerInfo(
                         avatar: widget.trip['user']['avatar'],
                         name: widget.trip['user']['name'],
@@ -106,7 +106,7 @@ class _DetailedScheduledTripScreenState
                 width: 1,
                 decoration: BoxDecoration(color: Colors.black54),
               ),
-              if (widget.trip['price'] != null)
+              if (!widget.trip['is_callcenter'])
                 InfoStats(
                   title: "Giá tiền",
                   content: tripView
@@ -131,8 +131,8 @@ class _DetailedScheduledTripScreenState
               color: themedata.primaryColor,
             ),
           ),
-          if (widget.trip['end'] != null) const SizedBox(height: 15),
-          if (widget.trip['end'] != null)
+          if (!widget.trip['is_callcenter']) const SizedBox(height: 15),
+          if (!widget.trip['is_callcenter'])
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: Address(
@@ -154,10 +154,8 @@ class _DetailedScheduledTripScreenState
                 context: context,
                 builder: (cxt) => AlertDialog(
                   title: const Text("Xác nhận"),
-                  content:const Text(
-                    "Bạn có chấp nhận chuyến đi hẹn giờ vào lúc "
-                    // "${trip.scheduledDate!.hour.toString().padLeft(2, '0')} giờ ${trip.scheduledDate!.minute.toString().padLeft(2, '0')} phút, ngày ${trip.scheduledDate!.day} tháng ${trip.scheduledDate!.month} năm ${trip.scheduledDate!.year}"
-                    " không?",
+                  content: const Text(
+                    "Bạn có chấp nhận chuyến đi hẹn giờ này không?",
                     style: TextStyle(fontWeight: FontWeight.normal),
                   ),
                   actions: [

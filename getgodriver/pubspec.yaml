@@ -71,6 +71,8 @@ dev_dependencies:
   flutter_local_notifications: ^14.1.1
   firebase_core: ^2.1.1
   firebase_messaging: ^14.6.1
+  just_audio: ^0.9.34
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
