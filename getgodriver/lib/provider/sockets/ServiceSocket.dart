@@ -15,6 +15,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:intl/intl.dart';
 
 class SocketService {
   static io.Socket? _socket;
@@ -52,6 +53,7 @@ class SocketService {
         successReceipt();
         startScheduledTrip();
         driverReconnect();
+        receiptMessage();
         // startScheduledCallcenterTrip();
         // receiptClient(context);
       },
@@ -67,6 +69,22 @@ class SocketService {
 
   static void disconnect() {
     _socket?.disconnect();
+  }
+
+  static void receiptMessage() {
+    _socket?.on("message-to-driver", (data) {
+      DateTime now = DateTime.now();
+      String formattedTime = DateFormat('HH:mm').format(now);
+      _context.read<TripViewModel>().pushMessage(data, '0', formattedTime);
+    });
+  }
+
+  static void sendMessage(String text, BuildContext context) {
+    _socket?.emit("driver-message", {
+      'message': text,
+      'user_id': '5',
+      'trip_id': context.read<TripViewModel>().id
+    });
   }
 
   static void driverSendToServer(LatLng location, double heading) {
