@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -136,14 +135,12 @@ class _MessageScreenState extends State<MessageScreen>
                                             2.1, // Giới hạn chiều rộng tối đa là 100
                                       ),
                                       child: Text(
-                                        e[context
-                                                    .read<DriverViewModel>()
-                                                    .driverId] ==
-                                                null
+                                        e['0'] != null
                                             ? e['0'].toString()
                                             : e[context
                                                     .read<DriverViewModel>()
-                                                    .driverId]
+                                                    .driverId
+                                                    .toString()]
                                                 .toString(),
                                         style: const TextStyle(
                                           fontSize: 15,
@@ -193,9 +190,11 @@ class _MessageScreenState extends State<MessageScreen>
                     onFieldSubmitted: (value) {
                       DateTime now = DateTime.now();
                       String formattedTime = DateFormat('HH:mm').format(now);
-                      context.read<TripViewModel>().pushMessage(value,
-                          context.read<DriverViewModel>().driverId.toString(), formattedTime);
-                     SocketService.sendMessage(value, context);
+                      context.read<TripViewModel>().pushMessage(
+                          value,
+                          context.read<DriverViewModel>().driverId.toString(),
+                          formattedTime);
+                      SocketService.sendMessage(value, context);
                       // Xử lý sự kiện khi người dùng nhấn nút Enter
                       // Điều này xảy ra khi người dùng nhấn Enter và không điều hướng đến trường khác
                       print("Người dùng đã nhấn Enter với giá trị: $value");
