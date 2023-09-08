@@ -152,8 +152,8 @@ class _MessageScreenState extends State<MessageScreen>
                                     const SizedBox(
                                       height: 4,
                                     ),
-                                    const Text(
-                                      '10:00',
+                                     Text(
+                                      e['time'].toString(),
                                       style: TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.w400,

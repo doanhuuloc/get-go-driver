@@ -42,7 +42,7 @@ class ApointmentBox extends StatelessWidget {
               color: themeData.primaryColor,
             ),
             const SizedBox(height: 10),
-            if (!trip['is_callcenter'])
+            if (trip['is_callcenter'] == 0)
               Address(
                   address: trip['end']['place'],
                   img: "assets/svgs/toaddress.svg"),
@@ -73,7 +73,7 @@ class ApointmentBox extends StatelessWidget {
                   color: themeData.primaryColor,
                 ),
                 const SizedBox(width: 5),
-                if (!trip['is_callcenter'])
+                if (trip['is_callcenter']==0)
                   Text(
                     tripProvider.formatCurrency(double.parse(trip['price'])),
                     // style: TextStyle(color: themeData.primaryColor),

@@ -30,7 +30,7 @@ class TripViewModel with ChangeNotifier {
   double price1km = 7;
   List<PointLatLng> _direction = [];
   final List<Map<String, String>> _message = [
-    {"5": 'Chào em', "time": '10:00'},
+    {"9": 'Chào em', "time": '10:00'},
     {"0": 'Chào anh', "time": '10:05'}
   ];
   List<Map<String, String>> get message => _message;

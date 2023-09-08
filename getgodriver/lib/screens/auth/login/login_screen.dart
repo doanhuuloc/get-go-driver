@@ -13,9 +13,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController controller = TextEditingController();
-  PhoneNumber phone = new PhoneNumber();
-  bool validPhone = false;
+  final TextEditingController controller = TextEditingController(text: "0941544569");
+  PhoneNumber phone = new PhoneNumber(phoneNumber: "+84941544569");
+  bool validPhone = true;
 
   updatePhone(PhoneNumber newphone) {
     setState(() {

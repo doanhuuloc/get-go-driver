@@ -84,7 +84,7 @@ class SocketService {
   static void sendMessage(String text, BuildContext context) {
     _socket?.emit("driver-message", {
       'message': text,
-      'user_id': '5',
+      'user_id': 5,
       'trip_id': context.read<TripViewModel>().id
     });
   }
@@ -118,7 +118,7 @@ class SocketService {
             : trip.updateInfoTrip(data);
         // print(data);
         print('cout<< thành công r nè');
-        
+
         showModalBottomSheet(
           enableDrag: false,
           isDismissible: false,
