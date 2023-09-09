@@ -36,6 +36,7 @@ class TripViewModel with ChangeNotifier {
   List<Map<String, String>> get message => _message;
   void pushMessage(String text, String id, String time) {
     _message.add({id: text, "time": time});
+    notifyListeners();
   }
 
   List<PointLatLng> get direction => _direction;

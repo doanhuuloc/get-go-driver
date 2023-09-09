@@ -23,7 +23,7 @@ class TripScreen extends StatefulWidget {
 class _TripScreenState extends State<TripScreen> {
   @override
   void initState() {
-    SocketService.updateContext(context);
+    // SocketService.updateContext(context);
     // TODO: implement initState
     super.initState();
   }

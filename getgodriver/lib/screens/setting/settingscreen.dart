@@ -19,7 +19,7 @@ class _SettingScreenState extends State<SettingScreen> {
   bool item1 = true;
   void initState() {
     super.initState();
-    SocketService.updateContext(context);
+    // SocketService.updateContext(context);
   }
 
   @override

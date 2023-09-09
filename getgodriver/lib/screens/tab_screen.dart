@@ -44,8 +44,9 @@ class _TabScreenState extends State<TabScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     SocketService.updateContext(context);
+    super.initState();
+    // SocketService.updateContext(context);
 
     // SocketService.connectserver(context);
   }

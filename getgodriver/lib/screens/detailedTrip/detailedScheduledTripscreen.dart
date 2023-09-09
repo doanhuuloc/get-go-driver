@@ -165,7 +165,7 @@ class _DetailedScheduledTripScreenState
                             ? await acceptScheduledTrip(driver.accessToken)
                             : print("cout << hủy");
                         // Navigator.of(context).pushReplacementNamed(Routes.home);
-                        Navigator.of(cxt).pop();
+                        Navigator.of(context).pop();
                         Navigator.of(context).pop("confirmed");
 
                         // Navigator.pop(context,"confirmed");

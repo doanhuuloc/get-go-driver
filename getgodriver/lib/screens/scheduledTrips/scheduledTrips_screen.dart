@@ -26,7 +26,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
   @override
   void initState() {
     super.initState();
-    SocketService.updateContext(context);
+    // SocketService.updateContext(context);
   }
 
   @override

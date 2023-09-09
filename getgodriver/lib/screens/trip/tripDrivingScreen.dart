@@ -19,7 +19,7 @@ class TripDrivingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SocketService.updateContext(context);
+    // SocketService.updateContext(context);
     // final SocketService socketProvider = context.read<SocketService>();
     final TripViewModel trip = context.read<TripViewModel>();
     return Scaffold(

@@ -28,39 +28,40 @@ class ButtonChangeStatusTrip extends StatelessWidget {
                   ? ButtonSizeL(
                       name: "Đã đến điểm đón",
                       onTap: () {
-                        double result = Geolocator.distanceBetween(
-                          driver.myLocation.coordinates.latitude,
-                          driver.myLocation.coordinates.longitude,
-                          trip.fromAddress.coordinates.latitude,
-                          trip.fromAddress.coordinates.longitude,
-                        );
-                        if (result <= 200)
+                        // double result = Geolocator.distanceBetween(
+                        //   driver.myLocation.coordinates.latitude,
+                        //   driver.myLocation.coordinates.longitude,
+                        //   trip.fromAddress.coordinates.latitude,
+                        //   trip.fromAddress.coordinates.longitude,
+                        // );
+                        // if (result <= 200)
                         driver.updateStatus('pickUp');
-                        else
-                          DialogMessage.show(context);
+                        // else
+                        //   DialogMessage.show(context);
                       })
                   : status == 'pickUp'
-                      ? trip.isCallcenter?
-                      ButtonSizeL(
-                          name: "Nhập thông tin điểm đến",
-                          onTap: () {
-                            Navigator.pushNamed(context, Routes.searchAddress);
-                          },
-                        ):
-                      SlideAction(
-                          borderRadius: 10,
-                          height: 55,
-                          sliderButtonIconPadding: 10,
-                          innerColor: Colors.white,
-                          outerColor: Theme.of(context).primaryColor,
-                          text: 'Bắt đầu chuyến đi',
-                          onSubmit: () async {
-                            await SocketService.handleTripUpdate(
-                                context, 'Driving');
-                            Navigator.of(context)
-                                .pushReplacementNamed(Routes.tripDriving);
-                          },
-                        )
+                      ? trip.isCallcenter
+                          ? ButtonSizeL(
+                              name: "Nhập thông tin điểm đến",
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, Routes.searchAddress);
+                              },
+                            )
+                          : SlideAction(
+                              borderRadius: 10,
+                              height: 55,
+                              sliderButtonIconPadding: 10,
+                              innerColor: Colors.white,
+                              outerColor: Theme.of(context).primaryColor,
+                              text: 'Bắt đầu chuyến đi',
+                              onSubmit: () async {
+                                await SocketService.handleTripUpdate(
+                                    context, 'Driving');
+                                Navigator.of(context)
+                                    .pushReplacementNamed(Routes.tripDriving);
+                              },
+                            )
                       : SizedBox();
               // : SizedBox();
             }),
