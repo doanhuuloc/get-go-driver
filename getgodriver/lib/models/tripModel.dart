@@ -22,6 +22,7 @@ class TripModel {
   bool is_callCenter;
   DateTime? setTripDate;
   DateTime? scheduledDate;
+  String userId;
   TripModel({
     required this.id,
     required this.avatar,
@@ -38,6 +39,7 @@ class TripModel {
     required this.endDate,
     required this.is_scheduled,
     required this.is_callCenter,
+    required this.userId,
     this.scheduledDate,
     this.setTripDate,
   });

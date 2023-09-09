@@ -21,10 +21,10 @@ import 'package:intl/intl.dart';
 
 class SocketService {
   static io.Socket? _socket;
-  static late BuildContext _context;
-  static updateContext(BuildContext context) {
-    _context = context;
-  }
+  static late BuildContext context;
+  // static updateContext(BuildContext context) {
+  //   context = context;
+  // }
 
   static void connectserver(BuildContext context) {
     print('hhhhhhhh');
@@ -40,10 +40,10 @@ class SocketService {
       (data) async {
         print("cout<< connect " + _socket!.id.toString());
         // print(
-        //     "cout<< ơi òi ${_context.read<DriverViewModel>().myLocation.coordinates}");
+        //     "cout<< ơi òi ${context.read<DriverViewModel>().myLocation.coordinates}");
         // driverSendToServer(
-        //     _context.read<DriverViewModel>().myLocation.coordinates,
-        //     _context.read<DriverViewModel>().myLocation.heading);
+        //     context.read<DriverViewModel>().myLocation.coordinates,
+        //     context.read<DriverViewModel>().myLocation.heading);
         Location location = Location();
         LocationData locationData = await location.getLocation();
         // print('hihihi');
@@ -77,14 +77,14 @@ class SocketService {
     _socket?.on("message-to-driver", (data) {
       DateTime now = DateTime.now();
       String formattedTime = DateFormat('HH:mm').format(now);
-      _context.read<TripViewModel>().pushMessage(data, '0', formattedTime);
+      context.read<TripViewModel>().pushMessage(data, '0', formattedTime);
     });
   }
 
   static void sendMessage(String text, BuildContext context) {
     _socket?.emit("driver-message", {
       'message': text,
-      'user_id': 5,
+      'user_id': context.read<TripViewModel>().userId,
       'trip_id': context.read<TripViewModel>().id
     });
   }
@@ -104,7 +104,7 @@ class SocketService {
 
   static void receiptClient() {
     _socket?.on("user-trip", (data) async {
-      final trip = _context.read<TripViewModel>();
+      final trip = context.read<TripViewModel>();
       print("cout<< trip có chuyến");
       // final jsonData = jsonDecode(data);
       // print('cout<< 11111111111111111111111111111111111111111');
@@ -122,8 +122,8 @@ class SocketService {
         showModalBottomSheet(
           enableDrag: false,
           isDismissible: false,
-          context: _context,
-          builder: (_context) {
+          context: context,
+          builder: (context) {
             return BottomSheetAcceptTrip(stripId: data["trip_info"]);
           },
         );
@@ -166,14 +166,14 @@ class SocketService {
   static void successReceipt() {
     _socket?.on("receive-trip-success", (data) async {
       print('cccccccccccccccccccccccccc');
-      final trip = _context.read<TripViewModel>();
-      _context.read<DriverViewModel>().updateStatus('Confirmed');
+      final trip = context.read<TripViewModel>();
+      context.read<DriverViewModel>().updateStatus('Confirmed');
       String directions = await APIPlace.getDirections(
-          origin: _context.read<DriverViewModel>().myLocation.coordinates,
+          origin: context.read<DriverViewModel>().myLocation.coordinates,
           destination: trip.fromAddress.coordinates);
-      await trip.updateDirection(PolylinePoints().decodePolyline(directions));
+      trip.updateDirection(PolylinePoints().decodePolyline(directions));
 
-      Navigator.of(_context).pushReplacementNamed(Routes.trip);
+      Navigator.of(context).pushReplacementNamed(Routes.trip);
     });
   }
 
@@ -201,8 +201,8 @@ class SocketService {
 
   static void startScheduledTrip() {
     _socket?.on("schedule-notice", (data) async {
-      final trip = _context.read<TripViewModel>();
-      final driver = _context.read<DriverViewModel>();
+      final trip = context.read<TripViewModel>();
+      final driver = context.read<DriverViewModel>();
       bool check = data['trip_info']['is_callcenter'];
       print('print($check)');
       check ? trip.updateInfoCallCenterTrip(data) : trip.updateInfoTrip(data);
@@ -211,29 +211,29 @@ class SocketService {
           origin: driver.myLocation.coordinates,
           destination: trip.fromAddress.coordinates);
       await trip.updateDirection(PolylinePoints().decodePolyline(directions));
-      Navigator.of(_context)
+      Navigator.of(context)
           .pushNamedAndRemoveUntil(Routes.trip, (route) => false);
     });
   }
 
   static void driverReconnect() {
     _socket?.on("driver-reconnect", (data) async {
-      final trip = _context.read<TripViewModel>();
-      final driver = _context.read<DriverViewModel>();
-      _context.read<TripViewModel>().updateInfoTrip(data);
+      final trip = context.read<TripViewModel>();
+      final driver = context.read<DriverViewModel>();
+      context.read<TripViewModel>().updateInfoTrip(data);
       driver.updateStatus(data['trip_info']['status']);
       if (data['trip_info']['status'] == "Confirmed") {
         String directions = await APIPlace.getDirections(
-            origin: _context.read<DriverViewModel>().myLocation.coordinates,
+            origin: context.read<DriverViewModel>().myLocation.coordinates,
             destination: trip.fromAddress.coordinates);
         await trip.updateDirection(PolylinePoints().decodePolyline(directions));
-        Navigator.of(_context).pushReplacementNamed(Routes.trip);
+        Navigator.of(context).pushReplacementNamed(Routes.trip);
       } else if (data['trip_info']['status'] == 'Driving') {
         String directions = await APIPlace.getDirections(
             origin: driver.myLocation.coordinates,
             destination: trip.toAddress.coordinates);
         await trip.updateDirection(PolylinePoints().decodePolyline(directions));
-        Navigator.of(_context).pushReplacementNamed(Routes.tripDriving);
+        Navigator.of(context).pushReplacementNamed(Routes.tripDriving);
       }
     });
   }

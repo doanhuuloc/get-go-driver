@@ -7,26 +7,26 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 class TripViewModel with ChangeNotifier {
   TripModel _infoTrip = TripModel(
-    id: 1,
-    avatar: "https://picsum.photos/200/300",
-    name: "Nguyễn Đăng Mạnh Tú",
-    phone: "0909100509",
-    cost: 100000,
-    distance: 22.6,
-    typeCar: "taxi 4 chỗ",
-    note: "Chở em gái đi học",
-    fromAddress: LocationModel(
-        title: '', summary: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm"),
-    toAddress: LocationModel(
-        title: '', summary: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm"),
-    scheduledDate: DateTime.utc(2023, 7, 25, 16, 00),
-    paymentMethod: "tiền mặt",
-    is_scheduled: false,
-    is_callCenter: false,
-    startDate: DateTime.utc(2023, 7, 25, 16, 00),
-    endDate: DateTime.utc(2023, 7, 25, 16, 00),
-    setTripDate: DateTime.utc(2023, 7, 25, 16, 00),
-  );
+      id: 1,
+      avatar: "https://picsum.photos/200/300",
+      name: "Nguyễn Đăng Mạnh Tú",
+      phone: "0909100509",
+      cost: 100000,
+      distance: 22.6,
+      typeCar: "taxi 4 chỗ",
+      note: "Chở em gái đi học",
+      fromAddress: LocationModel(
+          title: '', summary: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm"),
+      toAddress: LocationModel(
+          title: '', summary: "227 Nguyễn Văn Cừ phuong 4 quan 5 tp hcm"),
+      scheduledDate: DateTime.utc(2023, 7, 25, 16, 00),
+      paymentMethod: "tiền mặt",
+      is_scheduled: false,
+      is_callCenter: false,
+      startDate: DateTime.utc(2023, 7, 25, 16, 00),
+      endDate: DateTime.utc(2023, 7, 25, 16, 00),
+      setTripDate: DateTime.utc(2023, 7, 25, 16, 00),
+      userId: '1');
   double price1km = 7;
   List<PointLatLng> _direction = [];
   final List<Map<String, String>> _message = [
@@ -44,6 +44,7 @@ class TripViewModel with ChangeNotifier {
   String get avatar => _infoTrip.avatar;
   String get name => _infoTrip.name;
   String get phone => _infoTrip.phone;
+  String get userId => _infoTrip.userId;
 
   double get cost => _infoTrip.cost;
   double get distance => _infoTrip.distance;
@@ -69,16 +70,17 @@ class TripViewModel with ChangeNotifier {
     return currencyFormatter.format(cost);
   }
 
-  Future<bool> updateDirection(List<PointLatLng> data) async {
+  bool updateDirection(List<PointLatLng> data) {
     _direction = data;
-    notifyListeners();
+    // notifyListeners();
     return true;
   }
 
   void updateInfoTrip(Map<String, dynamic> data) {
     Map<String, dynamic> trip_infor = data['trip_info'];
     Map<String, dynamic> user_infor = data['user_info'];
-
+    print('thông tin user nhân: $user_infor');
+    _infoTrip.userId = user_infor['id'].toString();
     _infoTrip.id = trip_infor['trip_id'] / 1;
     _infoTrip.avatar = user_infor['avatar'];
     _infoTrip.name = user_infor['name'];

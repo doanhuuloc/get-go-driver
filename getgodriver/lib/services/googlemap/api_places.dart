@@ -112,8 +112,8 @@ class APIPlace {
       throw Exception('Request failed with status: ${response.statusCode}');
     } catch (e) {
       print("cout<< neeee $e");
+      throw Exception('Request failed with status: ');
     }
-    throw Exception('Request failed with status: ');
   }
 
   static Future<Map<String, dynamic>> getDirectionAndDistance(
@@ -175,10 +175,11 @@ class APIPlace {
         // print('cout<<<< ${response.data['routes'][0]['distanceMeters']}');
         // print('cout<<<< ${response.data['routes'][0]['duration']}');
         double distance = response.data['routes'][0]['distanceMeters'] / 1000;
-        String duration =
-            (double.parse(response.data['routes'][0]['duration'].replaceAll('s', '')) / 60)
-                .round()
-                .toString();
+        String duration = (double.parse(response.data['routes'][0]['duration']
+                    .replaceAll('s', '')) /
+                60)
+            .round()
+            .toString();
         Map<String, dynamic> detail = {
           "polylinePoints": response.data['routes'][0]['polyline']
               ['encodedPolyline'],
