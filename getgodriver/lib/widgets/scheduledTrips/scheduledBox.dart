@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:getgodriver/models/tripModel.dart';
 import 'package:getgodriver/provider/tripViewModel.dart';
@@ -42,7 +40,7 @@ class ApointmentBox extends StatelessWidget {
               color: themeData.primaryColor,
             ),
             const SizedBox(height: 10),
-            if (trip['is_callcenter'] == 0)
+            if (!trip['is_callcenter'])
               Address(
                   address: trip['end']['place'],
                   img: "assets/svgs/toaddress.svg"),
@@ -61,7 +59,7 @@ class ApointmentBox extends StatelessWidget {
                   height: 25,
                 ),
                 const SizedBox(width: 5),
-                Text("${2} km")
+                Text("${trip['distance']} km")
               ],
             ),
             Row(
@@ -73,7 +71,7 @@ class ApointmentBox extends StatelessWidget {
                   color: themeData.primaryColor,
                 ),
                 const SizedBox(width: 5),
-                if (trip['is_callcenter']==0)
+                if (!trip['is_callcenter'])
                   Text(
                     tripProvider.formatCurrency(double.parse(trip['price'])),
                     // style: TextStyle(color: themeData.primaryColor),
@@ -91,7 +89,7 @@ class ApointmentBox extends StatelessWidget {
                 const SizedBox(width: 5),
                 Text(formatApointmentDate.format(
                     DateTime.parse(trip['schedule_time'])
-                        .add(const Duration(hours: 0))))
+                        .add(const Duration(hours: 7))))
               ],
             ),
           ],

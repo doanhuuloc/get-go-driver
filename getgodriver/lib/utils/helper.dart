@@ -4,7 +4,7 @@ import 'package:just_audio/just_audio.dart';
 class Helper {
   static final AudioPlayer _audioPlayer = AudioPlayer();
 
-  static void playRingSound(String url, double volumn) {
+  static Future<void> playRingSound(String url, double volumn) async {
     try {
       if (_audioPlayer.playing) {
         _audioPlayer.stop();
@@ -15,7 +15,8 @@ class Helper {
       _audioPlayer.setUrl(url);
       _audioPlayer.play();
     } catch (err) {
-      throw (err);
+      print("lỗi âm thanh: $err");
+      return;
     }
   }
 
@@ -26,7 +27,8 @@ class Helper {
         await _audioPlayer.stop();
       }
     } catch (err) {
-      throw (err);
+      print("lỗi âm thanh stop: $err");
+      return;
     }
   }
 }

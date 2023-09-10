@@ -10,10 +10,13 @@ class ApiAuth {
 
   static Future<Map<String, dynamic>> checkPhone(String phone) async {
     try {
+      print('check ${RoutePathApi.checkPhone}?phone=$phone');
       final respone = await _dio.get("${RoutePathApi.checkPhone}?phone=$phone");
       return respone.data;
     } catch (err) {
-      throw err;
+      // throw err;
+      print(err);
+      return {};
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/home/distanceCost.dart';
 import 'package:provider/provider.dart';
 import '../customerInfo.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class ContentTripFromClient extends StatelessWidget {
   const ContentTripFromClient({super.key});
@@ -33,7 +34,9 @@ class ContentTripFromClient extends StatelessWidget {
               ),
             ),
             IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await FlutterPhoneDirectCaller.callNumber(trip.phone);
+                },
                 icon: Icon(
                   Icons.phone,
                   color: Theme.of(context).primaryColor,

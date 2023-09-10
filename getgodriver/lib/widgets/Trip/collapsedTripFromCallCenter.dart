@@ -6,6 +6,7 @@ import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class CollapsedTripFromCallCenter extends StatelessWidget {
   const CollapsedTripFromCallCenter({super.key});
@@ -58,7 +59,11 @@ class CollapsedTripFromCallCenter extends StatelessWidget {
                     ],
                   ),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () async{
+                        await FlutterPhoneDirectCaller.callNumber(trip.phone);
+
+
+                      },
                       icon: Icon(
                         Icons.phone,
                         color: Theme.of(context).primaryColor,

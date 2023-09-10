@@ -15,6 +15,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class SlidingTrip extends StatefulWidget {
   const SlidingTrip({super.key});
@@ -82,7 +83,9 @@ class _SlidingTripState extends State<SlidingTrip> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await FlutterPhoneDirectCaller.callNumber(trip.phone);
+                      },
                       iconSize: 30,
                       icon: Icon(
                         Icons.phone,
@@ -173,8 +176,6 @@ class _SlidingTripState extends State<SlidingTrip> {
                           fontWeight: FontWeight.bold),
                     ),
                   ))
-        
-              
             ],
           ),
         ),

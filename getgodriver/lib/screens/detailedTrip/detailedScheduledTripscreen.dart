@@ -100,7 +100,7 @@ class _DetailedScheduledTripScreenState
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              InfoStats(title: "Khoảng cách", content: "12 km"),
+              InfoStats(title: "Khoảng cách", content: "${widget.trip['distance']} km"),
               Container(
                 height: MediaQuery.of(context).size.height * 0.08,
                 width: 1,
@@ -118,7 +118,7 @@ class _DetailedScheduledTripScreenState
                 width: 1,
                 decoration: BoxDecoration(color: Colors.black54),
               ),
-              InfoStats(title: "Dịch vụ", content: "car"),
+              InfoStats(title: "Dịch vụ", content: "Xe 4 chỗ"),
             ],
           ),
           const Divider(height: 1, color: Colors.black54),
@@ -146,7 +146,8 @@ class _DetailedScheduledTripScreenState
               info: widget.trip['paymentMethod'] != null
                   ? widget.trip['paymentMethod']
                   : "Tiền mặt"),
-          UserLineInfo(title: "Lưu ý", info: widget.trip['note'].toString()),
+          if (widget.trip['note'] != null)
+            UserLineInfo(title: "Lưu ý", info: widget.trip['note'].toString()),
           const SizedBox(height: 30),
           InkWell(
             onTap: () {
@@ -165,7 +166,7 @@ class _DetailedScheduledTripScreenState
                             ? await acceptScheduledTrip(driver.accessToken)
                             : print("cout << hủy");
                         // Navigator.of(context).pushReplacementNamed(Routes.home);
-                        Navigator.of(context).pop();
+                        Navigator.of(cxt).pop();
                         Navigator.of(context).pop("confirmed");
 
                         // Navigator.pop(context,"confirmed");

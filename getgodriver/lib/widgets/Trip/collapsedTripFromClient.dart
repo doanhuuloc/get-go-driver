@@ -7,6 +7,7 @@ import 'package:getgodriver/widgets/address.dart';
 import 'package:getgodriver/widgets/customerInfo.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 import '../../routes/routes.dart';
 
@@ -68,7 +69,9 @@ class CollapsedTripFromClient extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await FlutterPhoneDirectCaller.callNumber(trip.phone);
+                      },
                       icon: Icon(
                         Icons.phone,
                         color: Theme.of(context).primaryColor,
@@ -85,7 +88,7 @@ class CollapsedTripFromClient extends StatelessWidget {
                 children: [
                   Expanded(
                       child: Address(
-                    address: trip.toAddress.summary,
+                    address: trip.fromAddress.summary,
                     img: "assets/svgs/toaddress.svg",
                   )),
                   InkWell(
