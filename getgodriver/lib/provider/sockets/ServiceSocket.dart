@@ -144,7 +144,9 @@ class SocketService {
       String directions = await APIPlace.getDirections(
           origin: context.read<DriverViewModel>().myLocation.coordinates,
           destination: trip.toAddress.coordinates);
-      await trip.updateDirection(PolylinePoints().decodePolyline(directions));
+      if (directions != '[]') {
+        await trip.updateDirection(PolylinePoints().decodePolyline(directions));
+      }
       print('beff ${trip.id}');
       Map<String, dynamic> data = {
         "trip_id": trip.id,
@@ -172,8 +174,9 @@ class SocketService {
       String directions = await APIPlace.getDirections(
           origin: context.read<DriverViewModel>().myLocation.coordinates,
           destination: trip.fromAddress.coordinates);
-      trip.updateDirection(PolylinePoints().decodePolyline(directions));
-
+      if (directions != '[]') {
+        trip.updateDirection(PolylinePoints().decodePolyline(directions));
+      }
       // Navigator.of(context).pushReplacementNamed(Routes.trip);
       Navigator.of(context).pushNamed(Routes.trip);
     });
@@ -212,7 +215,9 @@ class SocketService {
       String directions = await APIPlace.getDirections(
           origin: driver.myLocation.coordinates,
           destination: trip.fromAddress.coordinates);
-      await trip.updateDirection(PolylinePoints().decodePolyline(directions));
+      if (directions != '[]') {
+        trip.updateDirection(PolylinePoints().decodePolyline(directions));
+      }
       // Navigator.of(context)
       //     .pushNamedAndRemoveUntil(Routes.trip, (route) => false);
       Navigator.of(context).pushNamed(Routes.trip);
@@ -229,14 +234,18 @@ class SocketService {
         String directions = await APIPlace.getDirections(
             origin: context.read<DriverViewModel>().myLocation.coordinates,
             destination: trip.fromAddress.coordinates);
-        await trip.updateDirection(PolylinePoints().decodePolyline(directions));
+        if (directions != '[]') {
+          trip.updateDirection(PolylinePoints().decodePolyline(directions));
+        }
         // Navigator.of(context).pushReplacementNamed(Routes.trip);
         Navigator.of(context).pushNamed(Routes.trip);
       } else if (data['trip_info']['status'] == 'Driving') {
         String directions = await APIPlace.getDirections(
             origin: driver.myLocation.coordinates,
             destination: trip.toAddress.coordinates);
-        await trip.updateDirection(PolylinePoints().decodePolyline(directions));
+        if (directions != '[]') {
+          trip.updateDirection(PolylinePoints().decodePolyline(directions));
+        }
         // Navigator.of(context).pushReplacementNamed(Routes.tripDriving);
         Navigator.of(context).pushNamed(Routes.tripDriving);
       }

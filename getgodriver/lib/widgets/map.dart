@@ -119,6 +119,7 @@ class _MapScreenState extends State<MapScreen> {
                 origin: LatLng(
                     newLocation.latitude ?? 0, newLocation.longitude ?? 0),
                 destination: widget.desLocation!.coordinates);
+            if (directions != '[]') directions = '';
             SocketService.driverUpdateServer(
                 LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0),
                 newLocation.heading ?? 0,

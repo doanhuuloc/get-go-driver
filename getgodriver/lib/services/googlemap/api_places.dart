@@ -55,7 +55,14 @@ class APIPlace {
 
   static Future<String> getDirections(
       {required LatLng origin, required LatLng destination}) async {
-    try {
+    double result = 0;
+    result = Geolocator.distanceBetween(
+      origin.latitude,
+      origin.longitude,
+      destination.latitude,
+      destination.longitude,
+    );
+    if (result > 200) {
       print('cout<< ooi doi oi');
       final url = 'https://routes.googleapis.com/directions/v2:computeRoutes';
 
@@ -108,11 +115,10 @@ class APIPlace {
         //     response.data['routes'][0]['polyline']['encodedPolyline']);
 
         return response.data['routes'][0]['polyline']['encodedPolyline'];
-      }
-      throw Exception('Request failed with status: ${response.statusCode}');
-    } catch (e) {
-      print("cout<< neeee $e");
-      throw Exception('Request failed with status: ');
+      } else
+        return '[]';
+    } else {
+      return '[]';
     }
   }
 
