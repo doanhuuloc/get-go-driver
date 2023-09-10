@@ -58,8 +58,10 @@ class ButtonChangeStatusTrip extends StatelessWidget {
                               onSubmit: () async {
                                 await SocketService.handleTripUpdate(
                                     context, 'Driving');
-                                Navigator.of(context)
-                                    .pushReplacementNamed(Routes.tripDriving);
+                                // Navigator.of(context)
+                                //     .pushReplacementNamed(Routes.tripDriving);
+                                 Navigator.of(context)
+                                    .pushNamed(Routes.tripDriving);
                               },
                             )
                       : SizedBox();

@@ -62,7 +62,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
 
   @override
   void initState() {
-    Helper.playRingSound(InitValue.ringSound[0]['assetUrl'].toString(), 1);
+    // Helper.playRingSound(InitValue.ringSound[0]['assetUrl'].toString(), 1);
      trip = context.read<TripViewModel>();
     startCountdown();
     super.initState();

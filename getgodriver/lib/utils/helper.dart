@@ -4,7 +4,7 @@ import 'package:just_audio/just_audio.dart';
 class Helper {
   static final AudioPlayer _audioPlayer = AudioPlayer();
 
-  static void playRingSound(String url, double volumn) {
+  static Future<void> playRingSound(String url, double volumn)async {
     try {
       if (_audioPlayer.playing) {
         _audioPlayer.stop();

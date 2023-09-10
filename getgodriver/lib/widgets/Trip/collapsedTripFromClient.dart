@@ -85,7 +85,7 @@ class CollapsedTripFromClient extends StatelessWidget {
                 children: [
                   Expanded(
                       child: Address(
-                    address: trip.toAddress.summary,
+                    address: trip.fromAddress.summary,
                     img: "assets/svgs/toaddress.svg",
                   )),
                   InkWell(
