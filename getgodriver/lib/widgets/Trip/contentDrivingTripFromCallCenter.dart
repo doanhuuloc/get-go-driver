@@ -51,13 +51,13 @@ class ContentDrivingTripFromCallCenter extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Khoa Học Tự Nhiên",
+                                "Điểm dến",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 5),
                               Text(
                                 overflow: TextOverflow.clip,
-                                "227 nguyễn văn cừ, phường 4, quận 5, thành phố Hồ Chí Minh",
+                                trip.toAddress.summary,
                               ),
                             ],
                           ),

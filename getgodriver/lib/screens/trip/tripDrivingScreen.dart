@@ -14,13 +14,26 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class TripDrivingScreen extends StatelessWidget {
+class TripDrivingScreen extends StatefulWidget {
   const TripDrivingScreen({super.key});
+
+  @override
+  State<TripDrivingScreen> createState() => _TripDrivingScreenState();
+}
+
+class _TripDrivingScreenState extends State<TripDrivingScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    SocketService.context = context;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     // SocketService.updateContext(context);
     // final SocketService socketProvider = context.read<SocketService>();
+    print("sao nua v ${context.read<TripViewModel>().toAddress.coordinates}");
     final TripViewModel trip = context.read<TripViewModel>();
     return Scaffold(
       body: Stack(

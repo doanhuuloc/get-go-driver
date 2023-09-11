@@ -18,6 +18,7 @@ class GoogleMapBuider {
   }
 
   GoogleMapBuider setDesLocation(LocationModel location) {
+    print("điểm cuối ne: ${location.coordinates}");
     _desLocation = location;
     return this;
   }

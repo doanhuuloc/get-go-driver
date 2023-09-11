@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getgodriver/models/location.dart';
 import 'package:getgodriver/models/tripModel.dart';
+import 'package:getgodriver/services/googlemap/api_places.dart';
 import 'package:intl/intl.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -27,7 +28,7 @@ class TripViewModel with ChangeNotifier {
       endDate: DateTime.utc(2023, 7, 25, 16, 00),
       setTripDate: DateTime.utc(2023, 7, 25, 16, 00),
       userId: '1');
-  double price1km = 7;
+  double price1km = 7000;
   List<PointLatLng> _direction = [];
   final List<Map<String, String>> _message = [
     {"9": 'Chào em', "time": '10:00'},
@@ -64,9 +65,19 @@ class TripViewModel with ChangeNotifier {
   DateTime? get setTripDate => _infoTrip.setTripDate;
   DateTime? get scheduledDate => _infoTrip.scheduledDate;
 
+  Future<void> updateLocation(LocationModel location) async{
+    if (location.placeID != '') {
+      location.coordinates = await APIPlace.getLatLng(location.placeID);
+    }
+    _infoTrip.toAddress = location;
+  }
+
   String formatCurrency(double cost) {
+    String k = cost.toStringAsFixed(0);
+    print("check:$k");
     final currencyFormatter =
         NumberFormat.currency(locale: 'vi_VN', symbol: 'đ');
+
     return currencyFormatter.format(cost);
   }
 

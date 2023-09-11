@@ -47,7 +47,7 @@ class _MapScreenState extends State<MapScreen> {
   double _heading = 0.0;
 
   Map<String, Marker> _marker = {};
-
+  
   // hàm lấy vị trí hiện tại
   _init() async {
     _location = Location();
@@ -111,9 +111,10 @@ class _MapScreenState extends State<MapScreen> {
                 newLocation.heading ?? 0,
                 '');
           }
-          if (context.read<TripViewModel>().direction.isNotEmpty &&
-              widget.desLocation != null) {
+          print('provider: ${widget.desLocation}');
+          if (widget.desLocation != null) {
             print('cout<<ne ${widget.desLocation!.coordinates}');
+            print('cout<<ne ${widget.currentLocation.coordinates}');
             print(
                 'cout<<ne ${LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0)}');
             String directions = await APIPlace.getDirections(
@@ -125,7 +126,12 @@ class _MapScreenState extends State<MapScreen> {
                 LatLng(newLocation.latitude ?? 0, newLocation.longitude ?? 0),
                 newLocation.heading ?? 0,
                 directions);
-            widget.listPoint = PolylinePoints().decodePolyline(directions);
+            if (directions == '') {
+              widget.listPoint = [];
+            } else
+              widget.listPoint = PolylinePoints().decodePolyline(directions);
+            // widget.listPoint = [];
+            print("ponit ${widget.listPoint}");
             setState(() {});
           } else {
             _moveCameraToLocation(
@@ -159,6 +165,7 @@ class _MapScreenState extends State<MapScreen> {
     _controller.future.then((GoogleMapController controller) {
       controller.dispose();
     });
+
     super.dispose();
   }
 

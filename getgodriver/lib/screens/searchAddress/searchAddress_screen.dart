@@ -47,6 +47,7 @@ class _SearchAddressScreenState extends State<SearchAddressScreen> {
     _inputAddress.text = location.summary;
     final trip = context.read<TripViewModel>();
     final driver = context.read<DriverViewModel>();
+    await trip.updateLocation(location);
     Map<String, dynamic> detail = await APIPlace.getDirectionAndDistance(
         origin: driver.myLocation.coordinates,
         destination: location.coordinates);
@@ -55,7 +56,8 @@ class _SearchAddressScreenState extends State<SearchAddressScreen> {
     detail['price'] = trip.updateTrip(detail['distance']);
     await ApiTrip.updateTripCallcenter(
         detail, driver.accessToken, trip.id.toString(), location);
-    Navigator.of(context).pushNamed(Routes.tripDriving);
+    // Navigator.of(context).pushNamed(Routes.tripDriving);
+    Navigator.of(context).pushReplacementNamed(Routes.tripDriving);
     // Navi ở đây
     locations = [];
     // vẽ đường đi, duration, distance, end, price

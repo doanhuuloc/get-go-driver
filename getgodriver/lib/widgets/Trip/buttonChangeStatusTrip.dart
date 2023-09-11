@@ -17,6 +17,7 @@ class ButtonChangeStatusTrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // SocketService socketProvider = context.read<SocketService>();
+    SocketService.context = context;
     final driver = context.read<DriverViewModel>();
     final trip = context.read<TripViewModel>();
     return Column(
@@ -44,7 +45,7 @@ class ButtonChangeStatusTrip extends StatelessWidget {
                           ? ButtonSizeL(
                               name: "Nhập thông tin điểm đến",
                               onTap: () {
-                                Navigator.pushNamed(
+                                Navigator.pushReplacementNamed(
                                     context, Routes.searchAddress);
                               },
                             )
