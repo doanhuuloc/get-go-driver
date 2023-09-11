@@ -28,16 +28,16 @@ class ButtonChangeStatusTrip extends StatelessWidget {
                   ? ButtonSizeL(
                       name: "Đã đến điểm đón",
                       onTap: () {
-                        // double result = Geolocator.distanceBetween(
-                        //   driver.myLocation.coordinates.latitude,
-                        //   driver.myLocation.coordinates.longitude,
-                        //   trip.fromAddress.coordinates.latitude,
-                        //   trip.fromAddress.coordinates.longitude,
-                        // );
-                        // if (result <= 200)
-                        driver.updateStatus('pickUp');
-                        // else
-                        //   DialogMessage.show(context);
+                        double result = Geolocator.distanceBetween(
+                          driver.myLocation.coordinates.latitude,
+                          driver.myLocation.coordinates.longitude,
+                          trip.fromAddress.coordinates.latitude,
+                          trip.fromAddress.coordinates.longitude,
+                        );
+                        if (result <= 200)
+                          driver.updateStatus('pickUp');
+                        else
+                          DialogMessage.show(context);
                       })
                   : status == 'pickUp'
                       ? trip.isCallcenter
@@ -58,10 +58,10 @@ class ButtonChangeStatusTrip extends StatelessWidget {
                               onSubmit: () async {
                                 await SocketService.handleTripUpdate(
                                     context, 'Driving');
-                                // Navigator.of(context)
-                                //     .pushReplacementNamed(Routes.tripDriving);
-                                 Navigator.of(context)
-                                    .pushNamed(Routes.tripDriving);
+                                Navigator.of(context)
+                                    .pushReplacementNamed(Routes.tripDriving);
+                                //  Navigator.of(context)
+                                //     .pushNamed(Routes.tripDriving);
                               },
                             )
                       : SizedBox();

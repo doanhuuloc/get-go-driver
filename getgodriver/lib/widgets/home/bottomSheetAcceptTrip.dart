@@ -32,7 +32,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
   late Timer timer;
 
   accpetTrip() {
-    Helper.stopRingSound();
+    // Helper.stopRingSound();
     context.read<DriverViewModel>().updateStatus('Confirmed');
     SocketService.driverIsAccept(widget.stripId, "Accept");
 
@@ -42,7 +42,7 @@ class _BottomSheetAcceptTripState extends State<BottomSheetAcceptTrip> {
   }
 
   rejectTrip() {
-    Helper.stopRingSound();
+    // Helper.stopRingSound();
     SocketService.driverIsAccept(widget.stripId, "Deny");
     Navigator.pop(context);
   }
