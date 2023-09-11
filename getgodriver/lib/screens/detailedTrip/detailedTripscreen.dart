@@ -103,9 +103,9 @@ class DetailedTripScreen extends StatelessWidget {
                     // SocketService.handleTripUpdate(context, 'waiting');
 
                     //         print("hhaa");
-                    // // Navigator.of(context).pushReplacementNamed(Routes.home);
-                    Navigator.of(context)
-                        .pushNamedAndRemoveUntil(Routes.home, (route) => false);
+                    Navigator.of(context).pushReplacementNamed(Routes.home);
+                    // Navigator.of(context)
+                    //     .pushNamedAndRemoveUntil(Routes.home, (route) => false);
                   },
                   child: Container(
                     height: 50,

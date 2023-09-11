@@ -14,7 +14,7 @@ class FloatingButtonMap extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(left: 30),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           FloatingActionButton(
             heroTag: null,
@@ -24,33 +24,34 @@ class FloatingButtonMap extends StatelessWidget {
             },
             child: const Icon(Icons.calendar_month_outlined),
           ),
-          FloatingActionButton(
-            heroTag: null,
-            backgroundColor: Theme.of(context).primaryColor,
-            onPressed: () {
-              // Navigator.of(context).pushNamed(Routes.tripDriving);
+          // FloatingActionButton(
+          //   heroTag: null,
+          //   backgroundColor: Theme.of(context).primaryColor,
+          //   onPressed: () {
+          //     // Navigator.of(context).pushNamed(Routes.tripDriving);
 
-              // final notify = Notifications();
-              // notify.showNotification("hello");
+          //     // final notify = Notifications();
+          //     // notify.showNotification("hello");
 
-              // notify.showScheduledNotification("hello", 23, 33,30);
-              // Location location = Location();
-              // location.getLocation().then((value) => {});
+          //     // notify.showScheduledNotification("hello", 23, 33,30);
+          //     // Location location = Location();
+          //     // location.getLocation().then((value) => {});
    
 
-              showModalBottomSheet(
-                enableDrag: false,
-                isDismissible: false,
-                context: context,
-                builder: (context) {
-                  return BottomSheetAcceptTrip(
-                    stripId: {'1': 1},
-                  );
-                },
-              );
-            },
-            child: const Icon(Icons.my_location),
-          ),
+          //     showModalBottomSheet(
+          //       enableDrag: false,
+          //       isDismissible: false,
+          //       context: context,
+          //       builder: (context) {
+          //         return BottomSheetAcceptTrip(
+          //           stripId: {'1': 1},
+          //         );
+          //       },
+          //     );
+          //   },
+          //   child: const Icon(Icons.my_location),
+          // ),
+    
         ],
       ),
     );

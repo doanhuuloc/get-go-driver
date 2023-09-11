@@ -63,60 +63,57 @@ class APIPlace {
       destination.longitude,
     );
     if (result > 200) {
-      print('cout<< ooi doi oi');
-      final url = 'https://routes.googleapis.com/directions/v2:computeRoutes';
+    print('cout<< ooi doi oi');
+    final url = 'https://routes.googleapis.com/directions/v2:computeRoutes';
 
-      final headers = {
-        'Content-Type': 'application/json',
-        'X-Goog-Api-Key': 'AIzaSyBLAnygT3LzvYGdMD43t12_zw79CXC0O2w',
-        'X-Goog-FieldMask':
-            'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline',
-      };
+    final headers = {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': 'AIzaSyBLAnygT3LzvYGdMD43t12_zw79CXC0O2w',
+      'X-Goog-FieldMask':
+          'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline',
+    };
 
-      final body = {
-        "origin": {
-          "location": {
-            "latLng": {
-              "latitude": origin.latitude,
-              "longitude": origin.longitude
-            }
+    final body = {
+      "origin": {
+        "location": {
+          "latLng": {"latitude": origin.latitude, "longitude": origin.longitude}
+        }
+      },
+      "destination": {
+        "location": {
+          "latLng": {
+            "latitude": destination.latitude,
+            "longitude": destination.longitude
           }
-        },
-        "destination": {
-          "location": {
-            "latLng": {
-              "latitude": destination.latitude,
-              "longitude": destination.longitude
-            }
-          }
-        },
-        "travelMode": "DRIVE",
-        "routingPreference": "TRAFFIC_AWARE",
-        "departureTime": "2023-10-15T15:01:23.045123456Z",
-        "computeAlternativeRoutes": false,
-        "routeModifiers": {
-          "avoidTolls": false,
-          "avoidHighways": false,
-          "avoidFerries": false
-        },
-        "languageCode": "en-US",
-        "units": "IMPERIAL"
-      };
+        }
+      },
+      "travelMode": "DRIVE",
+      "routingPreference": "TRAFFIC_AWARE",
+      "departureTime": "2023-10-15T15:01:23.045123456Z",
+      "computeAlternativeRoutes": false,
+      "routeModifiers": {
+        "avoidTolls": false,
+        "avoidHighways": false,
+        "avoidFerries": false
+      },
+      "languageCode": "en-US",
+      "units": "IMPERIAL"
+    };
 
-      final response =
-          await _dio.post(url, options: Options(headers: headers), data: body);
-      print('cout<< helloq242');
-      print(response);
-      if (response.statusCode == 200) {
-        // Successful response
-        // TODO: Handle and display the response data as per your requirement
-        // print(response.data);
-        // PolylinePoints().decodePolyline(
-        //     response.data['routes'][0]['polyline']['encodedPolyline']);
+    final response =
+        await _dio.post(url, options: Options(headers: headers), data: body);
+    print('cout<< helloq242');
+    print(response);
+    if (response.statusCode == 200) {
+      // Successful response
+      // TODO: Handle and display the response data as per your requirement
+      // print(response.data);
+      // PolylinePoints().decodePolyline(
+      //     response.data['routes'][0]['polyline']['encodedPolyline']);
 
-        return response.data['routes'][0]['polyline']['encodedPolyline'];
-      } else
-        return '[]';
+      return response.data['routes'][0]['polyline']['encodedPolyline'];
+    } else
+      return '[]';
     } else {
       return '[]';
     }

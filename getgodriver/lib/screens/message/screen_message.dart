@@ -152,7 +152,7 @@ class _MessageScreenState extends State<MessageScreen>
                                     const SizedBox(
                                       height: 4,
                                     ),
-                                     Text(
+                                    Text(
                                       e['time'].toString(),
                                       style: TextStyle(
                                         fontSize: 13,
@@ -198,6 +198,7 @@ class _MessageScreenState extends State<MessageScreen>
                       // Xử lý sự kiện khi người dùng nhấn nút Enter
                       // Điều này xảy ra khi người dùng nhấn Enter và không điều hướng đến trường khác
                       print("Người dùng đã nhấn Enter với giá trị: $value");
+                      messageController.clear();
                     },
                     decoration: InputDecoration(
                       hintText: "Tin nhắn",

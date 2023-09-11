@@ -44,7 +44,7 @@ class _TabScreenState extends State<TabScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    SocketService.context = context;
+    // SocketService.context = context;
     super.initState();
     // SocketService.updateContext(context);
 
@@ -53,6 +53,8 @@ class _TabScreenState extends State<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SocketService.context = context;
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBarSetting(), //_pages[_selectedPageIndex]['title']
